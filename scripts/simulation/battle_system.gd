@@ -32,6 +32,9 @@ static func resolve_city_battle(state: Dictionary, army_id: String, target_city_
 		target_city.previous_force_id = defender_force_id
 		target_city.troops = 0
 		target_city.recovery_state = "occupied"
+		target_city.integration_progress = 0
+		target_city.public_order = max(0, int(target_city.public_order) - 20)
+		target_city.morale_public = max(0, int(target_city.morale_public) - 20)
 		state.battle_logs[battle_id] = _battle_log(battle_id, army_id, target_city_id, "attacker", attacker_loss, defender_power)
 		return {
 			"ok": true,
@@ -105,4 +108,3 @@ static func _battle_log(
 		"attacker_loss": attacker_loss,
 		"defender_loss": defender_loss,
 	}
-
