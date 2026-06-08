@@ -23,6 +23,7 @@ static func build_from_dataset(dataset: Dictionary) -> Dictionary:
 		"routes": _index_rows(dataset.routes),
 		"armies": {},
 		"battle_logs": {},
+		"active_policies": {},
 	}
 
 	return {
