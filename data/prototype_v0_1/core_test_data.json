@@ -1,0 +1,67 @@
+{
+  "cities": [
+    {
+      "id": "CITY_TEST_A",
+      "name": "测试甲城",
+      "force_id": "FORCE_PLAYER",
+      "troops": 20000,
+      "food": 50000,
+      "public_order": 80,
+      "morale_public": 70,
+      "recovery_state": "normal"
+    },
+    {
+      "id": "CITY_TEST_B",
+      "name": "测试乙城",
+      "force_id": "FORCE_ENEMY",
+      "troops": 12000,
+      "food": 30000,
+      "public_order": 65,
+      "morale_public": 60,
+      "recovery_state": "normal"
+    }
+  ],
+  "forces": [
+    {
+      "id": "FORCE_PLAYER",
+      "name": "玩家测试势力",
+      "ruler_officer_id": "OFF_TEST_PLAYER",
+      "capital_city_id": "CITY_TEST_A"
+    },
+    {
+      "id": "FORCE_ENEMY",
+      "name": "敌方测试势力",
+      "ruler_officer_id": "OFF_TEST_ENEMY",
+      "capital_city_id": "CITY_TEST_B"
+    }
+  ],
+  "officers": [
+    {
+      "id": "OFF_TEST_PLAYER",
+      "name": "测试主将",
+      "force_id": "FORCE_PLAYER",
+      "leadership": 80,
+      "politics": 60
+    },
+    {
+      "id": "OFF_TEST_ENEMY",
+      "name": "测试守将",
+      "force_id": "FORCE_ENEMY",
+      "leadership": 70,
+      "politics": 50
+    }
+  ],
+  "routes": [
+    {
+      "id": "ROUTE_TEST_A_B",
+      "from_city_id": "CITY_TEST_A",
+      "to_city_id": "CITY_TEST_B",
+      "route_type": "road",
+      "distance": 60.0,
+      "terrain_modifier": 1.0,
+      "supply_modifier": 1.0,
+      "battle_trigger": "field"
+    }
+  ]
+}
+
