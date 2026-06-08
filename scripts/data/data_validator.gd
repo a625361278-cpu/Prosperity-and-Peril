@@ -2,10 +2,11 @@ extends RefCounted
 
 
 const REQUIRED_FIELDS := {
-	"cities": ["id", "name", "force_id", "troops", "food", "public_order", "morale_public", "recovery_state"],
-	"forces": ["id", "name", "ruler_officer_id", "capital_city_id"],
-	"officers": ["id", "name", "force_id", "leadership", "politics"],
+	"cities": ["id", "name", "force_id", "troops", "food", "public_order", "morale_public", "gentry_support", "recovery_state"],
+	"forces": ["id", "name", "ruler_officer_id", "capital_city_id", "legitimacy_base", "prestige_base"],
+	"officers": ["id", "name", "force_id", "leadership", "politics", "loyalty_base"],
 	"routes": ["id", "from_city_id", "to_city_id", "route_type", "distance", "terrain_modifier", "supply_modifier", "battle_trigger"],
+	"officer_relations": ["id", "officer_a_id", "officer_b_id", "relation_type", "relation_strength", "is_bidirectional", "effect_tag"],
 }
 
 const ENUM_FIELDS := {
@@ -15,6 +16,12 @@ const ENUM_FIELDS := {
 	"routes": {
 		"route_type": ["road", "mountain", "river", "sea", "pass"],
 		"battle_trigger": ["none", "field", "pass", "port", "river"],
+	},
+	"routes_optional": {
+		"strategic_node_type": ["none", "pass", "port", "ford", "water_route", "supply_node"],
+	},
+	"officer_relations": {
+		"relation_type": ["clan", "sworn", "spouse", "friend", "rival", "former_lord", "mentor"],
 	},
 }
 
@@ -69,8 +76,58 @@ static func _validate_table(table_name: String, rows: Array, errors: Array[Strin
 					var value := str(row[enum_field])
 					if not ENUM_FIELDS[table_name][enum_field].has(value):
 						errors.append("%s[%d].%s invalid enum value %s" % [table_name, index, enum_field, value])
+		if table_name == "routes":
+			_validate_route_optional_fields(index, row, errors)
+		_validate_numeric_ranges(table_name, index, row, errors)
 
 	return ids
+
+
+static func _validate_numeric_ranges(table_name: String, index: int, row: Dictionary, errors: Array[String]) -> void:
+	if table_name == "forces":
+		for field in ["legitimacy_base", "prestige_base"]:
+			if not row.has(field):
+				continue
+			if not _is_integer_number(row[field]):
+				errors.append("%s[%d].%s must be an integer" % [table_name, index, field])
+			elif int(row[field]) < 0 or int(row[field]) > 100:
+				errors.append("%s[%d].%s must be between 0 and 100" % [table_name, index, field])
+	if table_name == "cities":
+		for field in ["public_order", "morale_public", "gentry_support"]:
+			if not row.has(field):
+				continue
+			if not _is_integer_number(row[field]):
+				errors.append("%s[%d].%s must be an integer" % [table_name, index, field])
+			elif int(row[field]) < 0 or int(row[field]) > 100:
+				errors.append("%s[%d].%s must be between 0 and 100" % [table_name, index, field])
+	if table_name == "officers":
+		if row.has("loyalty_base"):
+			if not _is_integer_number(row.loyalty_base):
+				errors.append("%s[%d].loyalty_base must be an integer" % [table_name, index])
+			elif int(row.loyalty_base) < 0 or int(row.loyalty_base) > 100:
+				errors.append("%s[%d].loyalty_base must be between 0 and 100" % [table_name, index])
+	if table_name == "officer_relations":
+		if row.has("relation_strength") and not _is_integer_number(row.relation_strength):
+			errors.append("%s[%d].relation_strength must be an integer" % [table_name, index])
+		if row.has("is_bidirectional") and typeof(row.is_bidirectional) != TYPE_BOOL:
+			errors.append("%s[%d].is_bidirectional must be a bool" % [table_name, index])
+
+
+static func _validate_route_optional_fields(index: int, row: Dictionary, errors: Array[String]) -> void:
+	if row.has("strategic_node_type"):
+		var node_type := str(row.strategic_node_type)
+		if not ENUM_FIELDS.routes_optional.strategic_node_type.has(node_type):
+			errors.append("routes[%d].strategic_node_type invalid enum value %s" % [index, node_type])
+	if row.has("blocks_enemy_passage") and typeof(row.blocks_enemy_passage) != TYPE_BOOL:
+		errors.append("routes[%d].blocks_enemy_passage must be a bool" % index)
+
+
+static func _is_integer_number(value) -> bool:
+	if typeof(value) == TYPE_INT:
+		return true
+	if typeof(value) == TYPE_FLOAT:
+		return is_equal_approx(float(value), float(int(value)))
+	return false
 
 
 static func _validate_foreign_keys(dataset: Dictionary, ids_by_table: Dictionary, errors: Array[String]) -> void:
@@ -80,6 +137,9 @@ static func _validate_foreign_keys(dataset: Dictionary, ids_by_table: Dictionary
 	_validate_fk(dataset, ids_by_table, errors, "officers", "force_id", "forces")
 	_validate_fk(dataset, ids_by_table, errors, "routes", "from_city_id", "cities")
 	_validate_fk(dataset, ids_by_table, errors, "routes", "to_city_id", "cities")
+	_validate_fk(dataset, ids_by_table, errors, "routes", "control_force_id", "forces")
+	_validate_fk(dataset, ids_by_table, errors, "officer_relations", "officer_a_id", "officers")
+	_validate_fk(dataset, ids_by_table, errors, "officer_relations", "officer_b_id", "officers")
 
 
 static func _validate_fk(
@@ -100,4 +160,3 @@ static func _validate_fk(
 		var ref_id := str(row[field_name])
 		if not target_ids.has(ref_id):
 			errors.append("%s[%d].%s references missing %s id %s" % [source_table, index, field_name, target_table, ref_id])
-

@@ -8,6 +8,7 @@ const CITY_DYNAMIC_FIELDS := [
 	"food",
 	"public_order",
 	"morale_public",
+	"gentry_support",
 	"recovery_state",
 	"integration_progress",
 	"previous_force_id",
@@ -17,9 +18,16 @@ const CITY_DYNAMIC_FIELDS := [
 const OFFICER_DYNAMIC_FIELDS := [
 	"assignment_type",
 	"assignment_target_id",
+	"force_id",
+	"loyalty",
 ]
 
-const SAVE_VERSION := 2
+const FORCE_DYNAMIC_FIELDS := [
+	"legitimacy",
+	"prestige",
+]
+
+const SAVE_VERSION := 5
 
 
 static func save_state(state: Dictionary, path: String) -> Dictionary:
@@ -35,10 +43,18 @@ static func save_state(state: Dictionary, path: String) -> Dictionary:
 		"next_battle_seq": state.next_battle_seq,
 		"next_diplomacy_log_seq": state.next_diplomacy_log_seq,
 		"next_scheme_seq": state.next_scheme_seq,
+		"next_legitimacy_log_seq": state.next_legitimacy_log_seq,
+		"next_local_governance_log_seq": state.next_local_governance_log_seq,
+		"next_loyalty_log_seq": state.next_loyalty_log_seq,
 		"cities": _extract_dynamic_rows(state.cities, CITY_DYNAMIC_FIELDS),
+		"forces": _extract_dynamic_rows(state.forces, FORCE_DYNAMIC_FIELDS),
 		"officers": _extract_dynamic_rows(state.officers, OFFICER_DYNAMIC_FIELDS),
 		"armies": state.armies.duplicate(true),
 		"battle_logs": state.battle_logs.duplicate(true),
+		"legitimacy_logs": state.legitimacy_logs.duplicate(true),
+		"local_governance_logs": state.local_governance_logs.duplicate(true),
+		"loyalty_logs": state.loyalty_logs.duplicate(true),
+		"defector_states": state.defector_states.duplicate(true),
 		"active_policies": state.active_policies.duplicate(true),
 		"diplomacy_states": state.diplomacy_states.duplicate(true),
 		"diplomacy_logs": state.diplomacy_logs.duplicate(true),
@@ -99,7 +115,7 @@ static func load_state(base_dataset: Dictionary, path: String) -> Dictionary:
 
 static func _validate_state_for_save(state: Dictionary) -> Array[String]:
 	var errors: Array[String] = []
-	for key in ["current_day", "current_month", "next_army_seq", "next_battle_seq", "next_diplomacy_log_seq", "next_scheme_seq", "cities", "officers", "armies", "battle_logs", "active_policies", "diplomacy_states", "diplomacy_logs", "scheme_states"]:
+	for key in ["current_day", "current_month", "next_army_seq", "next_battle_seq", "next_diplomacy_log_seq", "next_scheme_seq", "next_legitimacy_log_seq", "next_local_governance_log_seq", "next_loyalty_log_seq", "cities", "forces", "officers", "armies", "battle_logs", "legitimacy_logs", "local_governance_logs", "loyalty_logs", "defector_states", "active_policies", "diplomacy_states", "diplomacy_logs", "scheme_states"]:
 		if not state.has(key):
 			errors.append("save state missing key %s" % key)
 	return errors
@@ -128,14 +144,22 @@ static func _apply_save_data(state: Dictionary, save_data: Dictionary) -> Array[
 	state.next_battle_seq = int(save_data.next_battle_seq)
 	state.next_diplomacy_log_seq = int(save_data.next_diplomacy_log_seq)
 	state.next_scheme_seq = int(save_data.next_scheme_seq)
+	state.next_legitimacy_log_seq = int(save_data.next_legitimacy_log_seq)
+	state.next_local_governance_log_seq = int(save_data.next_local_governance_log_seq)
+	state.next_loyalty_log_seq = int(save_data.next_loyalty_log_seq)
 
 	_apply_dynamic_rows(state.cities, save_data.cities, errors, "cities")
+	_apply_dynamic_rows(state.forces, save_data.forces, errors, "forces")
 	_apply_dynamic_rows(state.officers, save_data.officers, errors, "officers")
 	if not errors.is_empty():
 		return errors
 
 	state.armies = save_data.armies.duplicate(true)
 	state.battle_logs = save_data.battle_logs.duplicate(true)
+	state.legitimacy_logs = save_data.legitimacy_logs.duplicate(true)
+	state.local_governance_logs = save_data.local_governance_logs.duplicate(true)
+	state.loyalty_logs = save_data.loyalty_logs.duplicate(true)
+	state.defector_states = save_data.defector_states.duplicate(true)
 	state.active_policies = save_data.active_policies.duplicate(true)
 	state.diplomacy_states = save_data.diplomacy_states.duplicate(true)
 	state.diplomacy_logs = save_data.diplomacy_logs.duplicate(true)
@@ -145,7 +169,7 @@ static func _apply_save_data(state: Dictionary, save_data: Dictionary) -> Array[
 
 static func _validate_save_data(save_data: Dictionary) -> Array[String]:
 	var errors: Array[String] = []
-	for key in ["version", "current_day", "current_month", "next_army_seq", "next_battle_seq", "next_diplomacy_log_seq", "next_scheme_seq", "cities", "officers", "armies", "battle_logs", "active_policies", "diplomacy_states", "diplomacy_logs", "scheme_states"]:
+	for key in ["version", "current_day", "current_month", "next_army_seq", "next_battle_seq", "next_diplomacy_log_seq", "next_scheme_seq", "next_legitimacy_log_seq", "next_local_governance_log_seq", "next_loyalty_log_seq", "cities", "forces", "officers", "armies", "battle_logs", "legitimacy_logs", "local_governance_logs", "loyalty_logs", "defector_states", "active_policies", "diplomacy_states", "diplomacy_logs", "scheme_states"]:
 		if not save_data.has(key):
 			errors.append("save data missing key %s" % key)
 	if errors.is_empty() and int(save_data.version) != SAVE_VERSION:

@@ -3,7 +3,9 @@ extends RefCounted
 const REQUIRED_STATE_KEYS := [
 	"current_day",
 	"current_month",
+	"forces",
 	"cities",
+	"officers",
 	"armies",
 	"routes",
 	"battle_logs",
@@ -25,7 +27,9 @@ static func build_snapshot(state: Dictionary) -> Dictionary:
 		"snapshot": {
 			"current_day": state.current_day,
 			"current_month": state.current_month,
+			"forces": _force_rows(state.forces),
 			"cities": _city_rows(state.cities),
+			"officers": _officer_rows(state.officers),
 			"armies": _army_rows(state.armies),
 			"routes": _route_rows(state.routes),
 			"battle_logs": _battle_log_rows(state.battle_logs),
@@ -41,6 +45,19 @@ static func _validate_state(state: Dictionary) -> Array[String]:
 	return errors
 
 
+static func _force_rows(forces: Dictionary) -> Array[Dictionary]:
+	var rows: Array[Dictionary] = []
+	for force_id in _sorted_keys(forces):
+		var force: Dictionary = forces[force_id]
+		rows.append({
+			"id": force_id,
+			"name": force.name,
+			"legitimacy": force.legitimacy,
+			"prestige": force.prestige,
+		})
+	return rows
+
+
 static func _city_rows(cities: Dictionary) -> Array[Dictionary]:
 	var rows: Array[Dictionary] = []
 	for city_id in _sorted_keys(cities):
@@ -53,6 +70,7 @@ static func _city_rows(cities: Dictionary) -> Array[Dictionary]:
 			"food": city.food,
 			"public_order": city.public_order,
 			"morale_public": city.morale_public,
+			"gentry_support": city.gentry_support,
 			"recovery_state": city.recovery_state,
 			"integration_progress": city.get("integration_progress", -1),
 		})
@@ -73,6 +91,19 @@ static func _army_rows(armies: Dictionary) -> Array[Dictionary]:
 			"route_progress_days": army.route_progress_days,
 			"state": army.state,
 			"last_battle_result": army.get("last_battle_result", ""),
+		})
+	return rows
+
+
+static func _officer_rows(officers: Dictionary) -> Array[Dictionary]:
+	var rows: Array[Dictionary] = []
+	for officer_id in _sorted_keys(officers):
+		var officer: Dictionary = officers[officer_id]
+		rows.append({
+			"id": officer_id,
+			"name": officer.name,
+			"force_id": officer.force_id,
+			"loyalty": officer.loyalty,
 		})
 	return rows
 
@@ -103,4 +134,3 @@ static func _sorted_keys(values: Dictionary) -> Array:
 	var keys := values.keys()
 	keys.sort()
 	return keys
-

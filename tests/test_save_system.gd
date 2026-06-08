@@ -7,6 +7,9 @@ const MarchSystem = preload("res://scripts/simulation/march_system.gd")
 const BattleSystem = preload("res://scripts/simulation/battle_system.gd")
 const PostwarIntegrationSystem = preload("res://scripts/simulation/postwar_integration_system.gd")
 const DiplomacySchemeSystem = preload("res://scripts/simulation/diplomacy_scheme_system.gd")
+const LegitimacySystem = preload("res://scripts/simulation/legitimacy_system.gd")
+const LocalGovernanceSystem = preload("res://scripts/simulation/local_governance_system.gd")
+const OfficerLoyaltySystem = preload("res://scripts/simulation/officer_loyalty_system.gd")
 const SaveSystem = preload("res://scripts/save/save_system.gd")
 
 const SAVE_PATH := "user://prototype_v0_1_save_test.json"
@@ -66,6 +69,24 @@ func _test_save_and_load_restores_state() -> Dictionary:
 		return {"ok": false, "message": "loaded scheme state missing"}
 	if loaded_state.next_diplomacy_log_seq != 2 or loaded_state.next_scheme_seq != 2:
 		return {"ok": false, "message": "loaded diplomacy or scheme seq mismatch"}
+	if loaded_state.forces.FORCE_PLAYER.legitimacy != 67:
+		return {"ok": false, "message": "loaded force legitimacy mismatch"}
+	if not loaded_state.legitimacy_logs.has("LEGLOG_1"):
+		return {"ok": false, "message": "loaded legitimacy log missing"}
+	if loaded_state.next_legitimacy_log_seq != 2:
+		return {"ok": false, "message": "loaded legitimacy seq mismatch"}
+	if loaded_state.cities.CITY_TEST_B.gentry_support != 35:
+		return {"ok": false, "message": "loaded city gentry_support mismatch"}
+	if not loaded_state.local_governance_logs.has("LGOVLOG_1"):
+		return {"ok": false, "message": "loaded local governance log missing"}
+	if loaded_state.next_local_governance_log_seq != 2:
+		return {"ok": false, "message": "loaded local governance seq mismatch"}
+	if loaded_state.officers.OFF_TEST_ENEMY.loyalty != 53:
+		return {"ok": false, "message": "loaded officer loyalty mismatch"}
+	if not loaded_state.loyalty_logs.has("LOYLOG_1"):
+		return {"ok": false, "message": "loaded loyalty log missing"}
+	if loaded_state.next_loyalty_log_seq != 2:
+		return {"ok": false, "message": "loaded loyalty seq mismatch"}
 	return {"ok": true}
 
 
@@ -96,8 +117,8 @@ func _test_save_writes_current_schema_version() -> Dictionary:
 	var parsed = JSON.parse_string(file.get_as_text())
 	if parsed == null or not parsed is Dictionary:
 		return {"ok": false, "message": "save file is not valid JSON"}
-	if int(parsed.version) != 2:
-		return {"ok": false, "message": "expected save version 2, got %s" % parsed.version}
+	if int(parsed.version) != 5:
+		return {"ok": false, "message": "expected save version 5, got %s" % parsed.version}
 	return {"ok": true}
 
 
@@ -159,4 +180,34 @@ func _build_state_after_integration() -> Dictionary:
 	})
 	if not scheme_result.ok:
 		return {"ok": false, "message": "scheme setup failed: %s" % [scheme_result.errors]}
+	var legitimacy_result: Dictionary = LegitimacySystem.apply_force_reputation_change(state_result.state, {
+		"id": "LEG_SAVE_TEST",
+		"force_id": "FORCE_PLAYER",
+		"legitimacy_delta": 5,
+		"prestige_delta": -3,
+		"reason": "postwar_reputation",
+		"source_type": "save_test",
+	})
+	if not legitimacy_result.ok:
+		return {"ok": false, "message": "legitimacy setup failed: %s" % [legitimacy_result.errors]}
+	var governance_result: Dictionary = LocalGovernanceSystem.apply_gentry_pressure_rule(state_result.state, {
+		"id": "LGOV_SAVE_TEST",
+		"city_id": "CITY_TEST_B",
+		"gentry_support_below": 40,
+		"public_order_delta": -1,
+		"morale_public_delta": -1,
+		"integration_progress_delta": 0,
+		"reason": "save_test",
+	})
+	if not governance_result.ok:
+		return {"ok": false, "message": "local governance setup failed: %s" % [governance_result.errors]}
+	var loyalty_result: Dictionary = OfficerLoyaltySystem.apply_loyalty_change(state_result.state, {
+		"id": "LOY_SAVE_TEST",
+		"officer_id": "OFF_TEST_ENEMY",
+		"loyalty_delta": -5,
+		"reason": "save_test",
+		"source_type": "save_test",
+	})
+	if not loyalty_result.ok:
+		return {"ok": false, "message": "loyalty setup failed: %s" % [loyalty_result.errors]}
 	return {"ok": true, "state": state_result.state}

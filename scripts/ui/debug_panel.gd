@@ -17,9 +17,18 @@ func _format_snapshot(snapshot: Dictionary) -> String:
 	var lines: Array[String] = []
 	lines.append("日期: 第 %d 日 / 第 %d 月" % [snapshot.current_day, snapshot.current_month])
 	lines.append("")
+	lines.append("势力:")
+	for force in snapshot.forces:
+		lines.append("- %s %s 正统=%s 名望=%s" % [
+			force.id,
+			force.name,
+			force.legitimacy,
+			force.prestige,
+		])
+	lines.append("")
 	lines.append("城市:")
 	for city in snapshot.cities:
-		lines.append("- %s %s 势力=%s 兵=%s 粮=%s 民心=%s 治安=%s 状态=%s 整合=%s" % [
+		lines.append("- %s %s 势力=%s 兵=%s 粮=%s 民心=%s 治安=%s 士族=%s 状态=%s 整合=%s" % [
 			city.id,
 			city.name,
 			city.force_id,
@@ -27,8 +36,18 @@ func _format_snapshot(snapshot: Dictionary) -> String:
 			city.food,
 			city.morale_public,
 			city.public_order,
+			city.gentry_support,
 			city.recovery_state,
 			city.integration_progress,
+		])
+	lines.append("")
+	lines.append("武将:")
+	for officer in snapshot.officers:
+		lines.append("- %s %s 势力=%s 忠诚=%s" % [
+			officer.id,
+			officer.name,
+			officer.force_id,
+			officer.loyalty,
 		])
 	lines.append("")
 	lines.append("部队:")
@@ -54,4 +73,3 @@ func _format_snapshot(snapshot: Dictionary) -> String:
 			log.defender_loss,
 		])
 	return "\n".join(lines)
-
