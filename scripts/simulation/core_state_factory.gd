@@ -17,12 +17,18 @@ static func build_from_dataset(dataset: Dictionary) -> Dictionary:
 		"current_month": 1,
 		"next_army_seq": 1,
 		"next_battle_seq": 1,
+		"next_diplomacy_log_seq": 1,
+		"next_scheme_seq": 1,
 		"cities": _index_rows(dataset.cities),
 		"forces": _index_rows(dataset.forces),
 		"officers": _index_rows(dataset.officers),
 		"routes": _index_rows(dataset.routes),
 		"armies": {},
 		"battle_logs": {},
+		"active_policies": {},
+		"diplomacy_states": {},
+		"diplomacy_logs": {},
+		"scheme_states": {},
 	}
 
 	return {

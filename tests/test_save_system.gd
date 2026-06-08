@@ -6,6 +6,7 @@ const SortieSystem = preload("res://scripts/simulation/sortie_system.gd")
 const MarchSystem = preload("res://scripts/simulation/march_system.gd")
 const BattleSystem = preload("res://scripts/simulation/battle_system.gd")
 const PostwarIntegrationSystem = preload("res://scripts/simulation/postwar_integration_system.gd")
+const DiplomacySchemeSystem = preload("res://scripts/simulation/diplomacy_scheme_system.gd")
 const SaveSystem = preload("res://scripts/save/save_system.gd")
 
 const SAVE_PATH := "user://prototype_v0_1_save_test.json"
@@ -17,6 +18,7 @@ var _failed := 0
 func _initialize() -> void:
 	_run("save and load restores dynamic runtime state", _test_save_and_load_restores_state)
 	_run("save file does not copy static master names", _test_save_omits_static_names)
+	_run("save file writes current schema version", _test_save_writes_current_schema_version)
 	_run("missing save file fails loudly", _test_missing_save_fails)
 	quit(_failed)
 
@@ -56,6 +58,14 @@ func _test_save_and_load_restores_state() -> Dictionary:
 		return {"ok": false, "message": "loaded army food mismatch"}
 	if not loaded_state.battle_logs.has("BATTLE_1"):
 		return {"ok": false, "message": "loaded battle log missing"}
+	if not loaded_state.diplomacy_states.has(DiplomacySchemeSystem.relation_key("FORCE_PLAYER", "FORCE_ENEMY")):
+		return {"ok": false, "message": "loaded diplomacy state missing"}
+	if not loaded_state.diplomacy_logs.has("DIPLOG_1"):
+		return {"ok": false, "message": "loaded diplomacy log missing"}
+	if not loaded_state.scheme_states.has("SCHEME_1"):
+		return {"ok": false, "message": "loaded scheme state missing"}
+	if loaded_state.next_diplomacy_log_seq != 2 or loaded_state.next_scheme_seq != 2:
+		return {"ok": false, "message": "loaded diplomacy or scheme seq mismatch"}
 	return {"ok": true}
 
 
@@ -70,6 +80,24 @@ func _test_save_omits_static_names() -> Dictionary:
 	var text := file.get_as_text()
 	if text.contains("测试甲城") or text.contains("测试乙城"):
 		return {"ok": false, "message": "save file copied static city names"}
+	return {"ok": true}
+
+
+func _test_save_writes_current_schema_version() -> Dictionary:
+	var setup := _build_state_after_integration()
+	if not setup.ok:
+		return setup
+	var save_result: Dictionary = SaveSystem.save_state(setup.state, SAVE_PATH)
+	if not save_result.ok:
+		return {"ok": false, "message": "save failed: %s" % [save_result.errors]}
+	var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
+	if file == null:
+		return {"ok": false, "message": "could not read save file"}
+	var parsed = JSON.parse_string(file.get_as_text())
+	if parsed == null or not parsed is Dictionary:
+		return {"ok": false, "message": "save file is not valid JSON"}
+	if int(parsed.version) != 2:
+		return {"ok": false, "message": "expected save version 2, got %s" % parsed.version}
 	return {"ok": true}
 
 
@@ -104,5 +132,31 @@ func _build_state_after_integration() -> Dictionary:
 		MarchSystem.advance_army_one_day(state_result.state, sortie.army_id)
 	BattleSystem.resolve_city_battle(state_result.state, sortie.army_id, "CITY_TEST_B")
 	PostwarIntegrationSystem.apply_integration_task(state_result.state, "CITY_TEST_B", "OFF_TEST_PLAYER")
+	state_result.state.forces.FORCE_PLAYER.gold = 1000
+	var diplomacy_result: Dictionary = DiplomacySchemeSystem.execute_diplomacy_action(state_result.state, {
+		"id": "DIP_SAVE_TRUCE",
+		"action_type": "truce",
+		"source_force_id": "FORCE_PLAYER",
+		"target_force_id": "FORCE_ENEMY",
+		"cost_gold": 100,
+		"new_state": "truce",
+		"duration_days": 30,
+	})
+	if not diplomacy_result.ok:
+		return {"ok": false, "message": "diplomacy setup failed: %s" % [diplomacy_result.errors]}
+	var scheme_result: Dictionary = DiplomacySchemeSystem.execute_scheme_action(state_result.state, {
+		"id": "SCHEME_SAVE_ORDER",
+		"scheme_type": "sabotage_order",
+		"source_force_id": "FORCE_PLAYER",
+		"target_force_id": "FORCE_ENEMY",
+		"actor_officer_id": "OFF_TEST_PLAYER",
+		"target_scope": "city",
+		"target_id": "CITY_TEST_B",
+		"cost_gold": 150,
+		"effects": [
+			{"target_scope": "city", "target_id": "CITY_TEST_B", "stat_key": "public_order", "operation": "add_flat", "value": -5}
+		],
+	})
+	if not scheme_result.ok:
+		return {"ok": false, "message": "scheme setup failed: %s" % [scheme_result.errors]}
 	return {"ok": true, "state": state_result.state}
-
