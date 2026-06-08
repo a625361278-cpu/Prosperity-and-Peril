@@ -80,6 +80,19 @@
       "terrain_modifier": 1.0,
       "supply_modifier": 1.0,
       "battle_trigger": "field"
+    },
+    {
+      "id": "ROUTE_TEST_A_B_PASS",
+      "from_city_id": "CITY_TEST_A",
+      "to_city_id": "CITY_TEST_B",
+      "route_type": "pass",
+      "distance": 30.0,
+      "terrain_modifier": 0.8,
+      "supply_modifier": 1.2,
+      "battle_trigger": "pass",
+      "strategic_node_type": "pass",
+      "control_force_id": "FORCE_ENEMY",
+      "blocks_enemy_passage": true
     }
   ]
 }

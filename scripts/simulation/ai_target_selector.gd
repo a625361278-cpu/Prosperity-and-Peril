@@ -1,6 +1,7 @@
 extends RefCounted
 
 const DiplomacySchemeSystem = preload("res://scripts/simulation/diplomacy_scheme_system.gd")
+const RouteAccessSystem = preload("res://scripts/simulation/route_access_system.gd")
 
 const REQUIRED_OPTION_FIELDS := ["troop_count", "speed_base", "food_cost_per_day"]
 const BLOCKING_DIPLOMACY_STATES := ["truce", "alliance", "vassal"]
@@ -96,6 +97,11 @@ static func _candidate_from_route(
 	if int(origin_city.troops) < troop_count:
 		return {"ok": false}
 	if _is_diplomacy_blocked(state, force_id, str(target_city.force_id)):
+		return {"ok": false}
+	var route_access: Dictionary = RouteAccessSystem.evaluate_route_access(state, force_id, str(route.id))
+	if not route_access.ok:
+		return {"ok": false, "errors": route_access.errors}
+	if not route_access.can_pass:
 		return {"ok": false}
 
 	var days_required := _days_required(route, speed_base)

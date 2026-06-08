@@ -17,6 +17,9 @@ const ENUM_FIELDS := {
 		"route_type": ["road", "mountain", "river", "sea", "pass"],
 		"battle_trigger": ["none", "field", "pass", "port", "river"],
 	},
+	"routes_optional": {
+		"strategic_node_type": ["none", "pass", "port", "ford", "water_route", "supply_node"],
+	},
 	"officer_relations": {
 		"relation_type": ["clan", "sworn", "spouse", "friend", "rival", "former_lord", "mentor"],
 	},
@@ -73,6 +76,8 @@ static func _validate_table(table_name: String, rows: Array, errors: Array[Strin
 					var value := str(row[enum_field])
 					if not ENUM_FIELDS[table_name][enum_field].has(value):
 						errors.append("%s[%d].%s invalid enum value %s" % [table_name, index, enum_field, value])
+		if table_name == "routes":
+			_validate_route_optional_fields(index, row, errors)
 		_validate_numeric_ranges(table_name, index, row, errors)
 
 	return ids
@@ -108,6 +113,15 @@ static func _validate_numeric_ranges(table_name: String, index: int, row: Dictio
 			errors.append("%s[%d].is_bidirectional must be a bool" % [table_name, index])
 
 
+static func _validate_route_optional_fields(index: int, row: Dictionary, errors: Array[String]) -> void:
+	if row.has("strategic_node_type"):
+		var node_type := str(row.strategic_node_type)
+		if not ENUM_FIELDS.routes_optional.strategic_node_type.has(node_type):
+			errors.append("routes[%d].strategic_node_type invalid enum value %s" % [index, node_type])
+	if row.has("blocks_enemy_passage") and typeof(row.blocks_enemy_passage) != TYPE_BOOL:
+		errors.append("routes[%d].blocks_enemy_passage must be a bool" % index)
+
+
 static func _is_integer_number(value) -> bool:
 	if typeof(value) == TYPE_INT:
 		return true
@@ -123,6 +137,7 @@ static func _validate_foreign_keys(dataset: Dictionary, ids_by_table: Dictionary
 	_validate_fk(dataset, ids_by_table, errors, "officers", "force_id", "forces")
 	_validate_fk(dataset, ids_by_table, errors, "routes", "from_city_id", "cities")
 	_validate_fk(dataset, ids_by_table, errors, "routes", "to_city_id", "cities")
+	_validate_fk(dataset, ids_by_table, errors, "routes", "control_force_id", "forces")
 	_validate_fk(dataset, ids_by_table, errors, "officer_relations", "officer_a_id", "officers")
 	_validate_fk(dataset, ids_by_table, errors, "officer_relations", "officer_b_id", "officers")
 

@@ -49,8 +49,8 @@ func _test_debug_snapshot() -> Dictionary:
 		return {"ok": false, "message": "expected loyalty values in officer snapshot"}
 	if snapshot.armies.size() != 1:
 		return {"ok": false, "message": "expected 1 army in debug snapshot"}
-	if snapshot.routes.size() != 1:
-		return {"ok": false, "message": "expected 1 route in debug snapshot"}
+	if snapshot.routes.size() != 2:
+		return {"ok": false, "message": "expected 2 routes in debug snapshot"}
 	if snapshot.battle_logs.size() != 1:
 		return {"ok": false, "message": "expected 1 battle log in debug snapshot"}
 	if snapshot.cities[1].recovery_state != "occupied":
