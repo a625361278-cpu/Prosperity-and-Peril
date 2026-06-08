@@ -18,6 +18,7 @@ var _failed := 0
 func _initialize() -> void:
 	_run("save and load restores dynamic runtime state", _test_save_and_load_restores_state)
 	_run("save file does not copy static master names", _test_save_omits_static_names)
+	_run("save file writes current schema version", _test_save_writes_current_schema_version)
 	_run("missing save file fails loudly", _test_missing_save_fails)
 	quit(_failed)
 
@@ -79,6 +80,24 @@ func _test_save_omits_static_names() -> Dictionary:
 	var text := file.get_as_text()
 	if text.contains("测试甲城") or text.contains("测试乙城"):
 		return {"ok": false, "message": "save file copied static city names"}
+	return {"ok": true}
+
+
+func _test_save_writes_current_schema_version() -> Dictionary:
+	var setup := _build_state_after_integration()
+	if not setup.ok:
+		return setup
+	var save_result: Dictionary = SaveSystem.save_state(setup.state, SAVE_PATH)
+	if not save_result.ok:
+		return {"ok": false, "message": "save failed: %s" % [save_result.errors]}
+	var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
+	if file == null:
+		return {"ok": false, "message": "could not read save file"}
+	var parsed = JSON.parse_string(file.get_as_text())
+	if parsed == null or not parsed is Dictionary:
+		return {"ok": false, "message": "save file is not valid JSON"}
+	if int(parsed.version) != 2:
+		return {"ok": false, "message": "expected save version 2, got %s" % parsed.version}
 	return {"ok": true}
 
 

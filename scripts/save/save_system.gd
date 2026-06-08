@@ -19,6 +19,8 @@ const OFFICER_DYNAMIC_FIELDS := [
 	"assignment_target_id",
 ]
 
+const SAVE_VERSION := 2
+
 
 static func save_state(state: Dictionary, path: String) -> Dictionary:
 	var errors := _validate_state_for_save(state)
@@ -26,7 +28,7 @@ static func save_state(state: Dictionary, path: String) -> Dictionary:
 		return {"ok": false, "errors": errors}
 
 	var save_data := {
-		"version": 1,
+		"version": SAVE_VERSION,
 		"current_day": state.current_day,
 		"current_month": state.current_month,
 		"next_army_seq": state.next_army_seq,
@@ -146,7 +148,7 @@ static func _validate_save_data(save_data: Dictionary) -> Array[String]:
 	for key in ["version", "current_day", "current_month", "next_army_seq", "next_battle_seq", "next_diplomacy_log_seq", "next_scheme_seq", "cities", "officers", "armies", "battle_logs", "active_policies", "diplomacy_states", "diplomacy_logs", "scheme_states"]:
 		if not save_data.has(key):
 			errors.append("save data missing key %s" % key)
-	if errors.is_empty() and int(save_data.version) != 1:
+	if errors.is_empty() and int(save_data.version) != SAVE_VERSION:
 		errors.append("unsupported save version %s" % save_data.version)
 	return errors
 
