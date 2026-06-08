@@ -41,6 +41,15 @@ func _format_snapshot(snapshot: Dictionary) -> String:
 			city.integration_progress,
 		])
 	lines.append("")
+	lines.append("武将:")
+	for officer in snapshot.officers:
+		lines.append("- %s %s 势力=%s 忠诚=%s" % [
+			officer.id,
+			officer.name,
+			officer.force_id,
+			officer.loyalty,
+		])
+	lines.append("")
 	lines.append("部队:")
 	for army in snapshot.armies:
 		lines.append("- %s 状态=%s 出阵=%s 路线=%s 兵=%s 粮=%s 进度=%s 战果=%s" % [

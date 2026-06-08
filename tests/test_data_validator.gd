@@ -103,8 +103,11 @@ func _valid_dataset() -> Dictionary:
 			{"id": "FORCE_ENEMY", "name": "敌方测试势力", "ruler_officer_id": "OFF_TEST_ENEMY", "capital_city_id": "CITY_TEST_B", "legitimacy_base": 35, "prestige_base": 55},
 		],
 		"officers": [
-			{"id": "OFF_TEST_PLAYER", "name": "测试主将", "force_id": "FORCE_PLAYER", "leadership": 80, "politics": 60},
-			{"id": "OFF_TEST_ENEMY", "name": "测试守将", "force_id": "FORCE_ENEMY", "leadership": 70, "politics": 50},
+			{"id": "OFF_TEST_PLAYER", "name": "测试主将", "force_id": "FORCE_PLAYER", "leadership": 80, "politics": 60, "loyalty_base": 90},
+			{"id": "OFF_TEST_ENEMY", "name": "测试守将", "force_id": "FORCE_ENEMY", "leadership": 70, "politics": 50, "loyalty_base": 58},
+		],
+		"officer_relations": [
+			{"id": "REL_TEST_RIVAL", "officer_a_id": "OFF_TEST_PLAYER", "officer_b_id": "OFF_TEST_ENEMY", "relation_type": "rival", "relation_strength": -30, "is_bidirectional": true, "effect_tag": "loyalty_risk"},
 		],
 		"routes": [
 			{

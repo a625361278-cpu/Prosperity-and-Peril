@@ -4,8 +4,9 @@ extends RefCounted
 const REQUIRED_FIELDS := {
 	"cities": ["id", "name", "force_id", "troops", "food", "public_order", "morale_public", "gentry_support", "recovery_state"],
 	"forces": ["id", "name", "ruler_officer_id", "capital_city_id", "legitimacy_base", "prestige_base"],
-	"officers": ["id", "name", "force_id", "leadership", "politics"],
+	"officers": ["id", "name", "force_id", "leadership", "politics", "loyalty_base"],
 	"routes": ["id", "from_city_id", "to_city_id", "route_type", "distance", "terrain_modifier", "supply_modifier", "battle_trigger"],
+	"officer_relations": ["id", "officer_a_id", "officer_b_id", "relation_type", "relation_strength", "is_bidirectional", "effect_tag"],
 }
 
 const ENUM_FIELDS := {
@@ -15,6 +16,9 @@ const ENUM_FIELDS := {
 	"routes": {
 		"route_type": ["road", "mountain", "river", "sea", "pass"],
 		"battle_trigger": ["none", "field", "pass", "port", "river"],
+	},
+	"officer_relations": {
+		"relation_type": ["clan", "sworn", "spouse", "friend", "rival", "former_lord", "mentor"],
 	},
 }
 
@@ -91,6 +95,17 @@ static func _validate_numeric_ranges(table_name: String, index: int, row: Dictio
 				errors.append("%s[%d].%s must be an integer" % [table_name, index, field])
 			elif int(row[field]) < 0 or int(row[field]) > 100:
 				errors.append("%s[%d].%s must be between 0 and 100" % [table_name, index, field])
+	if table_name == "officers":
+		if row.has("loyalty_base"):
+			if not _is_integer_number(row.loyalty_base):
+				errors.append("%s[%d].loyalty_base must be an integer" % [table_name, index])
+			elif int(row.loyalty_base) < 0 or int(row.loyalty_base) > 100:
+				errors.append("%s[%d].loyalty_base must be between 0 and 100" % [table_name, index])
+	if table_name == "officer_relations":
+		if row.has("relation_strength") and not _is_integer_number(row.relation_strength):
+			errors.append("%s[%d].relation_strength must be an integer" % [table_name, index])
+		if row.has("is_bidirectional") and typeof(row.is_bidirectional) != TYPE_BOOL:
+			errors.append("%s[%d].is_bidirectional must be a bool" % [table_name, index])
 
 
 static func _is_integer_number(value) -> bool:
@@ -108,6 +123,8 @@ static func _validate_foreign_keys(dataset: Dictionary, ids_by_table: Dictionary
 	_validate_fk(dataset, ids_by_table, errors, "officers", "force_id", "forces")
 	_validate_fk(dataset, ids_by_table, errors, "routes", "from_city_id", "cities")
 	_validate_fk(dataset, ids_by_table, errors, "routes", "to_city_id", "cities")
+	_validate_fk(dataset, ids_by_table, errors, "officer_relations", "officer_a_id", "officers")
+	_validate_fk(dataset, ids_by_table, errors, "officer_relations", "officer_b_id", "officers")
 
 
 static func _validate_fk(

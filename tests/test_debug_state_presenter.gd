@@ -43,6 +43,10 @@ func _test_debug_snapshot() -> Dictionary:
 		return {"ok": false, "message": "expected 2 forces in debug snapshot"}
 	if snapshot.forces[0].legitimacy != 35 and snapshot.forces[1].legitimacy != 62:
 		return {"ok": false, "message": "expected legitimacy values in force snapshot"}
+	if snapshot.officers.size() != 2:
+		return {"ok": false, "message": "expected 2 officers in debug snapshot"}
+	if snapshot.officers[0].loyalty != 58 and snapshot.officers[1].loyalty != 90:
+		return {"ok": false, "message": "expected loyalty values in officer snapshot"}
 	if snapshot.armies.size() != 1:
 		return {"ok": false, "message": "expected 1 army in debug snapshot"}
 	if snapshot.routes.size() != 1:

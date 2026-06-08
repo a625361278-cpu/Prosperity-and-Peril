@@ -47,6 +47,10 @@ func _test_builds_indexed_runtime_state() -> Dictionary:
 		return {"ok": false, "message": "expected FORCE_PLAYER legitimacy/prestige from master data"}
 	if state.officers.OFF_TEST_PLAYER.force_id != "FORCE_PLAYER":
 		return {"ok": false, "message": "expected OFF_TEST_PLAYER force FORCE_PLAYER"}
+	if state.officers.OFF_TEST_PLAYER.loyalty != 90:
+		return {"ok": false, "message": "expected OFF_TEST_PLAYER loyalty 90"}
+	if not state.officer_relations.has("REL_TEST_RIVAL"):
+		return {"ok": false, "message": "expected officer relation REL_TEST_RIVAL"}
 	if state.routes.ROUTE_TEST_A_B.distance != 60.0:
 		return {"ok": false, "message": "expected ROUTE_TEST_A_B distance 60.0"}
 	if not state.armies.is_empty():
@@ -55,6 +59,8 @@ func _test_builds_indexed_runtime_state() -> Dictionary:
 		return {"ok": false, "message": "expected initial legitimacy logs to be empty"}
 	if not state.local_governance_logs.is_empty():
 		return {"ok": false, "message": "expected initial local governance logs to be empty"}
+	if not state.loyalty_logs.is_empty():
+		return {"ok": false, "message": "expected initial loyalty logs to be empty"}
 	return {"ok": true}
 
 

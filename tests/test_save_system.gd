@@ -9,6 +9,7 @@ const PostwarIntegrationSystem = preload("res://scripts/simulation/postwar_integ
 const DiplomacySchemeSystem = preload("res://scripts/simulation/diplomacy_scheme_system.gd")
 const LegitimacySystem = preload("res://scripts/simulation/legitimacy_system.gd")
 const LocalGovernanceSystem = preload("res://scripts/simulation/local_governance_system.gd")
+const OfficerLoyaltySystem = preload("res://scripts/simulation/officer_loyalty_system.gd")
 const SaveSystem = preload("res://scripts/save/save_system.gd")
 
 const SAVE_PATH := "user://prototype_v0_1_save_test.json"
@@ -80,6 +81,12 @@ func _test_save_and_load_restores_state() -> Dictionary:
 		return {"ok": false, "message": "loaded local governance log missing"}
 	if loaded_state.next_local_governance_log_seq != 2:
 		return {"ok": false, "message": "loaded local governance seq mismatch"}
+	if loaded_state.officers.OFF_TEST_ENEMY.loyalty != 53:
+		return {"ok": false, "message": "loaded officer loyalty mismatch"}
+	if not loaded_state.loyalty_logs.has("LOYLOG_1"):
+		return {"ok": false, "message": "loaded loyalty log missing"}
+	if loaded_state.next_loyalty_log_seq != 2:
+		return {"ok": false, "message": "loaded loyalty seq mismatch"}
 	return {"ok": true}
 
 
@@ -110,8 +117,8 @@ func _test_save_writes_current_schema_version() -> Dictionary:
 	var parsed = JSON.parse_string(file.get_as_text())
 	if parsed == null or not parsed is Dictionary:
 		return {"ok": false, "message": "save file is not valid JSON"}
-	if int(parsed.version) != 4:
-		return {"ok": false, "message": "expected save version 4, got %s" % parsed.version}
+	if int(parsed.version) != 5:
+		return {"ok": false, "message": "expected save version 5, got %s" % parsed.version}
 	return {"ok": true}
 
 
@@ -194,4 +201,13 @@ func _build_state_after_integration() -> Dictionary:
 	})
 	if not governance_result.ok:
 		return {"ok": false, "message": "local governance setup failed: %s" % [governance_result.errors]}
+	var loyalty_result: Dictionary = OfficerLoyaltySystem.apply_loyalty_change(state_result.state, {
+		"id": "LOY_SAVE_TEST",
+		"officer_id": "OFF_TEST_ENEMY",
+		"loyalty_delta": -5,
+		"reason": "save_test",
+		"source_type": "save_test",
+	})
+	if not loyalty_result.ok:
+		return {"ok": false, "message": "loyalty setup failed: %s" % [loyalty_result.errors]}
 	return {"ok": true, "state": state_result.state}

@@ -5,6 +5,7 @@ const REQUIRED_STATE_KEYS := [
 	"current_month",
 	"forces",
 	"cities",
+	"officers",
 	"armies",
 	"routes",
 	"battle_logs",
@@ -28,6 +29,7 @@ static func build_snapshot(state: Dictionary) -> Dictionary:
 			"current_month": state.current_month,
 			"forces": _force_rows(state.forces),
 			"cities": _city_rows(state.cities),
+			"officers": _officer_rows(state.officers),
 			"armies": _army_rows(state.armies),
 			"routes": _route_rows(state.routes),
 			"battle_logs": _battle_log_rows(state.battle_logs),
@@ -89,6 +91,19 @@ static func _army_rows(armies: Dictionary) -> Array[Dictionary]:
 			"route_progress_days": army.route_progress_days,
 			"state": army.state,
 			"last_battle_result": army.get("last_battle_result", ""),
+		})
+	return rows
+
+
+static func _officer_rows(officers: Dictionary) -> Array[Dictionary]:
+	var rows: Array[Dictionary] = []
+	for officer_id in _sorted_keys(officers):
+		var officer: Dictionary = officers[officer_id]
+		rows.append({
+			"id": officer_id,
+			"name": officer.name,
+			"force_id": officer.force_id,
+			"loyalty": officer.loyalty,
 		})
 	return rows
 
