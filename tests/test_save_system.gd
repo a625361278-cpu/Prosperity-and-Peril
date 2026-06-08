@@ -7,6 +7,7 @@ const MarchSystem = preload("res://scripts/simulation/march_system.gd")
 const BattleSystem = preload("res://scripts/simulation/battle_system.gd")
 const PostwarIntegrationSystem = preload("res://scripts/simulation/postwar_integration_system.gd")
 const DiplomacySchemeSystem = preload("res://scripts/simulation/diplomacy_scheme_system.gd")
+const LegitimacySystem = preload("res://scripts/simulation/legitimacy_system.gd")
 const SaveSystem = preload("res://scripts/save/save_system.gd")
 
 const SAVE_PATH := "user://prototype_v0_1_save_test.json"
@@ -66,6 +67,12 @@ func _test_save_and_load_restores_state() -> Dictionary:
 		return {"ok": false, "message": "loaded scheme state missing"}
 	if loaded_state.next_diplomacy_log_seq != 2 or loaded_state.next_scheme_seq != 2:
 		return {"ok": false, "message": "loaded diplomacy or scheme seq mismatch"}
+	if loaded_state.forces.FORCE_PLAYER.legitimacy != 67:
+		return {"ok": false, "message": "loaded force legitimacy mismatch"}
+	if not loaded_state.legitimacy_logs.has("LEGLOG_1"):
+		return {"ok": false, "message": "loaded legitimacy log missing"}
+	if loaded_state.next_legitimacy_log_seq != 2:
+		return {"ok": false, "message": "loaded legitimacy seq mismatch"}
 	return {"ok": true}
 
 
@@ -96,8 +103,8 @@ func _test_save_writes_current_schema_version() -> Dictionary:
 	var parsed = JSON.parse_string(file.get_as_text())
 	if parsed == null or not parsed is Dictionary:
 		return {"ok": false, "message": "save file is not valid JSON"}
-	if int(parsed.version) != 2:
-		return {"ok": false, "message": "expected save version 2, got %s" % parsed.version}
+	if int(parsed.version) != 3:
+		return {"ok": false, "message": "expected save version 3, got %s" % parsed.version}
 	return {"ok": true}
 
 
@@ -159,4 +166,14 @@ func _build_state_after_integration() -> Dictionary:
 	})
 	if not scheme_result.ok:
 		return {"ok": false, "message": "scheme setup failed: %s" % [scheme_result.errors]}
+	var legitimacy_result: Dictionary = LegitimacySystem.apply_force_reputation_change(state_result.state, {
+		"id": "LEG_SAVE_TEST",
+		"force_id": "FORCE_PLAYER",
+		"legitimacy_delta": 5,
+		"prestige_delta": -3,
+		"reason": "postwar_reputation",
+		"source_type": "save_test",
+	})
+	if not legitimacy_result.ok:
+		return {"ok": false, "message": "legitimacy setup failed: %s" % [legitimacy_result.errors]}
 	return {"ok": true, "state": state_result.state}

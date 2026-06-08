@@ -3,6 +3,7 @@ extends RefCounted
 const REQUIRED_STATE_KEYS := [
 	"current_day",
 	"current_month",
+	"forces",
 	"cities",
 	"armies",
 	"routes",
@@ -25,6 +26,7 @@ static func build_snapshot(state: Dictionary) -> Dictionary:
 		"snapshot": {
 			"current_day": state.current_day,
 			"current_month": state.current_month,
+			"forces": _force_rows(state.forces),
 			"cities": _city_rows(state.cities),
 			"armies": _army_rows(state.armies),
 			"routes": _route_rows(state.routes),
@@ -39,6 +41,19 @@ static func _validate_state(state: Dictionary) -> Array[String]:
 		if not state.has(key):
 			errors.append("debug snapshot missing state key %s" % key)
 	return errors
+
+
+static func _force_rows(forces: Dictionary) -> Array[Dictionary]:
+	var rows: Array[Dictionary] = []
+	for force_id in _sorted_keys(forces):
+		var force: Dictionary = forces[force_id]
+		rows.append({
+			"id": force_id,
+			"name": force.name,
+			"legitimacy": force.legitimacy,
+			"prestige": force.prestige,
+		})
+	return rows
 
 
 static func _city_rows(cities: Dictionary) -> Array[Dictionary]:
@@ -103,4 +118,3 @@ static func _sorted_keys(values: Dictionary) -> Array:
 	var keys := values.keys()
 	keys.sort()
 	return keys
-

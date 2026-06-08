@@ -19,7 +19,7 @@ func _ready() -> void:
 		push_error("Strategic map render failed: %s" % [render_result.errors])
 		return
 	_debug_panel.set_runtime_state(state_result.state)
-	print("三国志：治世与乱世 Prototype V0.2.1 visual slice booted.")
+	print("三国志：治世与乱世 Prototype V0.3 visual slice booted.")
 
 
 func _build_visual_slice_state() -> Dictionary:

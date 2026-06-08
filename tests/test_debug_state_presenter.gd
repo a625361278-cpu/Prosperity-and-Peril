@@ -39,6 +39,10 @@ func _test_debug_snapshot() -> Dictionary:
 		return {"ok": false, "message": "expected current_day 0"}
 	if snapshot.cities.size() != 2:
 		return {"ok": false, "message": "expected 2 cities in debug snapshot"}
+	if snapshot.forces.size() != 2:
+		return {"ok": false, "message": "expected 2 forces in debug snapshot"}
+	if snapshot.forces[0].legitimacy != 35 and snapshot.forces[1].legitimacy != 62:
+		return {"ok": false, "message": "expected legitimacy values in force snapshot"}
 	if snapshot.armies.size() != 1:
 		return {"ok": false, "message": "expected 1 army in debug snapshot"}
 	if snapshot.routes.size() != 1:
@@ -82,4 +86,3 @@ func _build_state_after_battle() -> Dictionary:
 		MarchSystem.advance_army_one_day(state_result.state, sortie.army_id)
 	BattleSystem.resolve_city_battle(state_result.state, sortie.army_id, "CITY_TEST_B")
 	return {"ok": true, "state": state_result.state}
-

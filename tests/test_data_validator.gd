@@ -97,8 +97,8 @@ func _valid_dataset() -> Dictionary:
 			},
 		],
 		"forces": [
-			{"id": "FORCE_PLAYER", "name": "玩家测试势力", "ruler_officer_id": "OFF_TEST_PLAYER", "capital_city_id": "CITY_TEST_A"},
-			{"id": "FORCE_ENEMY", "name": "敌方测试势力", "ruler_officer_id": "OFF_TEST_ENEMY", "capital_city_id": "CITY_TEST_B"},
+			{"id": "FORCE_PLAYER", "name": "玩家测试势力", "ruler_officer_id": "OFF_TEST_PLAYER", "capital_city_id": "CITY_TEST_A", "legitimacy_base": 62, "prestige_base": 48},
+			{"id": "FORCE_ENEMY", "name": "敌方测试势力", "ruler_officer_id": "OFF_TEST_ENEMY", "capital_city_id": "CITY_TEST_B", "legitimacy_base": 35, "prestige_base": 55},
 		],
 		"officers": [
 			{"id": "OFF_TEST_PLAYER", "name": "测试主将", "force_id": "FORCE_PLAYER", "leadership": 80, "politics": 60},
