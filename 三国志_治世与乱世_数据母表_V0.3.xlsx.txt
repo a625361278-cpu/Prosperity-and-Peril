@@ -1,0 +1,692 @@
+=== Sheet: README ===
+《三国志：治世与乱世》数据母表 V0.1
+项目	《三国志：治世与乱世》
+文档类型	Excel 数据母表骨架
+版本	V0.1
+生成日期	2026-06-03
+当前定位	用于系统策划、数值策划、程序和内容组协作；不是最终完整数据。
+使用原则	先补字段和示例，再补全量内容；地图、武将库、技能库可在本母表基础上拆分专项。
+设计底线	部队从城池出阵；携带随军粮草；大地图移动需要时间；移动和作战消耗粮草；战斗结果回流大地图；战后占领需要整合。
+建议流程
+1	程序组先审字段是否满足状态机和存档需要。
+2	系统策划补充规则表、状态枚举和字段解释。
+3	数值策划补充公式、参数范围和调参备注。
+4	内容组再进入最终城池库、武将库、技能库、剧本初始状态。
+=== Sheet: 表目录 ===
+表名	类型	用途	来源章节	当前状态
+master_region	主数据表	定义州、地理大区、战略归属和显示顺序。	05_世界结构与地图规则	草案
+master_city	主数据表	定义城池静态属性，最终城池清单后续专项补齐。	05_世界结构与地图规则 / 16_数据库结构	草案
+master_route_node	主数据表 / 关联表	定义大地图行军节点、道路、水路和补给通道。	05_世界结构与地图规则 / 12_军事行军补给	草案
+master_force	主数据表	定义剧本中的势力静态信息和 AI 基础风格。	06_君主势力与汉室正统 / 16_数据库结构	草案
+master_officer	主数据表	定义武将静态资料和基础能力；最终武将库后续专项补齐。	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构	草案
+officer_relation	关联表	定义宗族、旧主、姻亲、好友、仇敌、师徒等关系。	07_人才任命 / 11_外交谋略与人物关系	草案
+appointment_policy	主数据表 / 规则表	合并记录岗位槽位、官职和政令配置入口，后续可拆表。	07_人才任命 / 09_政令官制	草案
+city_governance	状态表 / 主数据表	记录城市动态状态、设施和新占恢复相关配置。	08_内政与治世系统 / 14_战后整合	草案
+skill_tactic	主数据表 / 关联表	记录技能、战法、原型功能映射和三国化命名。	10_武将能力特技与战法	草案
+military_supply	状态表 / 规则表	固定军事底线：城池出阵、移动耗时、携粮、消耗和缺粮惩罚。	12_军事行军与补给 / 23_时间系统	草案
+battle_rules	规则表 / 状态表	记录战斗类型、士气、围城、港口、水路和结果回流规则。	13_野战攻城关隘与水战	草案
+diplomacy_postwar	状态表 / 规则表	连接外交信用、谋略、劝降、声势扩散、归附和战后治理。	11_外交谋略 / 14_声势归附与战后整合	草案
+ai_governorate	状态表 / 配置表	定义都督府范围、委任权限、AI 性格、目标选择和献策。	15_都督府委任与AI / 29_AI难度	草案
+scenario_event	主数据表 / 状态表 / 文本表	定义剧本入口、初始归属、历史事件链和改史条件。	26_胜利终局 / 27_剧本历史事件与改史框架	草案
+effect_formula_config	配置表 / 规则表	统一记录效果组、触发条件、公式 ID 和可调参数。	16_数据库结构 / 28_数值体系与平衡方法论	草案
+=== Sheet: 字段字典 ===
+sheet	field	type	required	key_or_ref	description	source	status
+master_region	region_id	string	Y	PK	州或地理大区唯一 ID	05_世界结构与地图规则	草案
+master_region	region_name	string	Y		州名，例如司隶、冀州、荆州	05_世界结构与地图规则	草案
+master_region	macro_area	enum	Y		北方 / 中原 / 关中 / 巴蜀 / 江东 / 荆襄 / 西北 / 南中	05_世界结构与地图规则	草案
+master_region	display_order	int	Y		UI 和数据表排序	05_世界结构与地图规则	草案
+master_region	terrain_theme	enum	N		主要地貌主题	05_世界结构与地图规则	草案
+master_region	strategic_note	text	N		战略说明	05_世界结构与地图规则	草案
+master_region	status	enum	Y		草案 / 待确认 / 已确认 / 暂缓 / 废弃	05_世界结构与地图规则	草案
+master_city	city_id	string	Y	PK	城池唯一 ID	05_世界结构与地图规则 / 16_数据库结构	草案
+master_city	city_name	string	Y		城池显示名	05_世界结构与地图规则 / 16_数据库结构	草案
+master_city	region_id	string	Y	FK master_region	所属州	05_世界结构与地图规则 / 16_数据库结构	草案
+master_city	commandery_id	string	N	FK master_commandery	所属郡	05_世界结构与地图规则 / 16_数据库结构	草案
+master_city	terrain_type	enum	Y		平原 / 山地 / 河网 / 关隘 / 港口 / 都城	05_世界结构与地图规则 / 16_数据库结构	草案
+master_city	city_scale	int	Y		城市规模等级	05_世界结构与地图规则 / 16_数据库结构	草案
+master_city	defense_base	int	Y		基础城防	05_世界结构与地图规则 / 16_数据库结构	草案
+master_city	agriculture_base	int	Y		农业基础	05_世界结构与地图规则 / 16_数据库结构	草案
+master_city	commerce_base	int	Y		商业基础	05_世界结构与地图规则 / 16_数据库结构	草案
+master_city	population_base	int	Y		人口基础	05_世界结构与地图规则 / 16_数据库结构	草案
+master_city	supply_capacity_base	int	Y		粮草容量基础	05_世界结构与地图规则 / 16_数据库结构	草案
+master_city	default_role	enum	Y		农业 / 商业 / 军事 / 交通 / 都城 / 前线	05_世界结构与地图规则 / 16_数据库结构	草案
+master_city	is_capital_candidate	bool	N		是否可作为势力首府候选	05_世界结构与地图规则 / 16_数据库结构	草案
+master_city	status	enum	Y		草案 / 待确认 / 已确认 / 暂缓 / 废弃	05_世界结构与地图规则 / 16_数据库结构	草案
+master_route_node	route_id	string	Y	PK	路线唯一 ID	05_世界结构与地图规则 / 12_军事行军补给	草案
+master_route_node	from_node_id	string	Y	FK node	起点节点	05_世界结构与地图规则 / 12_军事行军补给	草案
+master_route_node	to_node_id	string	Y	FK node	终点节点	05_世界结构与地图规则 / 12_军事行军补给	草案
+master_route_node	route_type	enum	Y		road / mountain / river / sea / pass	05_世界结构与地图规则 / 12_军事行军补给	草案
+master_route_node	distance	float	Y		路线距离，供移动时间计算	05_世界结构与地图规则 / 12_军事行军补给	草案
+master_route_node	terrain_modifier	float	Y		移动速度修正	05_世界结构与地图规则 / 12_军事行军补给	草案
+master_route_node	supply_modifier	float	Y		粮草消耗或补给修正	05_世界结构与地图规则 / 12_军事行军补给	草案
+master_route_node	control_required	bool	Y		是否需要控制节点才能安全通行	05_世界结构与地图规则 / 12_军事行军补给	草案
+master_route_node	battle_trigger	enum	N		none / field / pass / port / river	05_世界结构与地图规则 / 12_军事行军补给	草案
+master_route_node	status	enum	Y		草案 / 待确认 / 已确认 / 暂缓 / 废弃	05_世界结构与地图规则 / 12_军事行军补给	草案
+master_force	force_id	string	Y	PK	势力唯一 ID	06_君主势力与汉室正统 / 16_数据库结构	草案
+master_force	force_name	string	Y		势力名	06_君主势力与汉室正统 / 16_数据库结构	草案
+master_force	ruler_officer_id	string	Y	FK master_officer	君主武将 ID	06_君主势力与汉室正统 / 16_数据库结构	草案
+master_force	capital_city_id	string	Y	FK master_city	首府	06_君主势力与汉室正统 / 16_数据库结构	草案
+master_force	ideology	enum	N		复汉 / 霸府 / 割据 / 士族 / 军阀	06_君主势力与汉室正统 / 16_数据库结构	草案
+master_force	ai_personality_id	string	N	FK ai_personality	AI 性格	06_君主势力与汉室正统 / 16_数据库结构	草案
+master_force	legitimacy_base	int	Y		初始正统	06_君主势力与汉室正统 / 16_数据库结构	草案
+master_force	prestige_base	int	Y		初始名望	06_君主势力与汉室正统 / 16_数据库结构	草案
+master_force	diplomacy_profile	enum	N		激进 / 均衡 / 守成 / 谋略	06_君主势力与汉室正统 / 16_数据库结构	草案
+master_force	status	enum	Y		草案 / 待确认 / 已确认 / 暂缓 / 废弃	06_君主势力与汉室正统 / 16_数据库结构	草案
+master_officer	officer_id	string	Y	PK	武将唯一 ID	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构	草案
+master_officer	name	string	Y		姓名	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构	草案
+master_officer	courtesy_name	string	N		字	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构	草案
+master_officer	era_tag	enum	N		黄巾 / 群雄 / 官渡 / 赤壁 / 三国 / 后期	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构	草案
+master_officer	birth_year	int	N		出生年	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构	草案
+master_officer	death_year	int	N		死亡年	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构	草案
+master_officer	gender	enum	Y		M / F	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构	草案
+master_officer	clan_id	string	N		宗族 ID	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构	草案
+master_officer	origin_region_id	string	N	FK master_region	出身州	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构	草案
+master_officer	ability_leadership	int	Y		统率	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构	草案
+master_officer	ability_martial	int	Y		武力	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构	草案
+master_officer	ability_intellect	int	Y		智略	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构	草案
+master_officer	ability_politics	int	Y		政治	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构	草案
+master_officer	ability_charm	int	Y		魅力	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构	草案
+master_officer	ambition	int	Y		野心	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构	草案
+master_officer	loyalty_base	int	Y		基础忠诚	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构	草案
+master_officer	ideology	enum	N		复汉 / 霸府 / 士族 / 功名 / 仁政 / 法度	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构	草案
+master_officer	status	enum	Y		草案 / 待确认 / 已确认 / 暂缓 / 废弃	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构	草案
+officer_relation	relation_id	string	Y	PK	关系唯一 ID	07_人才任命 / 11_外交谋略与人物关系	草案
+officer_relation	officer_a_id	string	Y	FK master_officer	人物 A	07_人才任命 / 11_外交谋略与人物关系	草案
+officer_relation	officer_b_id	string	Y	FK master_officer	人物 B	07_人才任命 / 11_外交谋略与人物关系	草案
+officer_relation	relation_type	enum	Y		clan / sworn / spouse / friend / rival / former_lord / mentor	07_人才任命 / 11_外交谋略与人物关系	草案
+officer_relation	relation_strength	int	Y		关系强度，正负均可	07_人才任命 / 11_外交谋略与人物关系	草案
+officer_relation	is_bidirectional	bool	Y		是否双向	07_人才任命 / 11_外交谋略与人物关系	草案
+officer_relation	effect_tag	string	N		对忠诚、劝降、协同、仇敌战斗的影响标签	07_人才任命 / 11_外交谋略与人物关系	草案
+officer_relation	status	enum	Y		草案 / 待确认 / 已确认 / 暂缓 / 废弃	07_人才任命 / 11_外交谋略与人物关系	草案
+appointment_policy	entry_id	string	Y	PK	条目 ID	07_人才任命 / 09_政令官制	草案
+appointment_policy	entry_type	enum	Y		appointment_slot / office_rank / policy / bureaucracy	07_人才任命 / 09_政令官制	草案
+appointment_policy	name	string	Y		显示名	07_人才任命 / 09_政令官制	草案
+appointment_policy	route_type	enum	N		内政 / 军事 / 人才 / 外交 / 正统 / 都督	07_人才任命 / 09_政令官制	草案
+appointment_policy	unlock_condition	string	N		解锁条件 ID 或说明	07_人才任命 / 09_政令官制	草案
+appointment_policy	slot_scope	enum	N		city / commandery / governorate / force	07_人才任命 / 09_政令官制	草案
+appointment_policy	monthly_cost_gold	int	N		月维护金	07_人才任命 / 09_政令官制	草案
+appointment_policy	monthly_cost_food	int	N		月维护粮	07_人才任命 / 09_政令官制	草案
+appointment_policy	effect_group_id	string	N	FK effect_group	效果组	07_人才任命 / 09_政令官制	草案
+appointment_policy	negative_effect_group_id	string	N	FK effect_group	负面效果组	07_人才任命 / 09_政令官制	草案
+appointment_policy	status	enum	Y		草案 / 待确认 / 已确认 / 暂缓 / 废弃	07_人才任命 / 09_政令官制	草案
+city_governance	entry_id	string	Y	PK	状态或设施条目 ID	08_内政与治世系统 / 14_战后整合	草案
+city_governance	entry_type	enum	Y		state_city / facility / recovery_rule / gentry_state	08_内政与治世系统 / 14_战后整合	草案
+city_governance	city_id	string	N	FK master_city	城池 ID	08_内政与治世系统 / 14_战后整合	草案
+city_governance	owner_force_id	string	N	FK master_force	所属势力	08_内政与治世系统 / 14_战后整合	草案
+city_governance	current_role	enum	N		农业 / 商业 / 军事 / 交通 / 都城 / 前线	08_内政与治世系统 / 14_战后整合	草案
+city_governance	current_troops	int	N		当前兵力	08_内政与治世系统 / 14_战后整合	草案
+city_governance	current_food	int	N		当前粮草	08_内政与治世系统 / 14_战后整合	草案
+city_governance	current_gold	int	N		当前金钱	08_内政与治世系统 / 14_战后整合	草案
+city_governance	public_order	int	N		治安	08_内政与治世系统 / 14_战后整合	草案
+city_governance	morale_public	int	N		民心	08_内政与治世系统 / 14_战后整合	草案
+city_governance	gentry_support	int	N		士族支持	08_内政与治世系统 / 14_战后整合	草案
+city_governance	recovery_state	enum	N		normal / occupied / unrest / recovering	08_内政与治世系统 / 14_战后整合	草案
+city_governance	effect_group_id	string	N	FK effect_group	设施或恢复效果	08_内政与治世系统 / 14_战后整合	草案
+city_governance	status	enum	Y		草案 / 待确认 / 已确认 / 暂缓 / 废弃	08_内政与治世系统 / 14_战后整合	草案
+skill_tactic	entry_id	string	Y	PK	技能、战法或映射条目 ID	10_武将能力特技与战法	草案
+skill_tactic	entry_type	enum	Y		trait / tactic / officer_trait / rename_map / synergy_rule	10_武将能力特技与战法	草案
+skill_tactic	name	string	Y		三国化显示名	10_武将能力特技与战法	草案
+skill_tactic	prototype_function_tag	string	N		参考框架中的功能标签，不写原文文本	10_武将能力特技与战法	草案
+skill_tactic	category	enum	Y		内政 / 军事 / 外交 / 谋略 / 声势 / 关系 / 地形	10_武将能力特技与战法	草案
+skill_tactic	trigger_scope	enum	N		city / army / battle / force / diplomacy / postwar	10_武将能力特技与战法	草案
+skill_tactic	target_scope	enum	N		self / city / army / enemy / ally / region	10_武将能力特技与战法	草案
+skill_tactic	cost_type	enum	N		none / cooldown / morale / tactic_point / gold / food	10_武将能力特技与战法	草案
+skill_tactic	cost_value	float	N		消耗数值	10_武将能力特技与战法	草案
+skill_tactic	effect_group_id	string	Y	FK effect_group	效果组	10_武将能力特技与战法	草案
+skill_tactic	description_text	text	N		策划描述	10_武将能力特技与战法	草案
+skill_tactic	status	enum	Y		草案 / 待确认 / 已确认 / 暂缓 / 废弃	10_武将能力特技与战法	草案
+military_supply	entry_id	string	Y	PK	规则或状态条目 ID	12_军事行军与补给 / 23_时间系统	草案
+military_supply	entry_type	enum	Y		state_army / food_rule / movement_rule / supply_rule / transition	12_军事行军与补给 / 23_时间系统	草案
+military_supply	origin_city_id	string	N	FK master_city	出阵城	12_军事行军与补给 / 23_时间系统	草案
+military_supply	commander_officer_id	string	N	FK master_officer	主将	12_军事行军与补给 / 23_时间系统	草案
+military_supply	troop_count	int	N		兵力	12_军事行军与补给 / 23_时间系统	草案
+military_supply	food_current	int	N		当前随军粮	12_军事行军与补给 / 23_时间系统	草案
+military_supply	food_capacity	int	N		携粮上限	12_军事行军与补给 / 23_时间系统	草案
+military_supply	movement_speed_base	float	N		基础移动速度	12_军事行军与补给 / 23_时间系统	草案
+military_supply	food_cost_per_day	float	N		日粮耗	12_军事行军与补给 / 23_时间系统	草案
+military_supply	out_of_supply_penalty	string	N		缺粮惩罚 ID 或说明	12_军事行军与补给 / 23_时间系统	草案
+military_supply	state_from	enum	N		待机 / 整军 / 行军 / 接敌 / 围城 / 撤退 / 缺粮 / 归城	12_军事行军与补给 / 23_时间系统	草案
+military_supply	state_to	enum	N		目标状态	12_军事行军与补给 / 23_时间系统	草案
+military_supply	status	enum	Y		草案 / 待确认 / 已确认 / 暂缓 / 废弃	12_军事行军与补给 / 23_时间系统	草案
+battle_rules	rule_id	string	Y	PK	规则 ID	13_野战攻城关隘与水战	草案
+battle_rules	battle_type	enum	Y		field / siege / pass / port / river	13_野战攻城关隘与水战	草案
+battle_rules	trigger_condition	string	Y		触发条件	13_野战攻城关隘与水战	草案
+battle_rules	participant_scope	enum	Y		army / city / node / route	13_野战攻城关隘与水战	草案
+battle_rules	morale_base	int	N		基础士气	13_野战攻城关隘与水战	草案
+battle_rules	terrain_bonus_tag	string	N		地形修正标签	13_野战攻城关隘与水战	草案
+battle_rules	siege_device_tag	string	N		攻城器械标签	13_野战攻城关隘与水战	草案
+battle_rules	result_effect_group_id	string	Y	FK effect_group	战斗结果效果组	13_野战攻城关隘与水战	草案
+battle_rules	map_feedback	string	Y		回流大地图的结果	13_野战攻城关隘与水战	草案
+battle_rules	status	enum	Y		草案 / 待确认 / 已确认 / 暂缓 / 废弃	13_野战攻城关隘与水战	草案
+diplomacy_postwar	entry_id	string	Y	PK	条目 ID	11_外交谋略 / 14_声势归附与战后整合	草案
+diplomacy_postwar	entry_type	enum	Y		diplomacy_state / scheme_action / surrender_rule / momentum_rule / integration	11_外交谋略 / 14_声势归附与战后整合	草案
+diplomacy_postwar	source_force_id	string	N	FK master_force	发起势力	11_外交谋略 / 14_声势归附与战后整合	草案
+diplomacy_postwar	target_force_id	string	N	FK master_force	目标势力	11_外交谋略 / 14_声势归附与战后整合	草案
+diplomacy_postwar	action_name	string	N		行动名	11_外交谋略 / 14_声势归附与战后整合	草案
+diplomacy_postwar	cost_gold	int	N		金钱成本	11_外交谋略 / 14_声势归附与战后整合	草案
+diplomacy_postwar	cost_prestige	int	N		名望成本	11_外交谋略 / 14_声势归附与战后整合	草案
+diplomacy_postwar	condition_group_id	string	N	FK condition_group	条件组	11_外交谋略 / 14_声势归附与战后整合	草案
+diplomacy_postwar	success_formula_id	string	N	FK formula_config	成功率公式	11_外交谋略 / 14_声势归附与战后整合	草案
+diplomacy_postwar	effect_group_id	string	Y	FK effect_group	效果组	11_外交谋略 / 14_声势归附与战后整合	草案
+diplomacy_postwar	cooldown_days	int	N		冷却时间	11_外交谋略 / 14_声势归附与战后整合	草案
+diplomacy_postwar	status	enum	Y		草案 / 待确认 / 已确认 / 暂缓 / 废弃	11_外交谋略 / 14_声势归附与战后整合	草案
+ai_governorate	entry_id	string	Y	PK	条目 ID	15_都督府委任与AI / 29_AI难度	草案
+ai_governorate	entry_type	enum	Y		governorate / permission / ai_personality / proposal / strategy_state	15_都督府委任与AI / 29_AI难度	草案
+ai_governorate	name	string	Y		显示名	15_都督府委任与AI / 29_AI难度	草案
+ai_governorate	scope_type	enum	N		force / region / city / army	15_都督府委任与AI / 29_AI难度	草案
+ai_governorate	owner_force_id	string	N	FK master_force	所属势力	15_都督府委任与AI / 29_AI难度	草案
+ai_governorate	leader_officer_id	string	N	FK master_officer	都督或 AI 负责人	15_都督府委任与AI / 29_AI难度	草案
+ai_governorate	permission_flags	string	N		可委任权限集合	15_都督府委任与AI / 29_AI难度	草案
+ai_governorate	strategy_weight_expand	float	N		扩张权重	15_都督府委任与AI / 29_AI难度	草案
+ai_governorate	strategy_weight_defend	float	N		防守权重	15_都督府委任与AI / 29_AI难度	草案
+ai_governorate	strategy_weight_supply	float	N		补给权重	15_都督府委任与AI / 29_AI难度	草案
+ai_governorate	proposal_condition_id	string	N		献策条件	15_都督府委任与AI / 29_AI难度	草案
+ai_governorate	status	enum	Y		草案 / 待确认 / 已确认 / 暂缓 / 废弃	15_都督府委任与AI / 29_AI难度	草案
+scenario_event	entry_id	string	Y	PK	条目 ID	26_胜利终局 / 27_剧本历史事件与改史框架	草案
+scenario_event	entry_type	enum	Y		scenario / scenario_city / scenario_officer / event / ending	26_胜利终局 / 27_剧本历史事件与改史框架	草案
+scenario_event	scenario_id	string	N		剧本 ID	26_胜利终局 / 27_剧本历史事件与改史框架	草案
+scenario_event	year	int	N		年份	26_胜利终局 / 27_剧本历史事件与改史框架	草案
+scenario_event	month	int	N		月份	26_胜利终局 / 27_剧本历史事件与改史框架	草案
+scenario_event	force_id	string	N	FK master_force	相关势力	26_胜利终局 / 27_剧本历史事件与改史框架	草案
+scenario_event	city_id	string	N	FK master_city	相关城池	26_胜利终局 / 27_剧本历史事件与改史框架	草案
+scenario_event	officer_id	string	N	FK master_officer	相关武将	26_胜利终局 / 27_剧本历史事件与改史框架	草案
+scenario_event	condition_group_id	string	N		触发条件	26_胜利终局 / 27_剧本历史事件与改史框架	草案
+scenario_event	effect_group_id	string	N		效果组	26_胜利终局 / 27_剧本历史事件与改史框架	草案
+scenario_event	text_id	string	N		文本 ID	26_胜利终局 / 27_剧本历史事件与改史框架	草案
+scenario_event	status	enum	Y		草案 / 待确认 / 已确认 / 暂缓 / 废弃	26_胜利终局 / 27_剧本历史事件与改史框架	草案
+effect_formula_config	entry_id	string	Y	PK	效果、条件、公式或参数 ID	16_数据库结构 / 28_数值体系与平衡方法论	草案
+effect_formula_config	entry_type	enum	Y		effect / effect_group / condition / formula / parameter	16_数据库结构 / 28_数值体系与平衡方法论	草案
+effect_formula_config	name	string	Y		显示名	16_数据库结构 / 28_数值体系与平衡方法论	草案
+effect_formula_config	system_domain	enum	Y		world / city / officer / policy / battle / supply / diplomacy / ai	16_数据库结构 / 28_数值体系与平衡方法论	草案
+effect_formula_config	trigger_scope	enum	N		触发范围	16_数据库结构 / 28_数值体系与平衡方法论	草案
+effect_formula_config	target_scope	enum	N		目标范围	16_数据库结构 / 28_数值体系与平衡方法论	草案
+effect_formula_config	formula_expression	text	N		公式表达，后续由数值策划固化	16_数据库结构 / 28_数值体系与平衡方法论	草案
+effect_formula_config	default_value	float	N		默认参数	16_数据库结构 / 28_数值体系与平衡方法论	草案
+effect_formula_config	min_value	float	N		最小值	16_数据库结构 / 28_数值体系与平衡方法论	草案
+effect_formula_config	max_value	float	N		最大值	16_数据库结构 / 28_数值体系与平衡方法论	草案
+effect_formula_config	tuning_note	text	N		调参说明	16_数据库结构 / 28_数值体系与平衡方法论	草案
+effect_formula_config	status	enum	Y		草案 / 待确认 / 已确认 / 暂缓 / 废弃	16_数据库结构 / 28_数值体系与平衡方法论	草案
+=== Sheet: master_region ===
+州与地理大区主表
+表类型	主数据表
+用途	定义州、地理大区、战略归属和显示顺序。
+来源章节	05_世界结构与地图规则
+填写状态	V0.1 字段骨架；示例行为占位，不代表最终数据。
+region_id	region_name	macro_area	display_order	terrain_theme	strategic_note	status
+州或地理大区唯一 ID	州名，例如司隶、冀州、荆州	北方 / 中原 / 关中 / 巴蜀 / 江东 / 荆襄 / 西北 / 南中	UI 和数据表排序	主要地貌主题	战略说明	草案 / 待确认 / 已确认 / 暂缓 / 废弃
+string 必填 PK	string 必填	enum 必填	int 必填	enum	text	enum 必填
+REG_SILI	司隶	中原	10	平原+关隘	洛阳、长安周边，政治正统和战略通道核心。	草案
+REG_JING	荆州	荆襄	50	江河+平原	南北通道与水陆转换枢纽。	草案
+=== Sheet: master_city ===
+城池主表
+表类型	主数据表
+用途	定义城池静态属性，最终城池清单后续专项补齐。
+来源章节	05_世界结构与地图规则 / 16_数据库结构
+填写状态	V0.1 字段骨架；示例行为占位，不代表最终数据。
+city_id	city_name	region_id	commandery_id	terrain_type	city_scale	defense_base	agriculture_base	commerce_base	population_base	supply_capacity_base	default_role	is_capital_candidate	status
+城池唯一 ID	城池显示名	所属州	所属郡	平原 / 山地 / 河网 / 关隘 / 港口 / 都城	城市规模等级	基础城防	农业基础	商业基础	人口基础	粮草容量基础	农业 / 商业 / 军事 / 交通 / 都城 / 前线	是否可作为势力首府候选	草案 / 待确认 / 已确认 / 暂缓 / 废弃
+string 必填 PK	string 必填	string 必填 FK master_region	string FK master_commandery	enum 必填	int 必填	int 必填	int 必填	int 必填	int 必填	int 必填	enum 必填	bool	enum 必填
+CITY_LUOYANG	洛阳	REG_SILI	CMD_HENAN	都城	5	90	70	95	95	90	都城	True	草案
+CITY_XIANGYANG	襄阳	REG_JING	CMD_NANJUN	河网	4	80	70	80	75	75	交通	True	草案
+=== Sheet: master_route_node ===
+地图节点与路线表
+表类型	主数据表 / 关联表
+用途	定义大地图行军节点、道路、水路和补给通道。
+来源章节	05_世界结构与地图规则 / 12_军事行军补给
+填写状态	V0.1 字段骨架；示例行为占位，不代表最终数据。
+route_id	from_node_id	to_node_id	route_type	distance	terrain_modifier	supply_modifier	control_required	battle_trigger	status
+路线唯一 ID	起点节点	终点节点	road / mountain / river / sea / pass	路线距离，供移动时间计算	移动速度修正	粮草消耗或补给修正	是否需要控制节点才能安全通行	none / field / pass / port / river	草案 / 待确认 / 已确认 / 暂缓 / 废弃
+string 必填 PK	string 必填 FK node	string 必填 FK node	enum 必填	float 必填	float 必填	float 必填	bool 必填	enum	enum 必填
+R_LUOYANG_HULAOGUAN	CITY_LUOYANG	NODE_HULAO	pass	35	0.85	1.1	True	pass	草案
+R_XIANGYANG_JIANGXIA	CITY_XIANGYANG	CITY_JIANGXIA	river	80	1.05	0.95	False	river	草案
+=== Sheet: master_force ===
+势力主表
+表类型	主数据表
+用途	定义剧本中的势力静态信息和 AI 基础风格。
+来源章节	06_君主势力与汉室正统 / 16_数据库结构
+填写状态	V0.1 字段骨架；示例行为占位，不代表最终数据。
+force_id	force_name	ruler_officer_id	capital_city_id	ideology	ai_personality_id	legitimacy_base	prestige_base	diplomacy_profile	status
+势力唯一 ID	势力名	君主武将 ID	首府	复汉 / 霸府 / 割据 / 士族 / 军阀	AI 性格	初始正统	初始名望	激进 / 均衡 / 守成 / 谋略	草案 / 待确认 / 已确认 / 暂缓 / 废弃
+string 必填 PK	string 必填	string 必填 FK master_officer	string 必填 FK master_city	enum	string FK ai_personality	int 必填	int 必填	enum	enum 必填
+FORCE_CAOCAO	曹操	OFF_CAOCAO	CITY_XUCHANG	霸府	AI_EXPAND_BALANCED	70	85	均衡	草案
+FORCE_LIUBEI	刘备	OFF_LIUBEI	CITY_XINYE	复汉	AI_ALLIANCE_OPPORTUNIST	80	70	谋略	草案
+=== Sheet: master_officer ===
+武将主表
+表类型	主数据表
+用途	定义武将静态资料和基础能力；最终武将库后续专项补齐。
+来源章节	07_人才任命 / 10_武将能力特技战法 / 16_数据库结构
+填写状态	V0.1 字段骨架；示例行为占位，不代表最终数据。
+officer_id	name	courtesy_name	era_tag	birth_year	death_year	gender	clan_id	origin_region_id	ability_leadership	ability_martial	ability_intellect	ability_politics	ability_charm	ambition	loyalty_base	ideology	status
+武将唯一 ID	姓名	字	黄巾 / 群雄 / 官渡 / 赤壁 / 三国 / 后期	出生年	死亡年	M / F	宗族 ID	出身州	统率	武力	智略	政治	魅力	野心	基础忠诚	复汉 / 霸府 / 士族 / 功名 / 仁政 / 法度	草案 / 待确认 / 已确认 / 暂缓 / 废弃
+string 必填 PK	string 必填	string	enum	int	int	enum 必填	string	string FK master_region	int 必填	int 必填	int 必填	int 必填	int 必填	int 必填	int 必填	enum	enum 必填
+OFF_CAOCAO	曹操	孟德	群雄	155	220	M	CLAN_CAO	REG_YAN	96	72	91	94	96	95	70	霸府	草案
+OFF_ZHUGELIANG	诸葛亮	孔明	赤壁	181	234	M	CLAN_ZHUGE	REG_JING	92	38	100	98	95	55	95	复汉	草案
+=== Sheet: officer_relation ===
+人物关系表
+表类型	关联表
+用途	定义宗族、旧主、姻亲、好友、仇敌、师徒等关系。
+来源章节	07_人才任命 / 11_外交谋略与人物关系
+填写状态	V0.1 字段骨架；示例行为占位，不代表最终数据。
+relation_id	officer_a_id	officer_b_id	relation_type	relation_strength	is_bidirectional	effect_tag	status
+关系唯一 ID	人物 A	人物 B	clan / sworn / spouse / friend / rival / former_lord / mentor	关系强度，正负均可	是否双向	对忠诚、劝降、协同、仇敌战斗的影响标签	草案 / 待确认 / 已确认 / 暂缓 / 废弃
+string 必填 PK	string 必填 FK master_officer	string 必填 FK master_officer	enum 必填	int 必填	bool 必填	string	enum 必填
+REL_LB_GY	OFF_LIUBEI	OFF_GUANYU	sworn	100	True	LOYALTY_AND_BATTLE_SYNC	草案
+REL_CAO_LVBU	OFF_CAOCAO	OFF_LVBU	rival	-60	True	SURRENDER_PENALTY	草案
+=== Sheet: appointment_policy ===
+任命、官职与政令表
+表类型	主数据表 / 规则表
+用途	合并记录岗位槽位、官职和政令配置入口，后续可拆表。
+来源章节	07_人才任命 / 09_政令官制
+填写状态	V0.1 字段骨架；示例行为占位，不代表最终数据。
+entry_id	entry_type	name	route_type	unlock_condition	slot_scope	monthly_cost_gold	monthly_cost_food	effect_group_id	negative_effect_group_id	status
+条目 ID	appointment_slot / office_rank / policy / bureaucracy	显示名	内政 / 军事 / 人才 / 外交 / 正统 / 都督	解锁条件 ID 或说明	city / commandery / governorate / force	月维护金	月维护粮	效果组	负面效果组	草案 / 待确认 / 已确认 / 暂缓 / 废弃
+string 必填 PK	enum 必填	string 必填	enum	string	enum	int	int	string FK effect_group	string FK effect_group	enum 必填
+APPT_GOVERNOR	appointment_slot	太守	内政	城市归属己方	city	0	0	EFF_CITY_GOVERNOR		草案
+POLICY_TUNTIAN	policy	屯田制	军事	官制等级>=2	force	300	0	EFF_TUNTIAN	EFF_POLICY_MAINTAIN	草案
+=== Sheet: city_governance ===
+城市动态、内政与设施表
+表类型	状态表 / 主数据表
+用途	记录城市动态状态、设施和新占恢复相关配置。
+来源章节	08_内政与治世系统 / 14_战后整合
+填写状态	V0.1 字段骨架；示例行为占位，不代表最终数据。
+entry_id	entry_type	city_id	owner_force_id	current_role	current_troops	current_food	current_gold	public_order	morale_public	gentry_support	recovery_state	effect_group_id	status
+状态或设施条目 ID	state_city / facility / recovery_rule / gentry_state	城池 ID	所属势力	农业 / 商业 / 军事 / 交通 / 都城 / 前线	当前兵力	当前粮草	当前金钱	治安	民心	士族支持	normal / occupied / unrest / recovering	设施或恢复效果	草案 / 待确认 / 已确认 / 暂缓 / 废弃
+string 必填 PK	enum 必填	string FK master_city	string FK master_force	enum	int	int	int	int	int	int	enum	string FK effect_group	enum 必填
+STATE_CITY_XUCHANG_S1	state_city	CITY_XUCHANG	FORCE_CAOCAO	都城	30000	60000	40000	75	78	65	normal		草案
+FACILITY_GRANARY	facility											EFF_GRANARY	草案
+=== Sheet: skill_tactic ===
+特技、战法与效果映射表
+表类型	主数据表 / 关联表
+用途	记录技能、战法、原型功能映射和三国化命名。
+来源章节	10_武将能力特技与战法
+填写状态	V0.1 字段骨架；示例行为占位，不代表最终数据。
+entry_id	entry_type	name	prototype_function_tag	category	trigger_scope	target_scope	cost_type	cost_value	effect_group_id	description_text	status
+技能、战法或映射条目 ID	trait / tactic / officer_trait / rename_map / synergy_rule	三国化显示名	参考框架中的功能标签，不写原文文本	内政 / 军事 / 外交 / 谋略 / 声势 / 关系 / 地形	city / army / battle / force / diplomacy / postwar	self / city / army / enemy / ally / region	none / cooldown / morale / tactic_point / gold / food	消耗数值	效果组	策划描述	草案 / 待确认 / 已确认 / 暂缓 / 废弃
+string 必填 PK	enum 必填	string 必填	string	enum 必填	enum	enum	enum	float	string 必填 FK effect_group	text	enum 必填
+TRAIT_QIBING	trait	奇兵	AMBUSH_BONUS	军事	battle	enemy	none	0	EFF_TRAIT_QIBING	伏击、夹击、地形战中提高战斗收益。	草案
+TACTIC_HUOSHAO	tactic	火攻	FIRE_DAMAGE_MORALE	谋略	battle	enemy	tactic_point	3	EFF_TACTIC_FIRE	对密集敌军造成伤害并降低士气。	草案
+=== Sheet: military_supply ===
+出阵、行军、粮草与补给表
+表类型	状态表 / 规则表
+用途	固定军事底线：城池出阵、移动耗时、携粮、消耗和缺粮惩罚。
+来源章节	12_军事行军与补给 / 23_时间系统
+填写状态	V0.1 字段骨架；示例行为占位，不代表最终数据。
+entry_id	entry_type	origin_city_id	commander_officer_id	troop_count	food_current	food_capacity	movement_speed_base	food_cost_per_day	out_of_supply_penalty	state_from	state_to	status
+规则或状态条目 ID	state_army / food_rule / movement_rule / supply_rule / transition	出阵城	主将	兵力	当前随军粮	携粮上限	基础移动速度	日粮耗	缺粮惩罚 ID 或说明	待机 / 整军 / 行军 / 接敌 / 围城 / 撤退 / 缺粮 / 归城	目标状态	草案 / 待确认 / 已确认 / 暂缓 / 废弃
+string 必填 PK	enum 必填	string FK master_city	string FK master_officer	int	int	int	float	float	string	enum	enum	enum 必填
+RULE_FOOD_DEFAULT	food_rule							1	PENALTY_OUT_OF_SUPPLY_1			草案
+ARMY_SAMPLE_001	state_army	CITY_XUCHANG	OFF_CAOCAO	15000	30000	45000	12	900		行军	接敌	草案
+=== Sheet: battle_rules ===
+野战、攻城、关隘与水战规则表
+表类型	规则表 / 状态表
+用途	记录战斗类型、士气、围城、港口、水路和结果回流规则。
+来源章节	13_野战攻城关隘与水战
+填写状态	V0.1 字段骨架；示例行为占位，不代表最终数据。
+rule_id	battle_type	trigger_condition	participant_scope	morale_base	terrain_bonus_tag	siege_device_tag	result_effect_group_id	map_feedback	status
+规则 ID	field / siege / pass / port / river	触发条件	army / city / node / route	基础士气	地形修正标签	攻城器械标签	战斗结果效果组	回流大地图的结果	草案 / 待确认 / 已确认 / 暂缓 / 废弃
+string 必填 PK	enum 必填	string 必填	enum 必填	int	string	string	string 必填 FK effect_group	string 必填	enum 必填
+BATTLE_FIELD_CONTACT	field	两支敌对部队在路线或节点接触	army	100	TERRAIN_ROUTE		EFF_BATTLE_FIELD_RESULT	兵力、士气、部队状态回流	草案
+BATTLE_SIEGE_CITY	siege	敌军抵达城池并选择攻城	city	90	TERRAIN_CITY	SIEGE_LADDER	EFF_BATTLE_SIEGE_RESULT	城防、民心、占领状态回流	草案
+=== Sheet: diplomacy_postwar ===
+外交、谋略、声势与战后整合表
+表类型	状态表 / 规则表
+用途	连接外交信用、谋略、劝降、声势扩散、归附和战后治理。
+来源章节	11_外交谋略 / 14_声势归附与战后整合
+填写状态	V0.1 字段骨架；示例行为占位，不代表最终数据。
+entry_id	entry_type	source_force_id	target_force_id	action_name	cost_gold	cost_prestige	condition_group_id	success_formula_id	effect_group_id	cooldown_days	status
+条目 ID	diplomacy_state / scheme_action / surrender_rule / momentum_rule / integration	发起势力	目标势力	行动名	金钱成本	名望成本	条件组	成功率公式	效果组	冷却时间	草案 / 待确认 / 已确认 / 暂缓 / 废弃
+string 必填 PK	enum 必填	string FK master_force	string FK master_force	string	int	int	string FK condition_group	string FK formula_config	string 必填 FK effect_group	int	enum 必填
+DIP_ALLIANCE	diplomacy_state	FORCE_LIUBEI	FORCE_SUNQUAN	同盟	0	0	COND_RELATION_GOOD		EFF_ALLIANCE	0	草案
+POSTWAR_INTEGRATION	integration			安抚新占城	500	5	COND_CITY_OCCUPIED	FORMULA_INTEGRATION	EFF_POSTWAR_RECOVER	30	草案
+=== Sheet: ai_governorate ===
+都督府、委任与 AI 表
+表类型	状态表 / 配置表
+用途	定义都督府范围、委任权限、AI 性格、目标选择和献策。
+来源章节	15_都督府委任与AI / 29_AI难度
+填写状态	V0.1 字段骨架；示例行为占位，不代表最终数据。
+entry_id	entry_type	name	scope_type	owner_force_id	leader_officer_id	permission_flags	strategy_weight_expand	strategy_weight_defend	strategy_weight_supply	proposal_condition_id	status
+条目 ID	governorate / permission / ai_personality / proposal / strategy_state	显示名	force / region / city / army	所属势力	都督或 AI 负责人	可委任权限集合	扩张权重	防守权重	补给权重	献策条件	草案 / 待确认 / 已确认 / 暂缓 / 废弃
+string 必填 PK	enum 必填	string 必填	enum	string FK master_force	string FK master_officer	string	float	float	float	string	enum 必填
+GOV_JINGZHOU	governorate	荆州都督府	region	FORCE_LIUBEI	OFF_GUANYU	内政,整军,防御,局部出阵	0.45	0.75	0.8		草案
+AI_EXPAND_BALANCED	ai_personality	均衡扩张	force				0.65	0.55	0.6	PROP_ATTACK_WEAK_CITY	草案
+=== Sheet: scenario_event ===
+剧本、事件与初始状态表
+表类型	主数据表 / 状态表 / 文本表
+用途	定义剧本入口、初始归属、历史事件链和改史条件。
+来源章节	26_胜利终局 / 27_剧本历史事件与改史框架
+填写状态	V0.1 字段骨架；示例行为占位，不代表最终数据。
+entry_id	entry_type	scenario_id	year	month	force_id	city_id	officer_id	condition_group_id	effect_group_id	text_id	status
+条目 ID	scenario / scenario_city / scenario_officer / event / ending	剧本 ID	年份	月份	相关势力	相关城池	相关武将	触发条件	效果组	文本 ID	草案 / 待确认 / 已确认 / 暂缓 / 废弃
+string 必填 PK	enum 必填	string	int	int	string FK master_force	string FK master_city	string FK master_officer	string	string	string	enum 必填
+SCN_190	scenario	SCN_190	190	1						TEXT_SCN_190	暂缓
+EVENT_GUANDU_BRANCH	event	SCN_200	200	8	FORCE_CAOCAO	CITY_GUANDU		COND_GUANDU_READY	EFF_GUANDU_RESULT	TEXT_EVENT_GUANDU	草案
+=== Sheet: effect_formula_config ===
+统一效果、公式与参数表
+表类型	配置表 / 规则表
+用途	统一记录效果组、触发条件、公式 ID 和可调参数。
+来源章节	16_数据库结构 / 28_数值体系与平衡方法论
+填写状态	V0.1 字段骨架；示例行为占位，不代表最终数据。
+entry_id	entry_type	name	system_domain	trigger_scope	target_scope	formula_expression	default_value	min_value	max_value	tuning_note	status
+效果、条件、公式或参数 ID	effect / effect_group / condition / formula / parameter	显示名	world / city / officer / policy / battle / supply / diplomacy / ai	触发范围	目标范围	公式表达，后续由数值策划固化	默认参数	最小值	最大值	调参说明	草案 / 待确认 / 已确认 / 暂缓 / 废弃
+string 必填 PK	enum 必填	string 必填	enum 必填	enum	enum	text	float	float	float	text	enum 必填
+FORMULA_MOVE_DAYS	formula	行军天数	supply	march	army	distance / (speed_base * terrain_modifier * status_modifier)				先保证大地图移动需要时间。	草案
+PARAM_OUT_OF_SUPPLY_MORALE	parameter	缺粮士气惩罚	battle	daily_tick	army		-5	-20	0	缺粮时每日士气下降。	草案
+=== Sheet: V0.2说明 ===
+V0.2 版本说明
+version	date	change	impact
+V0.1	2026-06-03	建立核心表结构、字段字典和示例行。	可开始字段审阅。
+V0.2	2026-06-03	追加核心枚举、状态机、公式参数、效果拆分、导表约定和最小测试数据。	可进入程序审表和首轮导表格式讨论。
+=== Sheet: core_enums ===
+核心枚举表
+enum_group	enum_key	display_name	description	used_by	status
+city_role	agriculture	农业	粮草、人口恢复和屯田效率倾向。	master_city.default_role / city_governance.current_role	待确认
+city_role	commerce	商业	金钱、市场和贸易收益倾向。	master_city.default_role / city_governance.current_role	待确认
+city_role	military	军事	募兵、训练、军备和出阵效率倾向。	master_city.default_role / city_governance.current_role	待确认
+city_role	transport	交通	道路、水路、补给和调兵效率倾向。	master_city.default_role / city_governance.current_role	待确认
+city_role	capital	都城	中枢政令、正统、官制和资源调配中心。	master_city.default_role / city_governance.current_role	待确认
+city_role	frontline	前线	防御、驻军、关隘、战区压力承接。	master_city.default_role / city_governance.current_role	待确认
+terrain_type	plain	平原	普通行军和野战地形。	master_city.terrain_type / master_route_node.route_type	待确认
+terrain_type	mountain	山地	降低行军速度，提高防守和伏击价值。	master_city.terrain_type / master_route_node.route_type	待确认
+terrain_type	river	河网	支持水路、港口、渡口和水战修正。	master_city.terrain_type / master_route_node.route_type	待确认
+terrain_type	pass	关隘	关键节点，可触发关隘战。	master_city.terrain_type / battle_rules.battle_type	待确认
+terrain_type	port	港口	水陆转换节点，可触发港口战。	master_city.terrain_type / battle_rules.battle_type	待确认
+army_state	idle	待机	部队未出阵或驻扎状态。	military_supply.state_from / state_to	待确认
+army_state	mobilizing	整军	出阵前准备、集合、携粮。	military_supply.state_from / state_to	待确认
+army_state	marching	行军	正在大地图路线移动。	military_supply.state_from / state_to	待确认
+army_state	engaging	接敌	即将进入战斗判定。	military_supply.state_from / state_to	待确认
+army_state	sieging	围城	对城池持续围困或攻城准备。	military_supply.state_from / state_to	待确认
+army_state	retreating	撤退	战败、缺粮或主动撤回。	military_supply.state_from / state_to	待确认
+army_state	out_of_supply	缺粮	粮草为 0 或补给断绝后的异常状态。	military_supply.state_from / state_to	待确认
+army_state	returning	归城	战后返回或整编。	military_supply.state_from / state_to	待确认
+battle_type	field	野战	部队在路线或节点接触后的战斗。	battle_rules.battle_type	待确认
+battle_type	siege	攻城	围城、攻城、城防损耗。	battle_rules.battle_type	待确认
+battle_type	pass	关隘战	围绕关隘节点展开。	battle_rules.battle_type	待确认
+battle_type	port	港口战	水陆转换节点争夺。	battle_rules.battle_type	待确认
+battle_type	river	水路战	水路接触和河网修正战。	battle_rules.battle_type	待确认
+diplomacy_state	neutral	中立	无特殊关系。	diplomacy_postwar.entry_type	待确认
+diplomacy_state	hostile	敌对	可交战、可谋略。	diplomacy_postwar.entry_type	待确认
+diplomacy_state	alliance	同盟	不可主动交战，可能协同作战。	diplomacy_postwar.entry_type	待确认
+diplomacy_state	truce	停战	限时不可交战。	diplomacy_postwar.entry_type	待确认
+diplomacy_state	vassal	从属	弱势势力依附强势势力。	diplomacy_postwar.entry_type	待确认
+status	draft	草案	可改动，不进入正式导表。	all sheets.status	已确认
+status	review	待确认	等待负责人确认。	all sheets.status	已确认
+status	confirmed	已确认	可进入导表或开发引用。	all sheets.status	已确认
+status	deferred	暂缓	当前版本不制作。	all sheets.status	已确认
+status	deprecated	废弃	保留历史痕迹，不再使用。	all sheets.status	已确认
+=== Sheet: state_machine ===
+核心状态机表
+entity	state_from	trigger	state_to	required_data	side_effect	ui_feedback	qa_case	status
+army	idle	玩家选择出阵并通过校验	mobilizing	origin_city_id, commander_officer_id, troop_count, food_capacity	锁定兵力和武将，创建整军任务	城市出阵面板显示整军中	从许昌选择曹操出阵，进入整军状态	待确认
+army	mobilizing	整军天数完成	marching	route_id, food_current, movement_speed_base	扣除城市可用兵力和粮草	部队出现在大地图路线起点	整军完成后部队开始沿路线移动	待确认
+army	marching	route_progress >= 100%	engaging	route_id, target_node_id	触发接敌或到达目标节点	路线箭头到达目标节点	部队从 A 城抵达 B 城附近	待确认
+army	marching	food_current <= 0	out_of_supply	food_current, supply_network	应用缺粮惩罚	部队出现缺粮提示	携粮不足时状态变为缺粮	待确认
+army	out_of_supply	获得补给或返回补给范围	marching	supply_node_id, food_current	移除缺粮惩罚	缺粮图标消失	进入己方补给节点后恢复行军	待确认
+army	engaging	战斗结算胜利	sieging	battle_result, target_city_id	进入围城或占领判定	战斗结果面板显示胜利	野战胜利后可继续围城	待确认
+army	engaging	战斗结算失败	retreating	battle_result, retreat_route_id	应用损兵和士气惩罚	部队撤退线显示	战败后部队撤回出阵城	待确认
+army	sieging	城防或士气归零	returning	siege_result, city_id	占领城市并生成战后整合	城市归属变化并出现整合提示	攻城成功后回流大地图	待确认
+city	normal	被攻占	occupied	city_id, new_owner_force_id	降低民心和治安，生成恢复任务	城市状态显示新占	占领后进入新占状态	待确认
+city	occupied	整合任务完成	recovering	postwar_integration	恢复资源产出	城市状态显示恢复中	安抚完成后民心逐月恢复	待确认
+city	recovering	民心和治安达到阈值	normal	public_order, morale_public	恢复完整产出	新占标记消失	民心治安恢复后变为正常	待确认
+diplomacy	neutral	宣战或战斗发生	hostile	source_force_id, target_force_id	允许军事行动和谋略	外交面板显示敌对	攻击后关系变敌对	待确认
+diplomacy	hostile	议和成功	truce	diplomacy_action, cooldown_days	设定停战期限	停战倒计时显示	议和后无法立刻再宣战	待确认
+diplomacy	truce	停战期结束	neutral	date_tick	解除停战限制	停战标记消失	到期恢复中立	待确认
+=== Sheet: formula_parameters ===
+公式与参数草案表
+formula_id	system	name	expression_draft	input_fields	output_field	default_param	min	max	tuning_note	status
+FORMULA_MOVE_DAYS	supply	行军天数	ceil(distance / (speed_base * terrain_modifier * army_state_modifier))	master_route_node.distance, terrain_modifier, military_supply.movement_speed_base	army_route_progress.days_required		1	999	保证大地图移动需要时间，不能瞬移。	待确认
+FORMULA_FOOD_COST_DAY	supply	日粮耗	troop_count * food_cost_per_1000 / 1000 * route_supply_modifier	troop_count, food_cost_per_1000, supply_modifier	military_supply.food_cost_per_day	60	10	200	先以每千兵每日消耗作为调参入口。	待确认
+FORMULA_OUT_OF_SUPPLY_MORALE	battle	缺粮士气下降	morale_current + penalty_per_day	army_state, days_out_of_supply	morale_current	-5	-20	0	缺粮是远征约束，不宜只做轻惩罚。	待确认
+FORMULA_SIEGE_PROGRESS	battle	攻城进度	(attacker_power * siege_modifier - defense_base * defender_modifier) / city_scale	battle_power, siege_device, city.defense_base	siege_progress		0	100	攻城需要消耗时间并回流城防。	待确认
+FORMULA_MOMENTUM_SPREAD	postwar	声势扩散	battle_importance * victory_scale * legitimacy_modifier * distance_decay	battle_result, legitimacy, route_distance	momentum_value		0	100	大胜改变局部局势，小胜只影响邻近。	待确认
+FORMULA_SURRENDER_RATE	diplomacy	劝降成功率	base + momentum + relation + legitimacy - loyalty - distance_penalty	momentum, officer_relation, legitimacy, loyalty	success_rate		0	95	必须受人物关系、旧主和正统影响。	待确认
+FORMULA_CITY_RECOVERY	city	新占恢复	base_recovery + governor_politics_bonus + policy_bonus - unrest_penalty	public_order, governor, policy, gentry_support	recovery_progress		0	100	战后整合不可跳过。	待确认
+FORMULA_AI_TARGET_SCORE	ai	AI 目标评分	value_city + weak_enemy + route_access - supply_risk - diplomatic_risk	city_value, enemy_strength, supply_network, diplomacy_state	target_score		-999	999	AI 不应只看最近城市，必须考虑粮草和路线。	待确认
+=== Sheet: effect_split ===
+效果系统拆分表
+effect_id	effect_group_id	source_type	source_id	trigger	target_scope	stat_key	operation	value	duration	stack_rule	status
+EFF_TUNTIAN_FOOD	EFF_TUNTIAN	policy	POLICY_TUNTIAN	monthly_tick	owned_city	food_income	add_pct	0.15	while_active	same_source_no_stack	待确认
+EFF_TUNTIAN_TROOP_COST	EFF_TUNTIAN	policy	POLICY_TUNTIAN	monthly_tick	owned_city	gold_income	add_pct	-0.05	while_active	same_source_no_stack	待确认
+EFF_TRAIT_QIBING_DAMAGE	EFF_TRAIT_QIBING	trait	TRAIT_QIBING	battle_start	self_army	ambush_damage	add_pct	0.2	battle	same_trait_no_stack	待确认
+EFF_TACTIC_FIRE_DAMAGE	EFF_TACTIC_FIRE	tactic	TACTIC_HUOSHAO	tactic_cast	enemy_army	troop_damage	add_flat	800	instant	allow_multi_source	待确认
+EFF_TACTIC_FIRE_MORALE	EFF_TACTIC_FIRE	tactic	TACTIC_HUOSHAO	tactic_cast	enemy_army	morale_current	add_flat	-12	instant	allow_multi_source	待确认
+EFF_POSTWAR_RECOVER_ORDER	EFF_POSTWAR_RECOVER	postwar	POSTWAR_INTEGRATION	monthly_tick	city	public_order	add_flat	8	task_active	same_source_no_stack	待确认
+EFF_OUT_SUPPLY_SPEED	EFF_OUT_OF_SUPPLY	state	out_of_supply	daily_tick	self_army	movement_speed	mul	0.65	while_state	state_unique	待确认
+EFF_OUT_SUPPLY_POWER	EFF_OUT_OF_SUPPLY	state	out_of_supply	battle_start	self_army	battle_power	mul	0.75	while_state	state_unique	待确认
+=== Sheet: export_spec ===
+导表约定表
+topic	rule	recommendation	owner	status
+encoding	文本编码	统一 UTF-8。	程序	待确认
+id_policy	ID 规范	程序字段使用英文 snake_case；数据 ID 使用 UPPER_SNAKE_CASE。	程序 / 系统策划	待确认
+display_text	中文文本	正式导表建议英文枚举 + 中文文本字段或 text_id，避免逻辑依赖中文。	程序 / UI	待确认
+boolean	布尔值	编辑表可写 true/false；导出时可转 1/0。	程序	待确认
+null	空值	空白表示 null，不使用 N/A、无、- 作为逻辑空值。	程序	待确认
+multi_value	多值字段	草案可逗号分隔；进入开发前必须拆 link 表或数组字段。	系统策划 / 程序	待确认
+status	状态字段	只有 status=confirmed 的行允许进入正式导表。	程序 / 制作管理	待确认
+formula	公式字段	公式先以文本表达保存，程序确认后转实现函数或配置表达式。	数值 / 程序	待确认
+versioning	版本	每次变更保留独立 xlsx 版本，并在 README 记录差异。	制作管理	待确认
+=== Sheet: core_test_data ===
+最小核心闭环测试数据
+table	id	field_1	field_2	field_3	field_4	field_5	purpose	status
+master_region	REG_TEST_CENTRAL	中原测试区	中原	1			最小闭环地理区。	待确认
+master_city	CITY_TEST_A	许昌测试城	REG_TEST_CENTRAL	plain	military	60000	出阵城。	待确认
+master_city	CITY_TEST_B	宛城测试城	REG_TEST_CENTRAL	plain	frontline	30000	目标城。	待确认
+master_route_node	ROUTE_TEST_A_B	CITY_TEST_A	CITY_TEST_B	60	road	1	测试行军耗时路线。	待确认
+master_force	FORCE_TEST_PLAYER	玩家测试势力	OFF_TEST_RULER	CITY_TEST_A	70	80	玩家方。	待确认
+master_force	FORCE_TEST_ENEMY	敌方测试势力	OFF_TEST_ENEMY	CITY_TEST_B	30	40	敌方。	待确认
+master_officer	OFF_TEST_RULER	测试君主	80	70	75	78	出阵主将。	待确认
+master_officer	OFF_TEST_GOVERNOR	测试太守	50	40	72	85	城市治理。	待确认
+state_city	STATE_CITY_A	CITY_TEST_A	FORCE_TEST_PLAYER	20000	50000	70	己方出阵城状态。	待确认
+state_city	STATE_CITY_B	CITY_TEST_B	FORCE_TEST_ENEMY	12000	20000	60	敌方目标城状态。	待确认
+state_army	ARMY_TEST_001	CITY_TEST_A	OFF_TEST_RULER	8000	16000	marching	测试部队从城池出阵携粮。	待确认
+expected	EXPECT_MOVE_DAYS	distance=60	speed=12	terrain=1.0	days=5		行军不瞬移，应需要 5 天。	待确认
+expected	EXPECT_FOOD_COST	troops=8000	cost_per_1000=60	days=5	total=2400		行军粮草应减少。	待确认
+=== Sheet: V0.3说明 ===
+V0.3 资料平替版本说明
+version	date	change	impact
+V0.1	2026-06-04	建立核心表结构、字段字典和示例行。	可开始字段审阅。
+V0.2	2026-06-04	追加核心枚举、状态机、公式参数、效果拆分、导表约定和最小测试数据。	可进入程序审表和首轮导表格式讨论。
+V0.3	2026-06-04	启动资料平替专项，新增武将属性样例、兵种、特技、战法、效果组、效果定义、技能改名映射和组合规则。	内容组可按三国化口径替换原型资料，程序组可开始按拆表结构读配置。
+=== Sheet: replacement_scope ===
+资料平替范围与规则
+domain	replace_from	replace_to	first_batch_output	rule	owner	status
+角色属性	测试武将、少量示例能力	三国史实人物样例与五维能力模型	master_officer_v03	能力值表达角色定位，不直接照搬任何竞品数值。	内容 / 数值	进行中
+兵种	泛化兵力与路线修正	步兵、枪兵、骑兵、弓兵、弩兵、水军、攻城、亲卫、斥候、辎重	master_unit_type	兵种只定义作战边界和相克倾向，具体公式后续由战斗表承接。	系统 / 数值	进行中
+特技	功能标签和少量占位名	治理、军备、兵种、谋略、外交、声势等三国化特技	master_trait_v03 / officer_trait_v03	特技必须绑定岗位、触发时机和效果组。	系统 / 内容	进行中
+战法	火攻等示例战法	突击、齐射、坚守、火攻、伏兵、混乱、攻城、水战等战斗战法	master_tactic_v03	战法必须声明消耗、冷却、目标、范围和效果组。	战斗 / 数值	进行中
+效果系统	effect_split 示例	effect_group + effect_definition 拆分	effect_group_v03 / effect_definition_v03	统一承载特技、战法、状态、政令等效果，避免各系统各写一套。	系统 / 程序	进行中
+命名映射	竞品功能结构	三国语境名称和主题说明	skill_rename_map_v03	只保留功能类型，不引用原作独有技能名。	内容审核	进行中
+组合规则	未成表	主将军师、兵种地形、关系、声势组合	synergy_rule_v03	组合加成必须有条件组和效果组，不能写死在 UI 或战斗流程。	系统 / AI	草案
+=== Sheet: master_officer_v03 ===
+武将主表 V0.3 首批样例
+officer_id	name	courtesy_name	era_tag	birth_year	death_year	gender	clan_id	origin_region_id	leadership	martial	intellect	politics	charm	ambition	loyalty_base	ideology	preferred_unit	trait_ids	tactic_ids	content_note	status
+OFF_CAOCAO	曹操	孟德	群雄	155	220	M	CLAN_CAO	REG_YAN	96	72	91	94	96	95	70	霸府	UNIT_CAVALRY	TRAIT_BAFU,TRAIT_JUNZHENG	TACTIC_MORALE_BREAK	扩张、官制、统帅和挟天子路线核心。	草案
+OFF_LIUBEI	刘备	玄德	群雄	161	223	M	CLAN_LIU	REG_YOU	84	76	78	80	98	65	92	复汉	UNIT_INFANTRY	TRAIT_RENDE,TRAIT_ZHAOFU	TACTIC_RALLY	魅力和归附路线核心，正面战力不压过五虎。	草案
+OFF_SUNQUAN	孙权	仲谋	赤壁	182	252	M	CLAN_SUN	REG_YANG	82	68	80	86	89	78	82	守成	UNIT_NAVAL	TRAIT_MENWANG,TRAIT_JUNZHENG	TACTIC_NAVAL_ASSAULT	江东整合、水军和制衡型君主。	草案
+OFF_GUANYU	关羽	云长	群雄	160	220	M	CLAN_GUAN	REG_SI	93	97	76	64	90	70	98	义理	UNIT_CAVALRY	TRAIT_WEIZHEN,TRAIT_YILI	TACTIC_CHARGE_BREAK	高统高武，适合前线压迫和威名声势。	草案
+OFF_ZHANGFEI	张飞	翼德	群雄	167	221	M	CLAN_ZHANG	REG_YOU	86	98	54	38	72	64	94	义理	UNIT_SPEAR	TRAIT_MENGJIANG	TACTIC_TAUNT_ROAR	爆发和挑衅强，治理弱。	草案
+OFF_ZHAOYUN	赵云	子龙	群雄	168	229	M	CLAN_ZHAO	REG_JI	88	96	75	70	86	45	96	义理	UNIT_GUARD	TRAIT_HUYI,TRAIT_DANQI	TACTIC_GUARD_RESCUE	护卫、机动、低野心高忠诚。	草案
+OFF_ZHUGELIANG	诸葛亮	孔明	赤壁	181	234	M	CLAN_ZHUGE	REG_JING	92	38	100	98	95	55	95	复汉	UNIT_CROSSBOW	TRAIT_LONGZHONG,TRAIT_TUNTIAN	TACTIC_FIRE_STRATAGEM	军师、内政和持续补给核心。	草案
+OFF_ZHOUYU	周瑜	公瑾	赤壁	175	210	M	CLAN_ZHOU	REG_YANG	91	72	96	84	92	70	88	江东	UNIT_NAVAL	TRAIT_SHUIJUN,TRAIT_YAOLUE	TACTIC_FIRE_STRATAGEM,TACTIC_NAVAL_ASSAULT	水战、火攻和军师战法核心。	草案
+OFF_LUXUN	陆逊	伯言	三国	183	245	M	CLAN_LU	REG_YANG	90	66	95	89	86	58	90	江东	UNIT_CROSSBOW	TRAIT_YAOLUE,TRAIT_SHUIJUN	TACTIC_FIRE_STRATAGEM,TACTIC_COUNTER_DEFENSE	持久战、火攻和守势反击。	草案
+OFF_SIMAYI	司马懿	仲达	三国	179	251	M	CLAN_SIMA	REG_SI	94	63	98	95	83	96	78	权谋	UNIT_INFANTRY	TRAIT_QUANMOU,TRAIT_JUNZHENG	TACTIC_CONFUSION	权谋、长期经营和后期局势核心。	草案
+OFF_LVBU	吕布	奉先	群雄	156	199	M	CLAN_LU	REG_BING	86	100	42	25	58	92	45	功名	UNIT_CAVALRY	TRAIT_FEIJIANG	TACTIC_CHARGE_BREAK	最高武力样例，高野心低基础忠诚。	草案
+OFF_DONGZHUO	董卓	仲颖	群雄	140	192	M	CLAN_DONG	REG_LIANG	78	82	58	45	30	98	35	军阀	UNIT_GUARD	TRAIT_BAFU,TRAIT_MENGJIANG	TACTIC_MORALE_BREAK	暴政、威压和负面民心样例。	草案
+OFF_YUANSHAO	袁绍	本初	官渡	154	202	M	CLAN_YUAN	REG_JI	83	70	73	78	88	86	72	士族	UNIT_INFANTRY	TRAIT_MENWANG	TACTIC_RALLY	士族动员和门望型势力样例。	草案
+OFF_XUNYU	荀彧	文若	官渡	163	212	M	CLAN_XUN	REG_YU	62	30	96	99	90	42	94	法度	UNIT_SUPPLY	TRAIT_JUNZHENG,TRAIT_TUNTIAN	TACTIC_RALLY	内政、官制、人才和正统维护。	草案
+OFF_JIAXU	贾诩	文和	群雄	147	223	M	CLAN_JIA	REG_LIANG	78	45	97	84	72	72	82	权谋	UNIT_SCOUT	TRAIT_QUANMOU,TRAIT_LIJIAN	TACTIC_CONFUSION	谋略、离间、伪报样例。	草案
+OFF_GUOJIA	郭嘉	奉孝	官渡	170	207	M	CLAN_GUO	REG_YU	72	35	98	82	84	55	88	霸府	UNIT_SCOUT	TRAIT_QIBING,TRAIT_YAOLUE	TACTIC_AMBUSH	高智谋短寿军师样例。	草案
+OFF_ZHANGLIAO	张辽	文远	官渡	169	222	M	CLAN_ZHANG	REG_BING	91	93	78	58	82	55	86	功名	UNIT_CAVALRY	TRAIT_QIBING,TRAIT_WEIZHEN	TACTIC_CHARGE_BREAK	合肥、骑兵奇袭和少胜多样例。	草案
+OFF_MACHAO	马超	孟起	赤壁	176	222	M	CLAN_MA	REG_LIANG	84	96	54	42	79	78	70	功名	UNIT_CAVALRY	TRAIT_FEIJIANG	TACTIC_CHARGE_BREAK	西凉骑兵和高武突击。	草案
+OFF_HUANGZHONG	黄忠	汉升	赤壁	148	220	M	CLAN_HUANG	REG_JING	82	94	66	55	76	38	88	义理	UNIT_BOW	TRAIT_MENGJIANG	TACTIC_VOLLEY	老将、弓兵和稳定输出。	草案
+OFF_GANNING	甘宁	兴霸	赤壁	175	222	M	CLAN_GAN	REG_YI	82	93	70	45	78	72	75	功名	UNIT_NAVAL	TRAIT_SHUIJUN,TRAIT_QIBING	TACTIC_NAVAL_ASSAULT	水军突袭和劫营。	草案
+OFF_LUMENG	吕蒙	子明	三国	178	220	M	CLAN_LU	REG_YANG	89	82	88	78	80	62	84	江东	UNIT_NAVAL	TRAIT_SHUIJUN,TRAIT_QIBING	TACTIC_AMBUSH	成长型统帅和奇袭。	草案
+OFF_TAISHICI	太史慈	子义	群雄	166	206	M	CLAN_TAISHI	REG_QING	78	92	70	52	83	58	86	义理	UNIT_BOW	TRAIT_MENGJIANG	TACTIC_VOLLEY	弓骑与勇将样例。	草案
+OFF_DIAOCHAN	貂蝉		群雄			F	CLAN_NONE	REG_SI	22	18	82	64	96	45	80	谋略	UNIT_SCOUT	TRAIT_LIJIAN	TACTIC_CONFUSION	离间、谋略事件和魅力样例。	草案
+OFF_ZHENJI	甄姬		官渡	183	221	F	CLAN_ZHEN	REG_JI	28	20	78	82	94	38	78	士族	UNIT_SUPPLY	TRAIT_MENWANG	TACTIC_RALLY	士族、婚姻关系和内廷影响样例。	草案
+=== Sheet: master_unit_type ===
+兵种主表 V0.3 首批样例
+unit_type_id	name	category	battle_role	counter_to	weak_to	terrain_bonus	terrain_penalty	speed_base	food_cost_per_1000	recruit_cost_gold	morale_modifier	required_city_role	description	status
+UNIT_INFANTRY	步兵	line	通用持线	UNIT_BOW	UNIT_CAVALRY	plain	river	10	55	90	0	military	基础兵种，训练和补员成本低，适合作为城池常备兵。	草案
+UNIT_SPEAR	枪兵	line	反骑拒马	UNIT_CAVALRY	UNIT_CROSSBOW	pass	river	9	58	105	2	military	对骑兵有明显克制，适合关隘、窄道和守城外阵。	草案
+UNIT_CAVALRY	骑兵	mobile	突击穿插	UNIT_BOW	UNIT_SPEAR	plain	mountain	14	75	160	4	frontline	高机动高粮耗，适合平原追击、奇袭和声势扩散。	草案
+UNIT_BOW	弓兵	ranged	远程压制	UNIT_SPEAR	UNIT_CAVALRY	mountain	rain	9	50	120	0	military	远程消耗和守城辅助，遇骑兵冲击需要阵线保护。	草案
+UNIT_CROSSBOW	弩兵	ranged	破甲齐射	UNIT_GUARD	UNIT_CAVALRY	pass	river	8	60	145	1	frontline	射程和破甲更强，训练成本较高，适合关隘和城防。	草案
+UNIT_NAVAL	水军	naval	水路接战	UNIT_SUPPLY	UNIT_CROSSBOW	river	mountain	12	70	150	3	transport	在江河、港口、水路战中发挥主力价值。	草案
+UNIT_SIEGE	攻城队	siege	破城器械	UNIT_GUARD	UNIT_CAVALRY	siege	field	6	85	220	-2	frontline	提高攻城进度，野战脆弱，需要护卫。	草案
+UNIT_GUARD	亲卫	elite	护卫与坚守	UNIT_CAVALRY	UNIT_SIEGE	city	river	9	70	200	6	capital	高士气高成本，适合君主、名将护卫和关键城防。	草案
+UNIT_SCOUT	斥候	support	侦察与伏击	UNIT_SIEGE	UNIT_GUARD	mountain	plain	15	35	80	-1	transport	提高视野、伏击和谋略命中，正面战力低。	草案
+UNIT_SUPPLY	辎重	support	补给承载	UNIT_NONE	UNIT_CAVALRY	road	mountain	7	40	70	-4	transport	扩大携粮和远征半径，被袭会放大战役风险。	草案
+=== Sheet: master_trait_v03 ===
+特技主表 V0.3 首批样例
+trait_id	name	trait_type	trigger_scope	trigger_timing	ability_threshold_type	ability_threshold_value	effect_group_id	condition_group_id	description_text_id	status
+TRAIT_RENDE	仁德	diplomacy	force	city_occupied	charm	90	EFFG_TRAIT_RENDE	COND_POSTWAR_NEW_CITY	TXT_TRAIT_RENDE	active
+TRAIT_ZHAOFU	招抚	momentum	governor	monthly_tick	charm	80	EFFG_TRAIT_ZHAOFU	COND_CITY_OCCUPIED	TXT_TRAIT_ZHAOFU	active
+TRAIT_BAFU	霸府	military	force	monthly_tick	leadership	90	EFFG_TRAIT_BAFU		TXT_TRAIT_BAFU	active
+TRAIT_JUNZHENG	军政	governance	central_office	monthly_tick	politics	85	EFFG_TRAIT_JUNZHENG		TXT_TRAIT_JUNZHENG	active
+TRAIT_WEIZHEN	威震	momentum	commander	battle_start	leadership	90	EFFG_TRAIT_WEIZHEN		TXT_TRAIT_WEIZHEN	active
+TRAIT_YILI	义烈	battle	army	battle_start	charm	85	EFFG_TRAIT_YILI	COND_SWORN_ALLY	TXT_TRAIT_YILI	active
+TRAIT_MENGJIANG	猛将	battle	commander	battle_start	martial	90	EFFG_TRAIT_MENGJIANG		TXT_TRAIT_MENGJIANG	active
+TRAIT_HUYI	护义	battle	commander	battle_start	leadership	80	EFFG_TRAIT_HUYI	COND_ALLY_LOW_MORALE	TXT_TRAIT_HUYI	active
+TRAIT_DANQI	单骑	military	army	daily_tick	martial	90	EFFG_TRAIT_DANQI	COND_CAVALRY_OR_GUARD	TXT_TRAIT_DANQI	active
+TRAIT_LONGZHONG	隆中策	scheme	strategist	monthly_tick	intellect	95	EFFG_TRAIT_LONGZHONG		TXT_TRAIT_LONGZHONG	active
+TRAIT_TUNTIAN	屯田	supply	governor	monthly_tick	politics	85	EFFG_TRAIT_TUNTIAN	COND_FRONTLINE_CITY	TXT_TRAIT_TUNTIAN	active
+TRAIT_SHUIJUN	水军督率	military	commander	battle_start	leadership	85	EFFG_TRAIT_SHUIJUN	COND_RIVER_OR_PORT	TXT_TRAIT_SHUIJUN	active
+TRAIT_YAOLUE	遥略	scheme	strategist	battle_start	intellect	90	EFFG_TRAIT_YAOLUE		TXT_TRAIT_YAOLUE	active
+TRAIT_QUANMOU	权谋	scheme	central_office	monthly_tick	intellect	90	EFFG_TRAIT_QUANMOU		TXT_TRAIT_QUANMOU	active
+TRAIT_FEIJIANG	飞将	battle	commander	battle_start	martial	95	EFFG_TRAIT_FEIJIANG	COND_CAVALRY_UNIT	TXT_TRAIT_FEIJIANG	active
+TRAIT_QIBING	奇兵	battle	commander	battle_start	intellect	80	EFFG_TRAIT_QIBING	COND_SCOUT_OR_MOUNTAIN	TXT_TRAIT_QIBING	active
+TRAIT_LIJIAN	离间	scheme	strategist	monthly_tick	charm	85	EFFG_TRAIT_LIJIAN		TXT_TRAIT_LIJIAN	active
+TRAIT_MENWANG	门望	diplomacy	force	monthly_tick	charm	85	EFFG_TRAIT_MENWANG		TXT_TRAIT_MENWANG	active
+=== Sheet: officer_trait_v03 ===
+武将特技关联 V0.3 首批样例
+officer_id	trait_id	unlock_state	learned_day	source_type	slot_hint	status
+OFF_CAOCAO	TRAIT_BAFU	unlocked		base	force	active
+OFF_CAOCAO	TRAIT_JUNZHENG	unlocked		base	central_office	active
+OFF_LIUBEI	TRAIT_RENDE	unlocked		base	force	active
+OFF_LIUBEI	TRAIT_ZHAOFU	unlocked		base	governor	active
+OFF_GUANYU	TRAIT_WEIZHEN	unlocked		base	commander	active
+OFF_GUANYU	TRAIT_YILI	unlocked		base	army	active
+OFF_ZHANGFEI	TRAIT_MENGJIANG	unlocked		base	commander	active
+OFF_ZHAOYUN	TRAIT_HUYI	unlocked		base	commander	active
+OFF_ZHAOYUN	TRAIT_DANQI	unlocked		base	army	active
+OFF_ZHUGELIANG	TRAIT_LONGZHONG	unlocked		base	strategist	active
+OFF_ZHUGELIANG	TRAIT_TUNTIAN	unlocked		base	governor	active
+OFF_ZHOUYU	TRAIT_SHUIJUN	unlocked		base	commander	active
+OFF_ZHOUYU	TRAIT_YAOLUE	unlocked		base	strategist	active
+OFF_SIMAYI	TRAIT_QUANMOU	unlocked		base	central_office	active
+OFF_LVBU	TRAIT_FEIJIANG	unlocked		base	commander	active
+OFF_ZHANGLIAO	TRAIT_QIBING	unlocked		base	commander	active
+OFF_DIAOCHAN	TRAIT_LIJIAN	unlocked		base	strategist	active
+OFF_YUANSHAO	TRAIT_MENWANG	unlocked		base	force	active
+=== Sheet: master_tactic_v03 ===
+战法主表 V0.3 首批样例
+tactic_id	name	tactic_type	caster_scope	target_type	range_type	cooldown_days	cost_type	cost_value	effect_group_id	condition_group_id	description_text_id	status
+TACTIC_CHARGE_BREAK	陷阵突击	charge	commander	enemy	near	3	tactic_point	3	EFFG_TAC_CHARGE_BREAK	COND_CAVALRY_OR_GUARD	TXT_TAC_CHARGE_BREAK	active
+TACTIC_VOLLEY	连弩齐射	fire	army	enemy	far	2	tactic_point	2	EFFG_TAC_VOLLEY	COND_BOW_OR_CROSSBOW	TXT_TAC_VOLLEY	active
+TACTIC_COUNTER_DEFENSE	据险坚守	siege	commander	self	near	4	morale	8	EFFG_TAC_COUNTER_DEFENSE	COND_PASS_OR_CITY	TXT_TAC_COUNTER_DEFENSE	active
+TACTIC_RALLY	整军鼓舞	inspire	commander	ally	area	3	tactic_point	2	EFFG_TAC_RALLY		TXT_TAC_RALLY	active
+TACTIC_TAUNT_ROAR	怒喝挑阵	taunt	commander	enemy	near	3	morale	6	EFFG_TAC_TAUNT_ROAR		TXT_TAC_TAUNT_ROAR	active
+TACTIC_FIRE_STRATAGEM	火计连营	fire	strategist	area	area	5	tactic_point	4	EFFG_TAC_FIRE_STRATAGEM	COND_DRY_OR_WIND	TXT_TAC_FIRE_STRATAGEM	active
+TACTIC_AMBUSH	伏兵截击	ambush	strategist	enemy	route	4	tactic_point	3	EFFG_TAC_AMBUSH	COND_SCOUT_OR_MOUNTAIN	TXT_TAC_AMBUSH	active
+TACTIC_CONFUSION	疑兵乱阵	confuse	strategist	enemy	far	4	tactic_point	3	EFFG_TAC_CONFUSION		TXT_TAC_CONFUSION	active
+TACTIC_NAVAL_ASSAULT	楼船冲阵	naval	commander	enemy	near	3	tactic_point	3	EFFG_TAC_NAVAL_ASSAULT	COND_NAVAL_BATTLE	TXT_TAC_NAVAL_ASSAULT	active
+TACTIC_SIEGE_PRESS	云梯压城	siege	army	city	near	4	food	800	EFFG_TAC_SIEGE_PRESS	COND_SIEGE_DEVICE	TXT_TAC_SIEGE_PRESS	active
+TACTIC_GUARD_RESCUE	护主突围	inspire	commander	ally	near	5	morale	10	EFFG_TAC_GUARD_RESCUE	COND_ALLY_LOW_MORALE	TXT_TAC_GUARD_RESCUE	active
+TACTIC_MORALE_BREAK	威压摧锋	taunt	commander	enemy	area	4	tactic_point	3	EFFG_TAC_MORALE_BREAK		TXT_TAC_MORALE_BREAK	active
+=== Sheet: effect_group_v03 ===
+效果组 V0.3
+effect_group_id	name	source_type	source_id	execution_mode	status
+EFFG_TRAIT_RENDE	仁德效果组	trait	TRAIT_RENDE	all	active
+EFFG_TRAIT_ZHAOFU	招抚效果组	trait	TRAIT_ZHAOFU	all	active
+EFFG_TRAIT_BAFU	霸府效果组	trait	TRAIT_BAFU	all	active
+EFFG_TRAIT_JUNZHENG	军政效果组	trait	TRAIT_JUNZHENG	all	active
+EFFG_TRAIT_WEIZHEN	威震效果组	trait	TRAIT_WEIZHEN	all	active
+EFFG_TRAIT_YILI	义烈效果组	trait	TRAIT_YILI	all	active
+EFFG_TRAIT_MENGJIANG	猛将效果组	trait	TRAIT_MENGJIANG	all	active
+EFFG_TRAIT_HUYI	护义效果组	trait	TRAIT_HUYI	all	active
+EFFG_TRAIT_DANQI	单骑效果组	trait	TRAIT_DANQI	all	active
+EFFG_TRAIT_LONGZHONG	隆中策效果组	trait	TRAIT_LONGZHONG	all	active
+EFFG_TRAIT_TUNTIAN	屯田效果组	trait	TRAIT_TUNTIAN	all	active
+EFFG_TRAIT_SHUIJUN	水军督率效果组	trait	TRAIT_SHUIJUN	all	active
+EFFG_TRAIT_YAOLUE	遥略效果组	trait	TRAIT_YAOLUE	all	active
+EFFG_TRAIT_QUANMOU	权谋效果组	trait	TRAIT_QUANMOU	all	active
+EFFG_TRAIT_FEIJIANG	飞将效果组	trait	TRAIT_FEIJIANG	all	active
+EFFG_TRAIT_QIBING	奇兵效果组	trait	TRAIT_QIBING	all	active
+EFFG_TRAIT_LIJIAN	离间效果组	trait	TRAIT_LIJIAN	all	active
+EFFG_TRAIT_MENWANG	门望效果组	trait	TRAIT_MENWANG	all	active
+EFFG_TAC_CHARGE_BREAK	陷阵突击效果组	tactic	TACTIC_CHARGE_BREAK	all	active
+EFFG_TAC_VOLLEY	连弩齐射效果组	tactic	TACTIC_VOLLEY	all	active
+EFFG_TAC_COUNTER_DEFENSE	据险坚守效果组	tactic	TACTIC_COUNTER_DEFENSE	all	active
+EFFG_TAC_RALLY	整军鼓舞效果组	tactic	TACTIC_RALLY	all	active
+EFFG_TAC_TAUNT_ROAR	怒喝挑阵效果组	tactic	TACTIC_TAUNT_ROAR	all	active
+EFFG_TAC_FIRE_STRATAGEM	火计连营效果组	tactic	TACTIC_FIRE_STRATAGEM	all	active
+EFFG_TAC_AMBUSH	伏兵截击效果组	tactic	TACTIC_AMBUSH	all	active
+EFFG_TAC_CONFUSION	疑兵乱阵效果组	tactic	TACTIC_CONFUSION	all	active
+EFFG_TAC_NAVAL_ASSAULT	楼船冲阵效果组	tactic	TACTIC_NAVAL_ASSAULT	all	active
+EFFG_TAC_SIEGE_PRESS	云梯压城效果组	tactic	TACTIC_SIEGE_PRESS	all	active
+EFFG_TAC_GUARD_RESCUE	护主突围效果组	tactic	TACTIC_GUARD_RESCUE	all	active
+EFFG_TAC_MORALE_BREAK	威压摧锋效果组	tactic	TACTIC_MORALE_BREAK	all	active
+EFFG_SYN_SWORN_BROTHERS	结义同阵效果组	battle	SYN_LIUGUANZHANG	all	active
+EFFG_SYN_COMMANDER_STRATEGIST	主将军师协同效果组	battle	SYN_COMMANDER_STRATEGIST	all	active
+EFFG_SYN_CAVALRY_PLAIN	平原骑兵协同效果组	battle	SYN_CAVALRY_PLAIN	all	active
+EFFG_SYN_NAVAL_RIVER	河网水军协同效果组	battle	SYN_NAVAL_RIVER	all	active
+EFFG_SYN_MOMENTUM_FAMOUS_WIN	名将大胜声势效果组	battle	SYN_MOMENTUM_FAMOUS_WIN	all	active
+=== Sheet: effect_definition_v03 ===
+效果定义 V0.3
+effect_id	effect_group_id	trigger_timing	target_scope	stat_key	operation	value	duration_type	duration_value	condition_group_id	stack_rule	priority	status
+EFF_RENDE_ORDER	EFFG_TRAIT_RENDE	city_occupied	city	public_order	add_flat	8	instant		COND_POSTWAR_NEW_CITY	same_source_no_stack	40	active
+EFF_RENDE_SURRENDER	EFFG_TRAIT_RENDE	city_occupied	force	surrender_rate	add_pct	0.08	days	30	COND_POSTWAR_NEW_CITY	same_source_no_stack	50	active
+EFF_ZHAOFU_RECOVERY	EFFG_TRAIT_ZHAOFU	monthly_tick	city	recovery_progress	add_flat	10	while_active		COND_CITY_OCCUPIED	same_trait_no_stack	50	active
+EFF_BAFU_PRESTIGE	EFFG_TRAIT_BAFU	monthly_tick	force	prestige_base	add_flat	2	while_active			same_source_no_stack	60	active
+EFF_JUNZHENG_MOBILIZE	EFFG_TRAIT_JUNZHENG	monthly_tick	owned_city	mobilization_days	add_flat	-1	while_active			same_source_no_stack	55	active
+EFF_WEIZHEN_MORALE	EFFG_TRAIT_WEIZHEN	battle_start	enemy_army	morale_current	add_flat	-8	battle			same_trait_no_stack	45	active
+EFF_YILI_SYNC	EFFG_TRAIT_YILI	battle_start	self_army	battle_power	add_pct	0.08	battle		COND_SWORN_ALLY	same_trait_no_stack	50	active
+EFF_MENGJIANG_DAMAGE	EFFG_TRAIT_MENGJIANG	battle_start	self_army	melee_damage	add_pct	0.12	battle			same_trait_no_stack	50	active
+EFF_HUYI_RESCUE	EFFG_TRAIT_HUYI	battle_start	ally_army	morale_current	add_flat	10	instant		COND_ALLY_LOW_MORALE	same_source_no_stack	45	active
+EFF_DANQI_SPEED	EFFG_TRAIT_DANQI	daily_tick	self_army	movement_speed	add_pct	0.08	while_active		COND_CAVALRY_OR_GUARD	same_trait_no_stack	55	active
+EFF_LONGZHONG_AI	EFFG_TRAIT_LONGZHONG	monthly_tick	force	ai_target_score	add_flat	12	while_active			same_source_no_stack	65	active
+EFF_TUNTIAN_FOOD	EFFG_TRAIT_TUNTIAN	monthly_tick	owned_city	food_income	add_pct	0.16	while_active		COND_FRONTLINE_CITY	same_source_no_stack	50	active
+EFF_SHUIJUN_POWER	EFFG_TRAIT_SHUIJUN	battle_start	self_army	naval_power	add_pct	0.18	battle		COND_RIVER_OR_PORT	same_trait_no_stack	50	active
+EFF_YAOLUE_TACTIC	EFFG_TRAIT_YAOLUE	battle_start	self_army	tactic_point_gain	add_flat	1	battle			same_source_no_stack	55	active
+EFF_QUANMOU_SCHEME	EFFG_TRAIT_QUANMOU	monthly_tick	force	scheme_success_rate	add_pct	0.1	while_active			same_source_no_stack	50	active
+EFF_FEIJIANG_CHARGE	EFFG_TRAIT_FEIJIANG	battle_start	self_army	charge_damage	add_pct	0.2	battle		COND_CAVALRY_UNIT	same_trait_no_stack	50	active
+EFF_QIBING_AMBUSH	EFFG_TRAIT_QIBING	battle_start	self_army	ambush_damage	add_pct	0.18	battle		COND_SCOUT_OR_MOUNTAIN	same_trait_no_stack	50	active
+EFF_LIJIAN_LOYALTY	EFFG_TRAIT_LIJIAN	monthly_tick	enemy_officer	loyalty_current	add_flat	-4	days	30		same_source_no_stack	45	active
+EFF_MENWANG_DIP	EFFG_TRAIT_MENWANG	monthly_tick	force	diplomacy_success_rate	add_pct	0.07	while_active			same_source_no_stack	45	active
+EFF_TAC_CHARGE_DAMAGE	EFFG_TAC_CHARGE_BREAK	tactic_cast	enemy_army	troop_damage	add_flat	900	instant		COND_CAVALRY_OR_GUARD	allow_multi_source	50	active
+EFF_TAC_VOLLEY_DAMAGE	EFFG_TAC_VOLLEY	tactic_cast	enemy_army	troop_damage	add_flat	650	instant		COND_BOW_OR_CROSSBOW	allow_multi_source	50	active
+EFF_TAC_DEFENSE	EFFG_TAC_COUNTER_DEFENSE	tactic_cast	self_army	battle_power	mul	1.15	days	2	COND_PASS_OR_CITY	same_source_no_stack	40	active
+EFF_TAC_RALLY	EFFG_TAC_RALLY	tactic_cast	ally_army	morale_current	add_flat	12	instant			allow_multi_source	45	active
+EFF_TAC_TAUNT	EFFG_TAC_TAUNT_ROAR	tactic_cast	enemy_army	target_lock	set	caster_army_id	days	1		highest_priority	35	active
+EFF_TAC_FIRE_DAMAGE	EFFG_TAC_FIRE_STRATAGEM	tactic_cast	enemy_army	troop_damage	add_flat	1000	instant		COND_DRY_OR_WIND	allow_multi_source	50	active
+EFF_TAC_FIRE_MORALE	EFFG_TAC_FIRE_STRATAGEM	tactic_cast	enemy_army	morale_current	add_flat	-14	instant		COND_DRY_OR_WIND	allow_multi_source	45	active
+EFF_TAC_AMBUSH	EFFG_TAC_AMBUSH	tactic_cast	enemy_army	battle_power	mul	0.82	days	1	COND_SCOUT_OR_MOUNTAIN	same_source_no_stack	45	active
+EFF_TAC_CONFUSION	EFFG_TAC_CONFUSION	tactic_cast	enemy_army	tactic_disabled_days	add_flat	1	instant			same_source_no_stack	40	active
+EFF_TAC_NAVAL	EFFG_TAC_NAVAL_ASSAULT	tactic_cast	enemy_army	naval_damage	add_flat	850	instant		COND_NAVAL_BATTLE	allow_multi_source	50	active
+EFF_TAC_SIEGE	EFFG_TAC_SIEGE_PRESS	tactic_cast	city	siege_progress	add_flat	12	instant		COND_SIEGE_DEVICE	allow_multi_source	50	active
+EFF_TAC_GUARD_RESCUE	EFFG_TAC_GUARD_RESCUE	tactic_cast	ally_army	retreat_blocked	set	True	days	1	COND_ALLY_LOW_MORALE	same_source_no_stack	35	active
+EFF_TAC_MORALE_BREAK	EFFG_TAC_MORALE_BREAK	tactic_cast	enemy_army	morale_current	add_flat	-16	instant			allow_multi_source	45	active
+EFF_SYN_SWORN_MORALE	EFFG_SYN_SWORN_BROTHERS	battle_start	self_army	morale_current	add_flat	8	battle		COND_SWORN_ALLY	same_source_no_stack	45	active
+EFF_SYN_CMD_STR_TACTIC	EFFG_SYN_COMMANDER_STRATEGIST	battle_start	self_army	tactic_point_gain	add_flat	1	battle		COND_LEAD_INT_90	same_source_no_stack	50	active
+EFF_SYN_CAVALRY_PURSUIT	EFFG_SYN_CAVALRY_PLAIN	battle_start	self_army	pursuit_damage	add_pct	0.12	battle		COND_CAVALRY_ON_PLAIN	same_source_no_stack	50	active
+EFF_SYN_NAVAL_SPEED	EFFG_SYN_NAVAL_RIVER	battle_start	self_army	movement_speed	add_pct	0.1	battle		COND_NAVAL_BATTLE	same_source_no_stack	50	active
+EFF_SYN_FAMOUS_WIN_MOMENTUM	EFFG_SYN_MOMENTUM_FAMOUS_WIN	battle_finished	force	momentum_value	add_flat	10	instant		COND_MAJOR_VICTORY_FAMOUS_OFFICER	allow_multi_source	60	active
+=== Sheet: skill_rename_map_v03 ===
+技能功能平替映射 V0.3
+map_id	base_function_type	new_name	new_theme	linked_trait_id	linked_tactic_id	is_original_innovation	status
+MAP_GOV_RECOVERY	occupied_city_recovery_bonus	招抚	战后安民、降户复业、民心恢复。	TRAIT_ZHAOFU		False	active
+MAP_SUPPLY_FOOD	frontline_food_income_bonus	屯田	军民屯垦和前线粮道经营。	TRAIT_TUNTIAN		False	active
+MAP_MORALE_AURA	enemy_morale_down_on_battle_start	威震	名将临阵压迫敌军士气。	TRAIT_WEIZHEN		False	active
+MAP_AMBUSH_BONUS	ambush_damage_bonus	奇兵	山道、斥候、伏击和迂回包抄。	TRAIT_QIBING	TACTIC_AMBUSH	False	active
+MAP_FIRE_DAMAGE	area_fire_damage_and_morale	火计连营	火攻营寨、船队或粮草堆。		TACTIC_FIRE_STRATAGEM	False	active
+MAP_NAVAL_ATTACK	naval_battle_power_bonus	水军督率	江河港口中的船队调度和接舷战。	TRAIT_SHUIJUN	TACTIC_NAVAL_ASSAULT	True	active
+MAP_LEGITIMACY_DIP	prestige_and_surrender_bonus	仁德	以名望和德政降低新占地区反抗。	TRAIT_RENDE		True	active
+MAP_CAVALRY_CHARGE	cavalry_charge_damage	陷阵突击	骑兵或亲卫撕开阵线。	TRAIT_FEIJIANG	TACTIC_CHARGE_BREAK	False	active
+=== Sheet: synergy_rule_v03 ===
+组合规则 V0.3
+synergy_id	synergy_type	source_scope	condition_group_id	effect_group_id	priority	description	status
+SYN_LIUGUANZHANG	relation	commander_sub_officer	COND_SWORN_ALLY	EFFG_SYN_SWORN_BROTHERS	40	刘备、关羽、张飞同阵时提高士气稳定和战后归附。	草案
+SYN_COMMANDER_STRATEGIST	commander_strategist	army	COND_LEAD_INT_90	EFFG_SYN_COMMANDER_STRATEGIST	50	高统率主将搭配高智谋军师时提高战法点获取。	草案
+SYN_CAVALRY_PLAIN	terrain	army	COND_CAVALRY_ON_PLAIN	EFFG_SYN_CAVALRY_PLAIN	55	骑兵在平原路线获得突击和追击收益。	草案
+SYN_NAVAL_RIVER	unit_type	army	COND_NAVAL_BATTLE	EFFG_SYN_NAVAL_RIVER	55	水军在河网、港口、水路战获得机动收益。	草案
+SYN_MOMENTUM_FAMOUS_WIN	momentum	force	COND_MAJOR_VICTORY_FAMOUS_OFFICER	EFFG_SYN_MOMENTUM_FAMOUS_WIN	60	名将大胜后向邻近城池扩散声势。	草案

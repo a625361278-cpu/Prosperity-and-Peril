@@ -1,0 +1,21 @@
+# Godot local/editor state
+.godot/
+.import/
+
+# Builds and exports
+build/
+builds/
+export/
+exports/
+*.pck
+*.exe
+
+# Local scratch files
+*.tmp
+*.bak
+~$*
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+
