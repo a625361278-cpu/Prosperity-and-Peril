@@ -2,7 +2,7 @@ extends Control
 
 const DebugStatePresenter = preload("res://scripts/ui/debug_state_presenter.gd")
 
-@onready var _label: Label = $MarginContainer/ScrollContainer/DebugText
+@onready var _label: Label = $PanelBackground/MarginContainer/ScrollContainer/DebugText
 
 
 func set_runtime_state(state: Dictionary) -> void:

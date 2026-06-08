@@ -12,6 +12,16 @@ const FORCE_COLORS := {
 	"FORCE_PLAYER": Color(0.16, 0.42, 0.95, 1.0),
 	"FORCE_ENEMY": Color(0.86, 0.18, 0.14, 1.0),
 }
+const ROUTE_COLORS := {
+	"road": Color(0.82, 0.74, 0.52, 1.0),
+	"pass": Color(0.86, 0.55, 0.22, 1.0),
+	"water": Color(0.23, 0.55, 0.82, 1.0),
+}
+const ROUTE_OFFSETS := {
+	"road": Vector3(0.0, 0.05, -0.12),
+	"pass": Vector3(0.0, 0.08, 0.12),
+	"water": Vector3(0.0, 0.04, 0.0),
+}
 
 @export var editor_preview_enabled := true:
 	set(value):
@@ -80,9 +90,11 @@ func _validate_state(state: Dictionary) -> Array[String]:
 				errors.append("strategic map city missing %s %s" % [field, city_id])
 	for route_id in state.routes.keys():
 		var route: Dictionary = state.routes[route_id]
-		for field in ["id", "from_city_id", "to_city_id"]:
+		for field in ["id", "from_city_id", "to_city_id", "route_type"]:
 			if not route.has(field):
 				errors.append("strategic map route missing %s %s" % [field, route_id])
+		if route.has("route_type") and not ROUTE_COLORS.has(str(route.route_type)):
+			errors.append("strategic map route type unsupported %s %s" % [str(route.route_type), route_id])
 		if route.has("from_city_id") and not CITY_POSITIONS.has(str(route.from_city_id)):
 			errors.append("strategic map route origin position missing %s" % str(route.from_city_id))
 		if route.has("to_city_id") and not CITY_POSITIONS.has(str(route.to_city_id)):
@@ -146,17 +158,25 @@ func _add_city(city: Dictionary) -> void:
 func _add_route(route: Dictionary) -> void:
 	var from_pos: Vector3 = CITY_POSITIONS[str(route.from_city_id)]
 	var to_pos: Vector3 = CITY_POSITIONS[str(route.to_city_id)]
+	var route_type := str(route.route_type)
+	var offset := _route_visual_offset(route_type)
 	var mesh := ImmediateMesh.new()
 	mesh.surface_begin(Mesh.PRIMITIVE_LINES)
-	mesh.surface_add_vertex(from_pos + Vector3(0.0, 0.04, 0.0))
-	mesh.surface_add_vertex(to_pos + Vector3(0.0, 0.04, 0.0))
+	mesh.surface_add_vertex(from_pos + offset)
+	mesh.surface_add_vertex(to_pos + offset)
 	mesh.surface_end()
 
 	var node := MeshInstance3D.new()
 	node.name = "Route_%s" % str(route.id)
 	node.mesh = mesh
-	node.material_override = _material(Color(0.82, 0.74, 0.52, 1.0))
+	node.material_override = _material(_route_color(route_type))
+	node.set_meta("route_type", route_type)
+	node.set_meta("route_visual_offset", offset)
+	node.set_meta("blocks_enemy_passage", bool(route.get("blocks_enemy_passage", false)))
 	_generated_root.add_child(node)
+
+	if bool(route.get("blocks_enemy_passage", false)):
+		_add_block_marker(node, from_pos.lerp(to_pos, 0.5) + offset)
 
 
 func _add_army(state: Dictionary, army: Dictionary) -> void:
@@ -189,6 +209,29 @@ func _force_color(force_id: String) -> Color:
 	if not FORCE_COLORS.has(force_id):
 		return Color(0.55, 0.55, 0.55, 1.0)
 	return FORCE_COLORS[force_id]
+
+
+func _route_color(route_type: String) -> Color:
+	if not ROUTE_COLORS.has(route_type):
+		return Color(0.68, 0.68, 0.68, 1.0)
+	return ROUTE_COLORS[route_type]
+
+
+func _route_visual_offset(route_type: String) -> Vector3:
+	if not ROUTE_OFFSETS.has(route_type):
+		return Vector3(0.0, 0.05, 0.0)
+	return ROUTE_OFFSETS[route_type]
+
+
+func _add_block_marker(parent: Node3D, position: Vector3) -> void:
+	var mesh := BoxMesh.new()
+	mesh.size = Vector3(0.38, 0.38, 0.12)
+	var marker := MeshInstance3D.new()
+	marker.name = "BlockMarker"
+	marker.position = position + Vector3(0.0, 0.18, 0.0)
+	marker.mesh = mesh
+	marker.material_override = _material(Color(0.95, 0.18, 0.12, 1.0))
+	parent.add_child(marker)
 
 
 func _sorted_keys(values: Dictionary) -> Array:

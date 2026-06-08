@@ -12,6 +12,7 @@ var _failed := 0
 
 func _initialize() -> void:
 	_run("strategic map renders cities routes and army markers", _test_renders_runtime_state)
+	_run("strategic map exposes pass route and blocked passage markers", _test_pass_route_visual_state)
 	_run("strategic map fails when city position is missing", _test_missing_city_position_fails)
 	quit(_failed)
 
@@ -48,6 +49,41 @@ func _test_renders_runtime_state() -> Dictionary:
 	if generated.get_node_or_null("Army_ARMY_1") == null:
 		view.queue_free()
 		return {"ok": false, "message": "army marker missing"}
+	view.queue_free()
+	return {"ok": true}
+
+
+func _test_pass_route_visual_state() -> Dictionary:
+	var state_result := _build_state_with_army()
+	if not state_result.ok:
+		return state_result
+	var view := StrategicMapView.new()
+	get_root().add_child(view)
+	var render_result: Dictionary = view.render_state(state_result.state)
+	if not render_result.ok:
+		view.queue_free()
+		return {"ok": false, "message": "render failed: %s" % [render_result.errors]}
+	var generated := view.get_node_or_null("GeneratedStrategicMap")
+	if generated == null:
+		view.queue_free()
+		return {"ok": false, "message": "generated map root missing"}
+	var road_route := generated.get_node_or_null("Route_ROUTE_TEST_A_B")
+	var pass_route := generated.get_node_or_null("Route_ROUTE_TEST_A_B_PASS")
+	if road_route == null or pass_route == null:
+		view.queue_free()
+		return {"ok": false, "message": "expected road and pass route nodes"}
+	if str(pass_route.get_meta("route_type", "")) != "pass":
+		view.queue_free()
+		return {"ok": false, "message": "pass route missing route_type metadata"}
+	if not bool(pass_route.get_meta("blocks_enemy_passage", false)):
+		view.queue_free()
+		return {"ok": false, "message": "blocked pass route missing block metadata"}
+	if road_route.get_meta("route_visual_offset", Vector3.ZERO) == pass_route.get_meta("route_visual_offset", Vector3.ZERO):
+		view.queue_free()
+		return {"ok": false, "message": "road and pass routes share the same visual offset"}
+	if pass_route.get_node_or_null("BlockMarker") == null:
+		view.queue_free()
+		return {"ok": false, "message": "blocked pass route marker missing"}
 	view.queue_free()
 	return {"ok": true}
 
