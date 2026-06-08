@@ -83,6 +83,7 @@ func _valid_dataset() -> Dictionary:
 				"food": 50000,
 				"public_order": 80,
 				"morale_public": 70,
+				"gentry_support": 72,
 				"recovery_state": "normal",
 			},
 			{
@@ -93,6 +94,7 @@ func _valid_dataset() -> Dictionary:
 				"food": 30000,
 				"public_order": 65,
 				"morale_public": 60,
+				"gentry_support": 35,
 				"recovery_state": "normal",
 			},
 		],

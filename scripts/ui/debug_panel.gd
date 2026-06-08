@@ -28,7 +28,7 @@ func _format_snapshot(snapshot: Dictionary) -> String:
 	lines.append("")
 	lines.append("城市:")
 	for city in snapshot.cities:
-		lines.append("- %s %s 势力=%s 兵=%s 粮=%s 民心=%s 治安=%s 状态=%s 整合=%s" % [
+		lines.append("- %s %s 势力=%s 兵=%s 粮=%s 民心=%s 治安=%s 士族=%s 状态=%s 整合=%s" % [
 			city.id,
 			city.name,
 			city.force_id,
@@ -36,6 +36,7 @@ func _format_snapshot(snapshot: Dictionary) -> String:
 			city.food,
 			city.morale_public,
 			city.public_order,
+			city.gentry_support,
 			city.recovery_state,
 			city.integration_progress,
 		])

@@ -8,6 +8,7 @@ const BattleSystem = preload("res://scripts/simulation/battle_system.gd")
 const PostwarIntegrationSystem = preload("res://scripts/simulation/postwar_integration_system.gd")
 const DiplomacySchemeSystem = preload("res://scripts/simulation/diplomacy_scheme_system.gd")
 const LegitimacySystem = preload("res://scripts/simulation/legitimacy_system.gd")
+const LocalGovernanceSystem = preload("res://scripts/simulation/local_governance_system.gd")
 const SaveSystem = preload("res://scripts/save/save_system.gd")
 
 const SAVE_PATH := "user://prototype_v0_1_save_test.json"
@@ -73,6 +74,12 @@ func _test_save_and_load_restores_state() -> Dictionary:
 		return {"ok": false, "message": "loaded legitimacy log missing"}
 	if loaded_state.next_legitimacy_log_seq != 2:
 		return {"ok": false, "message": "loaded legitimacy seq mismatch"}
+	if loaded_state.cities.CITY_TEST_B.gentry_support != 35:
+		return {"ok": false, "message": "loaded city gentry_support mismatch"}
+	if not loaded_state.local_governance_logs.has("LGOVLOG_1"):
+		return {"ok": false, "message": "loaded local governance log missing"}
+	if loaded_state.next_local_governance_log_seq != 2:
+		return {"ok": false, "message": "loaded local governance seq mismatch"}
 	return {"ok": true}
 
 
@@ -103,8 +110,8 @@ func _test_save_writes_current_schema_version() -> Dictionary:
 	var parsed = JSON.parse_string(file.get_as_text())
 	if parsed == null or not parsed is Dictionary:
 		return {"ok": false, "message": "save file is not valid JSON"}
-	if int(parsed.version) != 3:
-		return {"ok": false, "message": "expected save version 3, got %s" % parsed.version}
+	if int(parsed.version) != 4:
+		return {"ok": false, "message": "expected save version 4, got %s" % parsed.version}
 	return {"ok": true}
 
 
@@ -176,4 +183,15 @@ func _build_state_after_integration() -> Dictionary:
 	})
 	if not legitimacy_result.ok:
 		return {"ok": false, "message": "legitimacy setup failed: %s" % [legitimacy_result.errors]}
+	var governance_result: Dictionary = LocalGovernanceSystem.apply_gentry_pressure_rule(state_result.state, {
+		"id": "LGOV_SAVE_TEST",
+		"city_id": "CITY_TEST_B",
+		"gentry_support_below": 40,
+		"public_order_delta": -1,
+		"morale_public_delta": -1,
+		"integration_progress_delta": 0,
+		"reason": "save_test",
+	})
+	if not governance_result.ok:
+		return {"ok": false, "message": "local governance setup failed: %s" % [governance_result.errors]}
 	return {"ok": true, "state": state_result.state}

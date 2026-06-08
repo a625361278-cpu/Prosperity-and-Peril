@@ -68,6 +68,7 @@ static func _city_rows(cities: Dictionary) -> Array[Dictionary]:
 			"food": city.food,
 			"public_order": city.public_order,
 			"morale_public": city.morale_public,
+			"gentry_support": city.gentry_support,
 			"recovery_state": city.recovery_state,
 			"integration_progress": city.get("integration_progress", -1),
 		})

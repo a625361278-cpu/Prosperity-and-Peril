@@ -2,7 +2,7 @@ extends RefCounted
 
 
 const REQUIRED_FIELDS := {
-	"cities": ["id", "name", "force_id", "troops", "food", "public_order", "morale_public", "recovery_state"],
+	"cities": ["id", "name", "force_id", "troops", "food", "public_order", "morale_public", "gentry_support", "recovery_state"],
 	"forces": ["id", "name", "ruler_officer_id", "capital_city_id", "legitimacy_base", "prestige_base"],
 	"officers": ["id", "name", "force_id", "leadership", "politics"],
 	"routes": ["id", "from_city_id", "to_city_id", "route_type", "distance", "terrain_modifier", "supply_modifier", "battle_trigger"],
@@ -77,6 +77,14 @@ static func _validate_table(table_name: String, rows: Array, errors: Array[Strin
 static func _validate_numeric_ranges(table_name: String, index: int, row: Dictionary, errors: Array[String]) -> void:
 	if table_name == "forces":
 		for field in ["legitimacy_base", "prestige_base"]:
+			if not row.has(field):
+				continue
+			if not _is_integer_number(row[field]):
+				errors.append("%s[%d].%s must be an integer" % [table_name, index, field])
+			elif int(row[field]) < 0 or int(row[field]) > 100:
+				errors.append("%s[%d].%s must be between 0 and 100" % [table_name, index, field])
+	if table_name == "cities":
+		for field in ["public_order", "morale_public", "gentry_support"]:
 			if not row.has(field):
 				continue
 			if not _is_integer_number(row[field]):

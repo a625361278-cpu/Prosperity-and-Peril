@@ -51,6 +51,8 @@ func _test_debug_snapshot() -> Dictionary:
 		return {"ok": false, "message": "expected 1 battle log in debug snapshot"}
 	if snapshot.cities[1].recovery_state != "occupied":
 		return {"ok": false, "message": "expected occupied city state to be visible"}
+	if snapshot.cities[0].gentry_support != 72:
+		return {"ok": false, "message": "expected gentry support to be visible"}
 	if snapshot.armies[0].state != "victorious":
 		return {"ok": false, "message": "expected victorious army state to be visible"}
 	return {"ok": true}
