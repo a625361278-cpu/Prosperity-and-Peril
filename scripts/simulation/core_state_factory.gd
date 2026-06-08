@@ -14,6 +14,7 @@ static func build_from_dataset(dataset: Dictionary) -> Dictionary:
 
 	var state := {
 		"current_day": 0,
+		"current_month": 1,
 		"cities": _index_rows(dataset.cities),
 		"forces": _index_rows(dataset.forces),
 		"officers": _index_rows(dataset.officers),
@@ -34,4 +35,3 @@ static func _index_rows(rows: Array) -> Dictionary:
 		var row_copy: Dictionary = row.duplicate(true)
 		indexed[str(row_copy.id)] = row_copy
 	return indexed
-
