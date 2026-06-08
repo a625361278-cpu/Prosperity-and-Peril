@@ -15,6 +15,7 @@ static func build_from_dataset(dataset: Dictionary) -> Dictionary:
 	var state := {
 		"current_day": 0,
 		"current_month": 1,
+		"next_army_seq": 1,
 		"cities": _index_rows(dataset.cities),
 		"forces": _index_rows(dataset.forces),
 		"officers": _index_rows(dataset.officers),
