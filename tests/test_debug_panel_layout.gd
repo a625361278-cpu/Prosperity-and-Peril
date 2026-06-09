@@ -84,7 +84,7 @@ func _test_debug_panel_portrait_preview_area() -> Dictionary:
 		return {"ok": false, "message": "debug panel scene missing"}
 	var panel: Control = scene.instantiate()
 	get_root().add_child(panel)
-	var preview_text := panel.get_node_or_null("PanelBackground/MarginContainer/VBoxContainer/PortraitPreviewText")
+	var preview_text := panel.get_node_or_null("PanelBackground/MarginContainer/VBoxContainer/HeroPortraitPreviewPanel/PortraitPreviewText")
 	if preview_text == null:
 		panel.queue_free()
 		return {"ok": false, "message": "PortraitPreviewText missing"}
@@ -105,7 +105,7 @@ func _test_debug_panel_formats_portrait_preview() -> Dictionary:
 		{"hero_id": 1001, "name_cn": "刘备", "half_body": "UI_gj_gg_basemap_hero_1001"},
 		{"hero_id": 2000501, "name_cn": "赵云", "half_body": "UI_gj_gg_basemap_hero_1004"},
 	])
-	var preview_text: Label = panel.get_node("PanelBackground/MarginContainer/VBoxContainer/PortraitPreviewText")
+	var preview_text: Label = panel.get_node("PanelBackground/MarginContainer/VBoxContainer/HeroPortraitPreviewPanel/PortraitPreviewText")
 	if not preview_text.text.contains("1001 刘备 halfBody=UI_gj_gg_basemap_hero_1001"):
 		panel.queue_free()
 		return {"ok": false, "message": "portrait preview missing 刘备 row"}
@@ -122,7 +122,7 @@ func _test_debug_panel_portrait_texture_node() -> Dictionary:
 		return {"ok": false, "message": "debug panel scene missing"}
 	var panel: Control = scene.instantiate()
 	get_root().add_child(panel)
-	var preview_image := panel.get_node_or_null("PanelBackground/MarginContainer/VBoxContainer/PortraitPreviewImage")
+	var preview_image := panel.get_node_or_null("PanelBackground/MarginContainer/VBoxContainer/HeroPortraitPreviewPanel/PortraitPreviewImage")
 	if preview_image == null:
 		panel.queue_free()
 		return {"ok": false, "message": "PortraitPreviewImage missing"}
@@ -146,7 +146,7 @@ func _test_debug_panel_assigns_portrait_texture() -> Dictionary:
 	image.fill(Color(1.0, 0.0, 0.0, 1.0))
 	var texture := ImageTexture.create_from_image(image)
 	panel.set_portrait_preview_texture(texture)
-	var preview_image: TextureRect = panel.get_node("PanelBackground/MarginContainer/VBoxContainer/PortraitPreviewImage")
+	var preview_image: TextureRect = panel.get_node("PanelBackground/MarginContainer/VBoxContainer/HeroPortraitPreviewPanel/PortraitPreviewImage")
 	if preview_image.texture == null:
 		panel.queue_free()
 		return {"ok": false, "message": "portrait preview texture was not assigned"}

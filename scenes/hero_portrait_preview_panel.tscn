@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/hero_portrait_preview_panel.gd" id="1_panel"]
+
+[node name="HeroPortraitPreviewPanel" type="VBoxContainer"]
+custom_minimum_size = Vector2(380, 228)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+script = ExtResource("1_panel")
+
+[node name="PortraitPreviewText" type="Label" parent="."]
+custom_minimum_size = Vector2(380, 92)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "半身像候选预览: 待加载"
+autowrap_mode = 3
+
+[node name="PortraitPreviewImage" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(148, 120)
+layout_mode = 2
+size_flags_horizontal = 0
+expand_mode = 1
+stretch_mode = 5

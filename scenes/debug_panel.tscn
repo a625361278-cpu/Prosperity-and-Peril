@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/debug_panel.gd" id="1_debug_panel"]
+[ext_resource type="PackedScene" path="res://scenes/hero_portrait_preview_panel.tscn" id="2_portrait_preview"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_debug_panel"]
 bg_color = Color(0.055, 0.06, 0.065, 0.9)
@@ -57,19 +58,7 @@ size_flags_horizontal = 3
 text = "当前选择: 未选择"
 autowrap_mode = 3
 
-[node name="PortraitPreviewText" type="Label" parent="PanelBackground/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(380, 92)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "半身像候选预览: 待加载"
-autowrap_mode = 3
-
-[node name="PortraitPreviewImage" type="TextureRect" parent="PanelBackground/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(148, 120)
-layout_mode = 2
-size_flags_horizontal = 0
-expand_mode = 1
-stretch_mode = 5
+[node name="HeroPortraitPreviewPanel" parent="PanelBackground/MarginContainer/VBoxContainer" instance=ExtResource("2_portrait_preview")]
 
 [node name="ScrollContainer" type="ScrollContainer" parent="PanelBackground/MarginContainer/VBoxContainer"]
 layout_mode = 2
