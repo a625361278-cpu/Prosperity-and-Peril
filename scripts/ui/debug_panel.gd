@@ -1,8 +1,14 @@
 extends Control
 
 const DebugStatePresenter = preload("res://scripts/ui/debug_state_presenter.gd")
+const HeroPortraitIndexLoader = preload("res://scripts/data/hero_portrait_index_loader.gd")
+const HeroPortraitPreviewPresenter = preload("res://scripts/ui/hero_portrait_preview_presenter.gd")
+
+const HERO_PORTRAIT_INDEX_PATH := "res://data/content_alpha/hero_portrait_index.json"
+const HERO_PORTRAIT_PREVIEW_LIMIT := 3
 
 @onready var _selection_label: Label = $PanelBackground/MarginContainer/VBoxContainer/SelectionText
+@onready var _portrait_preview_label: Label = $PanelBackground/MarginContainer/VBoxContainer/PortraitPreviewText
 @onready var _label: Label = $PanelBackground/MarginContainer/VBoxContainer/ScrollContainer/DebugText
 
 
@@ -14,6 +20,7 @@ func set_runtime_state(state: Dictionary) -> void:
 	_label.text = _format_snapshot(result.snapshot)
 	if _selection_label.text.is_empty() or _selection_label.text == "等待选择...":
 		_selection_label.text = "当前选择: 未选择"
+	load_content_alpha_portrait_preview()
 
 
 func set_map_selection(state: Dictionary, selection: Dictionary) -> void:
@@ -25,6 +32,26 @@ func set_map_selection(state: Dictionary, selection: Dictionary) -> void:
 		str(result.detail.title),
 		str(result.detail.body),
 	]
+
+
+func load_content_alpha_portrait_preview() -> void:
+	var preview_label := _portrait_preview_text()
+	var load_result: Dictionary = HeroPortraitIndexLoader.load_and_build_lookup(HERO_PORTRAIT_INDEX_PATH)
+	if not load_result.ok:
+		preview_label.text = "半身像候选预览异常:\n%s" % "\n".join(load_result.errors)
+		return
+	var preview_result: Dictionary = HeroPortraitPreviewPresenter.build_default_preview_rows(
+		load_result.lookup,
+		HERO_PORTRAIT_PREVIEW_LIMIT
+	)
+	if not preview_result.ok:
+		preview_label.text = "半身像候选预览异常:\n%s" % "\n".join(preview_result.errors)
+		return
+	preview_label.text = _format_portrait_preview(preview_result.rows)
+
+
+func set_portrait_preview_rows(rows: Array) -> void:
+	_portrait_preview_text().text = _format_portrait_preview(rows)
 
 
 func _format_snapshot(snapshot: Dictionary) -> String:
@@ -78,12 +105,29 @@ func _format_snapshot(snapshot: Dictionary) -> String:
 		])
 	lines.append("")
 	lines.append("战斗日志:")
-	for log in snapshot.battle_logs:
+	for battle_log in snapshot.battle_logs:
 		lines.append("- %s 目标=%s 胜者=%s 攻损=%s 守损=%s" % [
-			log.id,
-			log.target_city_id,
-			log.winner,
-			log.attacker_loss,
-			log.defender_loss,
+			battle_log.id,
+			battle_log.target_city_id,
+			battle_log.winner,
+			battle_log.attacker_loss,
+			battle_log.defender_loss,
 		])
 	return "\n".join(lines)
+
+
+func _format_portrait_preview(rows: Array) -> String:
+	var lines: Array[String] = ["半身像候选预览:"]
+	for row in rows:
+		lines.append("- %s %s halfBody=%s" % [
+			row.hero_id,
+			row.name_cn,
+			row.half_body,
+		])
+	return "\n".join(lines)
+
+
+func _portrait_preview_text() -> Label:
+	if _portrait_preview_label != null:
+		return _portrait_preview_label
+	return get_node("PanelBackground/MarginContainer/VBoxContainer/PortraitPreviewText") as Label

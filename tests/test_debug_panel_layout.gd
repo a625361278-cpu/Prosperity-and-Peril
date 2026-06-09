@@ -8,6 +8,8 @@ func _initialize() -> void:
 	_run("debug panel keeps a readable right-side layout", _test_debug_panel_readable_layout)
 	_run("debug panel exposes a dedicated selection text area", _test_debug_panel_selection_area)
 	_run("debug panel transparent root does not block map clicks", _test_debug_panel_root_ignores_mouse)
+	_run("debug panel exposes content alpha portrait preview area", _test_debug_panel_portrait_preview_area)
+	_run("debug panel formats portrait preview rows", _test_debug_panel_formats_portrait_preview)
 	quit(_failed)
 
 
@@ -70,5 +72,43 @@ func _test_debug_panel_root_ignores_mouse() -> Dictionary:
 	if panel.mouse_filter != Control.MOUSE_FILTER_IGNORE:
 		panel.queue_free()
 		return {"ok": false, "message": "debug panel root must not consume map click input"}
+	panel.queue_free()
+	return {"ok": true}
+
+
+func _test_debug_panel_portrait_preview_area() -> Dictionary:
+	var scene := load("res://scenes/debug_panel.tscn")
+	if scene == null:
+		return {"ok": false, "message": "debug panel scene missing"}
+	var panel: Control = scene.instantiate()
+	get_root().add_child(panel)
+	var preview_text := panel.get_node_or_null("PanelBackground/MarginContainer/VBoxContainer/PortraitPreviewText")
+	if preview_text == null:
+		panel.queue_free()
+		return {"ok": false, "message": "PortraitPreviewText missing"}
+	if preview_text.custom_minimum_size.y < 80.0:
+		panel.queue_free()
+		return {"ok": false, "message": "PortraitPreviewText height is too small"}
+	panel.queue_free()
+	return {"ok": true}
+
+
+func _test_debug_panel_formats_portrait_preview() -> Dictionary:
+	var scene := load("res://scenes/debug_panel.tscn")
+	if scene == null:
+		return {"ok": false, "message": "debug panel scene missing"}
+	var panel: Control = scene.instantiate()
+	get_root().add_child(panel)
+	panel.set_portrait_preview_rows([
+		{"hero_id": 1001, "name_cn": "刘备", "half_body": "UI_gj_gg_basemap_hero_1001"},
+		{"hero_id": 2000501, "name_cn": "赵云", "half_body": "UI_gj_gg_basemap_hero_1004"},
+	])
+	var preview_text: Label = panel.get_node("PanelBackground/MarginContainer/VBoxContainer/PortraitPreviewText")
+	if not preview_text.text.contains("1001 刘备 halfBody=UI_gj_gg_basemap_hero_1001"):
+		panel.queue_free()
+		return {"ok": false, "message": "portrait preview missing 刘备 row"}
+	if not preview_text.text.contains("2000501 赵云 halfBody=UI_gj_gg_basemap_hero_1004"):
+		panel.queue_free()
+		return {"ok": false, "message": "portrait preview missing audited 赵云 mapping"}
 	panel.queue_free()
 	return {"ok": true}

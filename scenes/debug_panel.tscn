@@ -57,6 +57,13 @@ size_flags_horizontal = 3
 text = "当前选择: 未选择"
 autowrap_mode = 3
 
+[node name="PortraitPreviewText" type="Label" parent="PanelBackground/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(380, 92)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "半身像候选预览: 待加载"
+autowrap_mode = 3
+
 [node name="ScrollContainer" type="ScrollContainer" parent="PanelBackground/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
