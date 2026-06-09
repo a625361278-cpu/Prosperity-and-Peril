@@ -37,11 +37,43 @@ static func build_snapshot(state: Dictionary) -> Dictionary:
 	}
 
 
+static func build_selection_detail(state: Dictionary, selection: Dictionary) -> Dictionary:
+	var errors := _validate_state(state)
+	errors.append_array(_validate_selection_payload(selection))
+	if not errors.is_empty():
+		return {
+			"ok": false,
+			"errors": errors,
+			"detail": {},
+		}
+
+	var selection_type := str(selection.type)
+	var selection_id := str(selection.id)
+	if selection_type == "city":
+		return _city_selection_detail(state, selection_id)
+	if selection_type == "army":
+		return _army_selection_detail(state, selection_id)
+
+	return {
+		"ok": false,
+		"errors": ["selection type unsupported %s" % selection_type],
+		"detail": {},
+	}
+
+
 static func _validate_state(state: Dictionary) -> Array[String]:
 	var errors: Array[String] = []
 	for key in REQUIRED_STATE_KEYS:
 		if not state.has(key):
 			errors.append("debug snapshot missing state key %s" % key)
+	return errors
+
+
+static func _validate_selection_payload(selection: Dictionary) -> Array[String]:
+	var errors: Array[String] = []
+	for key in ["type", "id"]:
+		if not selection.has(key):
+			errors.append("selection payload missing %s" % key)
 	return errors
 
 
@@ -128,6 +160,61 @@ static func _battle_log_rows(battle_logs: Dictionary) -> Array[Dictionary]:
 	for battle_id in _sorted_keys(battle_logs):
 		rows.append(battle_logs[battle_id].duplicate(true))
 	return rows
+
+
+static func _city_selection_detail(state: Dictionary, city_id: String) -> Dictionary:
+	if not state.cities.has(city_id):
+		return {
+			"ok": false,
+			"errors": ["selection city missing %s" % city_id],
+			"detail": {},
+		}
+	var city: Dictionary = state.cities[city_id]
+	return {
+		"ok": true,
+		"errors": [],
+		"detail": {
+			"title": "城市: %s" % str(city.name),
+			"body": "ID=%s\n势力=%s\n兵=%s 粮=%s\n民心=%s 治安=%s 士族=%s\n状态=%s 整合=%s" % [
+				city_id,
+				str(city.force_id),
+				city.troops,
+				city.food,
+				city.morale_public,
+				city.public_order,
+				city.gentry_support,
+				city.recovery_state,
+				city.get("integration_progress", -1),
+			],
+		},
+	}
+
+
+static func _army_selection_detail(state: Dictionary, army_id: String) -> Dictionary:
+	if not state.armies.has(army_id):
+		return {
+			"ok": false,
+			"errors": ["selection army missing %s" % army_id],
+			"detail": {},
+		}
+	var army: Dictionary = state.armies[army_id]
+	return {
+		"ok": true,
+		"errors": [],
+		"detail": {
+			"title": "部队: %s" % army_id,
+			"body": "状态=%s\n出阵=%s 路线=%s\n主将=%s\n兵=%s 粮=%s\n进度=%s 战果=%s" % [
+				army.state,
+				army.origin_city_id,
+				army.route_id,
+				army.commander_officer_id,
+				army.troop_count,
+				army.food_current,
+				army.route_progress_days,
+				army.get("last_battle_result", ""),
+			],
+		},
+	}
 
 
 static func _sorted_keys(values: Dictionary) -> Array:

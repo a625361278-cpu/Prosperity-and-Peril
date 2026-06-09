@@ -1,6 +1,8 @@
 @tool
 extends Node3D
 
+signal map_entity_selected(selection: Dictionary)
+
 const CoreDataLoader = preload("res://scripts/data/core_data_loader.gd")
 const CoreStateFactory = preload("res://scripts/simulation/core_state_factory.gd")
 
@@ -30,6 +32,8 @@ const ROUTE_OFFSETS := {
 			call_deferred("_rebuild_editor_preview")
 
 var _generated_root: Node3D
+var _rendered_state: Dictionary = {}
+var _current_selection: Dictionary = {}
 
 
 func _ready() -> void:
@@ -43,6 +47,8 @@ func render_state(state: Dictionary) -> Dictionary:
 		return {"ok": false, "errors": errors}
 
 	_clear_generated()
+	_rendered_state = state
+	_current_selection = {}
 	_generated_root = Node3D.new()
 	_generated_root.name = "GeneratedStrategicMap"
 	add_child(_generated_root)
@@ -71,6 +77,44 @@ func _rebuild_editor_preview() -> void:
 	var render_result := render_state(state_result.state)
 	if not render_result.ok:
 		push_error("editor map preview render failed: %s" % [render_result.errors])
+
+
+func select_entity(entity_type: String, entity_id: String) -> Dictionary:
+	var errors := _validate_selection(entity_type, entity_id)
+	if not errors.is_empty():
+		return {"ok": false, "errors": errors, "selection": {}}
+
+	_current_selection = {
+		"type": entity_type,
+		"id": entity_id,
+	}
+	_update_selection_marker()
+	map_entity_selected.emit(_current_selection.duplicate(true))
+	return {
+		"ok": true,
+		"errors": [],
+		"selection": _current_selection.duplicate(true),
+	}
+
+
+func get_current_selection() -> Dictionary:
+	return _current_selection.duplicate(true)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint():
+		return
+	if not (event is InputEventMouseButton):
+		return
+	var mouse_event := event as InputEventMouseButton
+	if mouse_event.button_index != MOUSE_BUTTON_LEFT or not mouse_event.pressed:
+		return
+	var hit := _pick_map_entity(mouse_event.position)
+	if hit.is_empty():
+		return
+	var result := select_entity(str(hit.type), str(hit.id))
+	if not result.ok:
+		push_error("strategic map selection failed: %s" % [result.errors])
 
 
 func _validate_state(state: Dictionary) -> Array[String]:
@@ -119,6 +163,8 @@ func _clear_generated() -> void:
 			remove_child(_generated_root)
 		_generated_root.free()
 	_generated_root = null
+	_rendered_state = {}
+	_current_selection = {}
 
 
 func _add_ground() -> void:
@@ -135,6 +181,7 @@ func _add_city(city: Dictionary) -> void:
 	var city_node := Node3D.new()
 	city_node.name = "City_%s" % str(city.id)
 	city_node.position = CITY_POSITIONS[str(city.id)]
+	_set_entity_metadata(city_node, "city", str(city.id))
 	_generated_root.add_child(city_node)
 
 	var mesh := SphereMesh.new()
@@ -153,6 +200,8 @@ func _add_city(city: Dictionary) -> void:
 	label.font_size = 28
 	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	city_node.add_child(label)
+
+	_add_hit_area(city_node, "city", str(city.id), 0.48)
 
 
 func _add_route(route: Dictionary) -> void:
@@ -195,7 +244,9 @@ func _add_army(state: Dictionary, army: Dictionary) -> void:
 	node.position = position
 	node.mesh = mesh
 	node.material_override = _material(Color(1.0, 0.86, 0.22, 1.0))
+	_set_entity_metadata(node, "army", str(army.id))
 	_generated_root.add_child(node)
+	_add_hit_area(node, "army", str(army.id), 0.42)
 
 
 func _material(color: Color) -> StandardMaterial3D:
@@ -232,6 +283,110 @@ func _add_block_marker(parent: Node3D, position: Vector3) -> void:
 	marker.mesh = mesh
 	marker.material_override = _material(Color(0.95, 0.18, 0.12, 1.0))
 	parent.add_child(marker)
+
+
+func _add_hit_area(parent: Node3D, entity_type: String, entity_id: String, radius: float) -> void:
+	var area := Area3D.new()
+	area.name = "HitArea"
+	_set_entity_metadata(area, entity_type, entity_id)
+	var shape := CollisionShape3D.new()
+	shape.name = "CollisionShape3D"
+	var sphere := SphereShape3D.new()
+	sphere.radius = radius
+	shape.shape = sphere
+	area.add_child(shape)
+	parent.add_child(area)
+
+
+func _set_entity_metadata(node: Node, entity_type: String, entity_id: String) -> void:
+	node.set_meta("map_entity_type", entity_type)
+	node.set_meta("map_entity_id", entity_id)
+
+
+func _validate_selection(entity_type: String, entity_id: String) -> Array[String]:
+	var errors: Array[String] = []
+	if _rendered_state.is_empty():
+		errors.append("strategic map selection requires rendered state")
+		return errors
+	if entity_type == "city":
+		if not _rendered_state.cities.has(entity_id):
+			errors.append("strategic map selection city missing %s" % entity_id)
+		return errors
+	if entity_type == "army":
+		if not _rendered_state.armies.has(entity_id):
+			errors.append("strategic map selection army missing %s" % entity_id)
+		return errors
+	errors.append("strategic map selection type unsupported %s" % entity_type)
+	return errors
+
+
+func _pick_map_entity(screen_position: Vector2) -> Dictionary:
+	var camera := get_viewport().get_camera_3d()
+	if camera == null or get_world_3d() == null:
+		return {}
+	var ray_origin := camera.project_ray_origin(screen_position)
+	var ray_end := ray_origin + camera.project_ray_normal(screen_position) * 1000.0
+	var query := PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
+	query.collide_with_areas = true
+	query.collide_with_bodies = false
+	var result := get_world_3d().direct_space_state.intersect_ray(query)
+	if not result.has("collider"):
+		return {}
+	var collider := result.collider as Node
+	if collider == null:
+		return {}
+	return _selection_from_node(collider)
+
+
+func _selection_from_node(node: Node) -> Dictionary:
+	var current := node
+	while current != null:
+		if current.has_meta("map_entity_type") and current.has_meta("map_entity_id"):
+			return {
+				"type": str(current.get_meta("map_entity_type")),
+				"id": str(current.get_meta("map_entity_id")),
+			}
+		current = current.get_parent()
+	return {}
+
+
+func _update_selection_marker() -> void:
+	_clear_selection_markers()
+	if _current_selection.is_empty() or _generated_root == null:
+		return
+	var target := _entity_node(str(_current_selection.type), str(_current_selection.id))
+	if target == null:
+		return
+	var mesh := CylinderMesh.new()
+	mesh.top_radius = 0.42
+	mesh.bottom_radius = 0.42
+	mesh.height = 0.04
+	var marker := MeshInstance3D.new()
+	marker.name = "SelectionMarker"
+	marker.position = Vector3(0.0, 0.03, 0.0)
+	marker.mesh = mesh
+	marker.material_override = _material(Color(1.0, 0.95, 0.35, 0.85))
+	target.add_child(marker)
+
+
+func _clear_selection_markers() -> void:
+	if _generated_root == null:
+		return
+	for child in _generated_root.find_children("SelectionMarker", "", true, false):
+		var parent := child.get_parent()
+		if parent != null:
+			parent.remove_child(child)
+		child.free()
+
+
+func _entity_node(entity_type: String, entity_id: String) -> Node3D:
+	if _generated_root == null:
+		return null
+	if entity_type == "city":
+		return _generated_root.get_node_or_null("City_%s" % entity_id) as Node3D
+	if entity_type == "army":
+		return _generated_root.get_node_or_null("Army_%s" % entity_id) as Node3D
+	return null
 
 
 func _sorted_keys(values: Dictionary) -> Array:

@@ -2,7 +2,8 @@ extends Control
 
 const DebugStatePresenter = preload("res://scripts/ui/debug_state_presenter.gd")
 
-@onready var _label: Label = $PanelBackground/MarginContainer/ScrollContainer/DebugText
+@onready var _selection_label: Label = $PanelBackground/MarginContainer/VBoxContainer/SelectionText
+@onready var _label: Label = $PanelBackground/MarginContainer/VBoxContainer/ScrollContainer/DebugText
 
 
 func set_runtime_state(state: Dictionary) -> void:
@@ -11,6 +12,19 @@ func set_runtime_state(state: Dictionary) -> void:
 		_label.text = "调试面板状态异常:\n%s" % "\n".join(result.errors)
 		return
 	_label.text = _format_snapshot(result.snapshot)
+	if _selection_label.text.is_empty() or _selection_label.text == "等待选择...":
+		_selection_label.text = "当前选择: 未选择"
+
+
+func set_map_selection(state: Dictionary, selection: Dictionary) -> void:
+	var result: Dictionary = DebugStatePresenter.build_selection_detail(state, selection)
+	if not result.ok:
+		_selection_label.text = "当前选择异常:\n%s" % "\n".join(result.errors)
+		return
+	_selection_label.text = "%s\n%s" % [
+		str(result.detail.title),
+		str(result.detail.body),
+	]
 
 
 func _format_snapshot(snapshot: Dictionary) -> String:

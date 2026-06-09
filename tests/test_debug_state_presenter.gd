@@ -13,6 +13,9 @@ var _failed := 0
 
 func _initialize() -> void:
 	_run("debug snapshot exposes real runtime state", _test_debug_snapshot)
+	_run("debug selection detail exposes selected city state", _test_city_selection_detail)
+	_run("debug selection detail exposes selected army state", _test_army_selection_detail)
+	_run("debug selection detail fails for missing entity", _test_missing_selection_detail_fails)
 	_run("debug snapshot fails when required state is missing", _test_missing_state_fails)
 	quit(_failed)
 
@@ -60,6 +63,60 @@ func _test_debug_snapshot() -> Dictionary:
 	if snapshot.armies[0].state != "victorious":
 		return {"ok": false, "message": "expected victorious army state to be visible"}
 	return {"ok": true}
+
+
+func _test_city_selection_detail() -> Dictionary:
+	var state_result := _build_state_after_battle()
+	if not state_result.ok:
+		return state_result
+	var result: Dictionary = DebugStatePresenter.build_selection_detail(
+		state_result.state,
+		{"type": "city", "id": "CITY_TEST_B"}
+	)
+	if not result.ok:
+		return {"ok": false, "message": "expected city detail success, got %s" % [result.errors]}
+	if result.detail.title != "城市: 测试乙城":
+		return {"ok": false, "message": "unexpected city detail title %s" % result.detail.title}
+	if not str(result.detail.body).contains("状态=occupied"):
+		return {"ok": false, "message": "city detail missing occupied state"}
+	if not str(result.detail.body).contains("士族=35"):
+		return {"ok": false, "message": "city detail missing gentry support"}
+	return {"ok": true}
+
+
+func _test_army_selection_detail() -> Dictionary:
+	var state_result := _build_state_after_battle()
+	if not state_result.ok:
+		return state_result
+	var result: Dictionary = DebugStatePresenter.build_selection_detail(
+		state_result.state,
+		{"type": "army", "id": "ARMY_1"}
+	)
+	if not result.ok:
+		return {"ok": false, "message": "expected army detail success, got %s" % [result.errors]}
+	if result.detail.title != "部队: ARMY_1":
+		return {"ok": false, "message": "unexpected army detail title %s" % result.detail.title}
+	if not str(result.detail.body).contains("路线=ROUTE_TEST_A_B"):
+		return {"ok": false, "message": "army detail missing route"}
+	if not str(result.detail.body).contains("状态=victorious"):
+		return {"ok": false, "message": "army detail missing battle state"}
+	return {"ok": true}
+
+
+func _test_missing_selection_detail_fails() -> Dictionary:
+	var state_result := _build_state_after_battle()
+	if not state_result.ok:
+		return state_result
+	var result: Dictionary = DebugStatePresenter.build_selection_detail(
+		state_result.state,
+		{"type": "city", "id": "CITY_MISSING"}
+	)
+	if result.ok:
+		return {"ok": false, "message": "missing city selection should fail"}
+	for error in result.errors:
+		if str(error).contains("selection city missing CITY_MISSING"):
+			return {"ok": true}
+	return {"ok": false, "message": "expected missing city error, got %s" % [result.errors]}
 
 
 func _test_missing_state_fails() -> Dictionary:
