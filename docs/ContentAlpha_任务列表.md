@@ -19,6 +19,15 @@
     - `py -3.14 tools\audit_hero_portrait_assets.py --export-json data\content_alpha\hero_portrait_index.json` 通过，导出 426 条记录。
     - `test_hero_portrait_index.gd` 通过，确认索引结构、样例映射和重复 ID 失败。
 
+- [x] Task 2：英雄半身像索引读取与解析入口
+  - 状态：已完成。
+  - 范围：新增 Godot 侧 `HeroPortraitIndexLoader`，读取 `hero_portrait_index.json` 后先执行结构校验，再按英雄 ID 建立查找表；UI 或后续内容系统可通过英雄 ID 取得真实 `name_cn / half_body / portrait_source_path`。
+  - 根因：只有静态 JSON 索引还不能约束后续 UI 的调用方式；必须提供统一入口，避免界面层重新拼接图片名或在缺失 ID 时使用默认头像。
+  - 边界：当前只返回已审计的候选资源路径，不导入贴图、不创建正式武将界面、不确认商业授权。
+  - 验收：索引文件缺失、JSON 非对象、结构校验失败、英雄 ID 缺失都必须失败；解析结果必须保留 `halfBody` 权威映射。
+  - 验证：
+    - `test_hero_portrait_index.gd` 通过，确认索引可加载、`2000501` 解析为 `UI_gj_gg_basemap_hero_1004`，缺失英雄 ID 明确失败。
+
 ## 当前缺口
 
 - 半身像资源仍来自候选项目路径，正式商业使用前必须确认授权。
