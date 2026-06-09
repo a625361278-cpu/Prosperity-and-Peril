@@ -235,13 +235,13 @@ func _add_army(state: Dictionary, army: Dictionary) -> void:
 	var progress := 0.0
 	if army.has("days_required") and int(army.days_required) > 0:
 		progress = clamp(float(army.route_progress_days) / float(army.days_required), 0.0, 1.0)
-	var position := from_pos.lerp(to_pos, progress) + Vector3(0.0, 0.45, 0.0)
+	var army_position := from_pos.lerp(to_pos, progress) + Vector3(0.0, 0.45, 0.0)
 
 	var mesh := BoxMesh.new()
 	mesh.size = Vector3(0.32, 0.32, 0.32)
 	var node := MeshInstance3D.new()
 	node.name = "Army_%s" % str(army.id)
-	node.position = position
+	node.position = army_position
 	node.mesh = mesh
 	node.material_override = _material(Color(1.0, 0.86, 0.22, 1.0))
 	_set_entity_metadata(node, "army", str(army.id))
@@ -274,12 +274,12 @@ func _route_visual_offset(route_type: String) -> Vector3:
 	return ROUTE_OFFSETS[route_type]
 
 
-func _add_block_marker(parent: Node3D, position: Vector3) -> void:
+func _add_block_marker(parent: Node3D, marker_position: Vector3) -> void:
 	var mesh := BoxMesh.new()
 	mesh.size = Vector3(0.38, 0.38, 0.12)
 	var marker := MeshInstance3D.new()
 	marker.name = "BlockMarker"
-	marker.position = position + Vector3(0.0, 0.18, 0.0)
+	marker.position = marker_position + Vector3(0.0, 0.18, 0.0)
 	marker.mesh = mesh
 	marker.material_override = _material(Color(0.95, 0.18, 0.12, 1.0))
 	parent.add_child(marker)
