@@ -8,18 +8,30 @@ const MarchSystem = preload("res://scripts/simulation/march_system.gd")
 @onready var _map_view: Node = $StrategicMapView
 @onready var _debug_panel: Control = $CanvasLayer/DebugPanel
 
+var _runtime_state: Dictionary = {}
+
 
 func _ready() -> void:
 	var state_result := _build_visual_slice_state()
 	if not state_result.ok:
 		push_error("Prototype visual slice failed: %s" % [state_result.errors])
 		return
+	_runtime_state = state_result.state
+	if not _map_view.is_connected("map_entity_selected", _on_map_entity_selected):
+		_map_view.connect("map_entity_selected", _on_map_entity_selected)
 	var render_result: Dictionary = _map_view.render_state(state_result.state)
 	if not render_result.ok:
 		push_error("Strategic map render failed: %s" % [render_result.errors])
 		return
 	_debug_panel.set_runtime_state(state_result.state)
 	print("三国志：治世与乱世 Prototype V0.3 visual slice booted.")
+
+
+func _on_map_entity_selected(selection: Dictionary) -> void:
+	if _runtime_state.is_empty():
+		push_error("map selection received before runtime state was initialized")
+		return
+	_debug_panel.set_map_selection(_runtime_state, selection)
 
 
 func _build_visual_slice_state() -> Dictionary:

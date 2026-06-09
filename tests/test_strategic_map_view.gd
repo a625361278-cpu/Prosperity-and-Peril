@@ -13,6 +13,8 @@ var _failed := 0
 func _initialize() -> void:
 	_run("strategic map renders cities routes and army markers", _test_renders_runtime_state)
 	_run("strategic map exposes pass route and blocked passage markers", _test_pass_route_visual_state)
+	_run("strategic map exposes selectable city and army hit areas", _test_selectable_hit_areas)
+	_run("strategic map emits selection for rendered entities", _test_selection_signal)
 	_run("strategic map fails when city position is missing", _test_missing_city_position_fails)
 	quit(_failed)
 
@@ -50,6 +52,69 @@ func _test_renders_runtime_state() -> Dictionary:
 		view.queue_free()
 		return {"ok": false, "message": "army marker missing"}
 	view.queue_free()
+	return {"ok": true}
+
+
+func _test_selectable_hit_areas() -> Dictionary:
+	var state_result := _build_state_with_army()
+	if not state_result.ok:
+		return state_result
+	var view := StrategicMapView.new()
+	get_root().add_child(view)
+	var render_result: Dictionary = view.render_state(state_result.state)
+	if not render_result.ok:
+		view.queue_free()
+		return {"ok": false, "message": "render failed: %s" % [render_result.errors]}
+	var generated := view.get_node_or_null("GeneratedStrategicMap")
+	if generated == null:
+		view.queue_free()
+		return {"ok": false, "message": "generated map root missing"}
+	var city_hit := generated.get_node_or_null("City_CITY_TEST_A/HitArea")
+	if city_hit == null:
+		view.queue_free()
+		return {"ok": false, "message": "city hit area missing"}
+	if str(city_hit.get_meta("map_entity_type", "")) != "city" or str(city_hit.get_meta("map_entity_id", "")) != "CITY_TEST_A":
+		view.queue_free()
+		return {"ok": false, "message": "city hit area metadata invalid"}
+	var army_hit := generated.get_node_or_null("Army_ARMY_1/HitArea")
+	if army_hit == null:
+		view.queue_free()
+		return {"ok": false, "message": "army hit area missing"}
+	if str(army_hit.get_meta("map_entity_type", "")) != "army" or str(army_hit.get_meta("map_entity_id", "")) != "ARMY_1":
+		view.queue_free()
+		return {"ok": false, "message": "army hit area metadata invalid"}
+	view.queue_free()
+	return {"ok": true}
+
+
+func _test_selection_signal() -> Dictionary:
+	var state_result := _build_state_with_army()
+	if not state_result.ok:
+		return state_result
+	var view := StrategicMapView.new()
+	get_root().add_child(view)
+	view.render_state(state_result.state)
+	var emitted: Array[Dictionary] = []
+	view.map_entity_selected.connect(func(selection: Dictionary) -> void:
+		emitted.append(selection.duplicate(true))
+	)
+	var select_result: Dictionary = view.select_entity("city", "CITY_TEST_A")
+	if not select_result.ok:
+		view.queue_free()
+		return {"ok": false, "message": "selection failed: %s" % [select_result.errors]}
+	if emitted.size() != 1:
+		view.queue_free()
+		return {"ok": false, "message": "selection signal was not emitted once"}
+	if emitted[0].type != "city" or emitted[0].id != "CITY_TEST_A":
+		view.queue_free()
+		return {"ok": false, "message": "selection payload invalid"}
+	if view.get_current_selection().id != "CITY_TEST_A":
+		view.queue_free()
+		return {"ok": false, "message": "current selection not stored"}
+	var missing_result: Dictionary = view.select_entity("army", "ARMY_MISSING")
+	view.queue_free()
+	if missing_result.ok:
+		return {"ok": false, "message": "missing army selection should fail"}
 	return {"ok": true}
 
 

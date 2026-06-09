@@ -45,13 +45,24 @@ theme_override_constants/margin_top = 14
 theme_override_constants/margin_right = 14
 theme_override_constants/margin_bottom = 14
 
-[node name="ScrollContainer" type="ScrollContainer" parent="PanelBackground/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelBackground/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SelectionText" type="Label" parent="PanelBackground/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(380, 96)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "当前选择: 未选择"
+autowrap_mode = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelBackground/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="DebugText" type="Label" parent="PanelBackground/MarginContainer/ScrollContainer"]
+[node name="DebugText" type="Label" parent="PanelBackground/MarginContainer/VBoxContainer/ScrollContainer"]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
 size_flags_horizontal = 3
