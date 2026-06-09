@@ -7,6 +7,8 @@ OpenXML zip structure so the audit can run on a clean Windows machine.
 
 from __future__ import annotations
 
+import argparse
+import json
 import re
 import sys
 import zipfile
@@ -96,7 +98,7 @@ def _cell(row: list[str], idx: int) -> str:
     return row[idx] if idx < len(row) else ""
 
 
-def main() -> int:
+def _audit_records() -> dict:
     if not PORTRAIT_DIR.exists():
         raise FileNotFoundError(f"Portrait directory not found: {PORTRAIT_DIR}")
 
@@ -133,7 +135,7 @@ def main() -> int:
     missing_lang: list[str] = []
     missing_portrait: list[str] = []
     empty_half_body: list[int] = []
-    records: list[tuple[int, str, str, str]] = []
+    records: list[dict[str, object]] = []
 
     for row in hero_rows[3:]:
         raw_id = _cell(row, hero_idx["id"])
@@ -155,18 +157,71 @@ def main() -> int:
             empty_half_body.append(hero_id)
         elif half_body not in portrait_stems:
             missing_portrait.append(f"{hero_id}:{half_body}")
-        records.append((hero_id, name_key, cn_name, half_body))
+        portrait_file = f"{half_body}.png" if half_body else ""
+        records.append(
+            {
+                "id": hero_id,
+                "name_key": name_key,
+                "name_cn": cn_name,
+                "half_body": half_body,
+                "portrait_file": portrait_file,
+                "portrait_source_path": str(PORTRAIT_DIR / portrait_file) if portrait_file else "",
+            }
+        )
+
+    return {
+        "records": records,
+        "duplicate_ids": duplicate_ids,
+        "missing_lang": missing_lang,
+        "empty_half_body": empty_half_body,
+        "missing_portrait": missing_portrait,
+        "png_files": len(list(PORTRAIT_DIR.glob("*.png"))),
+        "duplicate_portrait_numeric_suffixes": sum(1 for names in portrait_ids.values() if len(names) > 1),
+    }
+
+
+def _write_index(path: Path, audit: dict) -> None:
+    payload = {
+        "schema_version": 1,
+        "source": {
+            "hero_xlsx": str(HERO_XLSX),
+            "lang_xlsx": str(LANG_XLSX),
+            "portrait_dir": str(PORTRAIT_DIR),
+            "mapping_rule": "hero.halfBody is authoritative; never infer portrait file from hero id",
+            "usage_scope": "internal prototype candidate resources; commercial use requires authorization confirmation",
+        },
+        "records": audit["records"],
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Audit hero portrait resources and optionally export a Godot-readable index.")
+    parser.add_argument("--export-json", type=Path, help="Write audited portrait mapping to this JSON file.")
+    args = parser.parse_args()
+
+    audit = _audit_records()
+    records: list[dict[str, object]] = audit["records"]
+    duplicate_ids: list[int] = audit["duplicate_ids"]
+    missing_lang: list[str] = audit["missing_lang"]
+    empty_half_body: list[int] = audit["empty_half_body"]
+    missing_portrait: list[str] = audit["missing_portrait"]
 
     print("hero_records:", len(records))
     print("lang_matches:", len(records) - len(missing_lang))
     print("portrait_matches:", len(records) - len(missing_portrait) - len(empty_half_body))
-    print("png_files:", len(list(PORTRAIT_DIR.glob("*.png"))))
-    print("duplicate_portrait_numeric_suffixes:", sum(1 for names in portrait_ids.values() if len(names) > 1))
+    print("png_files:", audit["png_files"])
+    print("duplicate_portrait_numeric_suffixes:", audit["duplicate_portrait_numeric_suffixes"])
 
     for sample_id in [1001, 1002, 1003, 1004, 1007, 2001, 3001, 6001, 99001, 2000501]:
-        matches = [record for record in records if record[0] == sample_id]
+        matches = [record for record in records if record["id"] == sample_id]
         if matches:
-            hero_id, name_key, cn_name, half_body = matches[0]
+            record = matches[0]
+            hero_id = record["id"]
+            name_key = record["name_key"]
+            cn_name = record["name_cn"]
+            half_body = record["half_body"]
             print(f"sample:{hero_id}:{name_key}:{cn_name}:{half_body}")
 
     if duplicate_ids:
@@ -180,9 +235,12 @@ def main() -> int:
 
     if duplicate_ids or missing_lang or empty_half_body or missing_portrait:
         return 1
+
+    if args.export_json:
+        _write_index(args.export_json, audit)
+        print("exported_index:", args.export_json)
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

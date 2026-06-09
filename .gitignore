@@ -13,9 +13,9 @@ exports/
 # Local scratch files
 *.tmp
 *.bak
+__pycache__/
 ~$*
 
 # OS/editor noise
 .DS_Store
 Thumbs.db
-
