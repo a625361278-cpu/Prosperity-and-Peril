@@ -13,6 +13,8 @@ func _initialize() -> void:
 	_run("resource manifest rejects missing ownership", _test_missing_ownership_fails)
 	_run("resource manifest rejects invalid ownership", _test_invalid_ownership_fails)
 	_run("resource manifest rejects missing index path", _test_missing_index_path_fails)
+	_run("resource manifest rejects missing source project", _test_missing_source_project_fails)
+	_run("resource manifest rejects missing source path", _test_missing_source_path_fails)
 	quit(_failed)
 
 
@@ -68,6 +70,26 @@ func _test_missing_index_path_fails() -> Dictionary:
 	copied.resource_packs[0].index_path = "res://data/content_alpha/missing_index.json"
 	var validation: Dictionary = ContentAlphaResourceManifestValidator.validate_manifest(copied)
 	return _expect_error_contains(validation, "index_path missing file")
+
+
+func _test_missing_source_project_fails() -> Dictionary:
+	var manifest := _load_manifest()
+	if not manifest.ok:
+		return manifest
+	var copied: Dictionary = manifest.data.duplicate(true)
+	copied.resource_packs[0].source_project = "E:/newsanguo/missing_source_project"
+	var validation: Dictionary = ContentAlphaResourceManifestValidator.validate_manifest(copied)
+	return _expect_error_contains(validation, "source_project missing path")
+
+
+func _test_missing_source_path_fails() -> Dictionary:
+	var manifest := _load_manifest()
+	if not manifest.ok:
+		return manifest
+	var copied: Dictionary = manifest.data.duplicate(true)
+	copied.resource_packs[0].source_paths[0] = "E:/newsanguo/missing_hero_table.xlsx"
+	var validation: Dictionary = ContentAlphaResourceManifestValidator.validate_manifest(copied)
+	return _expect_error_contains(validation, "source_paths missing path")
 
 
 func _load_manifest() -> Dictionary:

@@ -67,10 +67,14 @@ static func _validate_ownership(index: int, pack: Dictionary, errors: Array[Stri
 static func _validate_paths(index: int, pack: Dictionary, errors: Array[String]) -> void:
 	if pack.has("index_path") and not FileAccess.file_exists(str(pack.index_path)):
 		errors.append("content alpha resource manifest resource_packs[%d].index_path missing file %s" % [index, str(pack.index_path)])
+	if pack.has("source_project") and not _path_exists(str(pack.source_project)):
+		errors.append("content alpha resource manifest resource_packs[%d].source_project missing path %s" % [index, str(pack.source_project)])
 	if pack.has("source_paths") and pack.source_paths is Array:
 		for source_path in pack.source_paths:
 			if str(source_path).is_empty():
 				errors.append("content alpha resource manifest resource_packs[%d].source_paths contains empty path" % index)
+			elif not _path_exists(str(source_path)):
+				errors.append("content alpha resource manifest resource_packs[%d].source_paths missing path %s" % [index, str(source_path)])
 
 
 static func _is_empty_value(value) -> bool:
@@ -85,6 +89,10 @@ static func _is_integer_number(value) -> bool:
 	if typeof(value) == TYPE_FLOAT:
 		return is_equal_approx(float(value), float(int(value)))
 	return false
+
+
+static func _path_exists(path: String) -> bool:
+	return FileAccess.file_exists(path) or DirAccess.dir_exists_absolute(path)
 
 
 static func _result(errors: Array[String]) -> Dictionary:
