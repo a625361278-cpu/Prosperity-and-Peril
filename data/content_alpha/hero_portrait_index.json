@@ -5,7 +5,7 @@
     "lang_xlsx": "E:\\work\\dajunshi\\new\\resource\\数据表\\lang_多语言.xlsx",
     "portrait_dir": "E:\\work\\dajunshi\\new\\client\\dajunshi\\Assets\\Arts\\04_UI\\04_Hero",
     "mapping_rule": "hero.halfBody is authoritative; never infer portrait file from hero id",
-    "usage_scope": "internal prototype candidate resources; commercial use requires authorization confirmation"
+    "usage_scope": "project owner cross-project resource for Content Alpha UI prototyping"
   },
   "records": [
     {

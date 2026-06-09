@@ -13,4 +13,5 @@
 ## 当前内容
 
 - `prototype_v0_1/core_test_data.json`：核心闭环测试数据。
-- `content_alpha/hero_portrait_index.json`：由 `tools/audit_hero_portrait_assets.py` 从候选项目英雄表、多语言表和半身像目录审计导出的内部原型候选资源索引。
+- `content_alpha/hero_portrait_index.json`：由 `tools/audit_hero_portrait_assets.py` 从项目负责人另一个自有项目的英雄表、多语言表和半身像目录审计导出的候选资源索引。
+- `content_alpha/resource_manifest.json`：Content Alpha 候选资源包清单，用于记录来源项目、索引路径、所有权状态和允许用途。

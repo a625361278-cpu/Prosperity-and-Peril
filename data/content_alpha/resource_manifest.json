@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "resource_packs": [
+    {
+      "id": "candidate_hero_portraits",
+      "kind": "hero_portrait",
+      "index_path": "res://data/content_alpha/hero_portrait_index.json",
+      "source_paths": [
+        "E:\\work\\dajunshi\\new\\resource\\数据表\\hero_英雄.xlsx",
+        "E:\\work\\dajunshi\\new\\resource\\数据表\\lang_多语言.xlsx",
+        "E:\\work\\dajunshi\\new\\client\\dajunshi\\Assets\\Arts\\04_UI\\04_Hero"
+      ],
+      "source_project": "E:\\work\\dajunshi\\new",
+      "ownership_status": "project_owner_resource",
+      "usage_scope": "Content Alpha UI prototyping and later project-owned resource integration",
+      "allowed_contexts": [
+        "internal_prototype",
+        "content_alpha_ui"
+      ],
+      "notes": [
+        "该半身像资源来自项目负责人另一个自有项目，不需要额外授权流程。",
+        "当前仍需保留来源路径和 halfBody 映射规则，避免错绑或猜测图片名。"
+      ]
+    }
+  ]
+}

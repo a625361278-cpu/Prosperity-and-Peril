@@ -188,7 +188,7 @@ def _write_index(path: Path, audit: dict) -> None:
             "lang_xlsx": str(LANG_XLSX),
             "portrait_dir": str(PORTRAIT_DIR),
             "mapping_rule": "hero.halfBody is authoritative; never infer portrait file from hero id",
-            "usage_scope": "internal prototype candidate resources; commercial use requires authorization confirmation",
+            "usage_scope": "project owner cross-project resource for Content Alpha UI prototyping",
         },
         "records": audit["records"],
     }
