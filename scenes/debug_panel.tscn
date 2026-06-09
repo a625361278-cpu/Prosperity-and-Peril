@@ -64,6 +64,13 @@ size_flags_horizontal = 3
 text = "半身像候选预览: 待加载"
 autowrap_mode = 3
 
+[node name="PortraitPreviewImage" type="TextureRect" parent="PanelBackground/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(148, 120)
+layout_mode = 2
+size_flags_horizontal = 0
+expand_mode = 1
+stretch_mode = 5
+
 [node name="ScrollContainer" type="ScrollContainer" parent="PanelBackground/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3

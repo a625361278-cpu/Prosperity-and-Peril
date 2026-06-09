@@ -10,6 +10,8 @@ func _initialize() -> void:
 	_run("debug panel transparent root does not block map clicks", _test_debug_panel_root_ignores_mouse)
 	_run("debug panel exposes content alpha portrait preview area", _test_debug_panel_portrait_preview_area)
 	_run("debug panel formats portrait preview rows", _test_debug_panel_formats_portrait_preview)
+	_run("debug panel exposes portrait texture preview node", _test_debug_panel_portrait_texture_node)
+	_run("debug panel can assign and clear portrait texture", _test_debug_panel_assigns_portrait_texture)
 	quit(_failed)
 
 
@@ -110,5 +112,47 @@ func _test_debug_panel_formats_portrait_preview() -> Dictionary:
 	if not preview_text.text.contains("2000501 赵云 halfBody=UI_gj_gg_basemap_hero_1004"):
 		panel.queue_free()
 		return {"ok": false, "message": "portrait preview missing audited 赵云 mapping"}
+	panel.queue_free()
+	return {"ok": true}
+
+
+func _test_debug_panel_portrait_texture_node() -> Dictionary:
+	var scene := load("res://scenes/debug_panel.tscn")
+	if scene == null:
+		return {"ok": false, "message": "debug panel scene missing"}
+	var panel: Control = scene.instantiate()
+	get_root().add_child(panel)
+	var preview_image := panel.get_node_or_null("PanelBackground/MarginContainer/VBoxContainer/PortraitPreviewImage")
+	if preview_image == null:
+		panel.queue_free()
+		return {"ok": false, "message": "PortraitPreviewImage missing"}
+	if preview_image.custom_minimum_size.x < 120.0 or preview_image.custom_minimum_size.y < 100.0:
+		panel.queue_free()
+		return {"ok": false, "message": "PortraitPreviewImage minimum size is too small"}
+	if preview_image.texture != null:
+		panel.queue_free()
+		return {"ok": false, "message": "PortraitPreviewImage must not start with a default texture"}
+	panel.queue_free()
+	return {"ok": true}
+
+
+func _test_debug_panel_assigns_portrait_texture() -> Dictionary:
+	var scene := load("res://scenes/debug_panel.tscn")
+	if scene == null:
+		return {"ok": false, "message": "debug panel scene missing"}
+	var panel: Control = scene.instantiate()
+	get_root().add_child(panel)
+	var image := Image.create(2, 2, false, Image.FORMAT_RGBA8)
+	image.fill(Color(1.0, 0.0, 0.0, 1.0))
+	var texture := ImageTexture.create_from_image(image)
+	panel.set_portrait_preview_texture(texture)
+	var preview_image: TextureRect = panel.get_node("PanelBackground/MarginContainer/VBoxContainer/PortraitPreviewImage")
+	if preview_image.texture == null:
+		panel.queue_free()
+		return {"ok": false, "message": "portrait preview texture was not assigned"}
+	panel.clear_portrait_preview_texture()
+	if preview_image.texture != null:
+		panel.queue_free()
+		return {"ok": false, "message": "portrait preview texture was not cleared"}
 	panel.queue_free()
 	return {"ok": true}
