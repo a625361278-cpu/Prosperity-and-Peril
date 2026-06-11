@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/reusable_hero_portrait_browser_panel.gd" id="1_browser"]
+
+[node name="ReusableHeroPortraitBrowserPanel" type="VBoxContainer"]
+custom_minimum_size = Vector2(560, 520)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+script = ExtResource("1_browser")
+
+[node name="PortraitList" type="ItemList" parent="."]
+custom_minimum_size = Vector2(540, 250)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+allow_reselect = true
+
+[node name="PortraitDetail" type="Label" parent="."]
+custom_minimum_size = Vector2(540, 92)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "可复用半身像: 待加载"
+autowrap_mode = 3
+
+[node name="PortraitImage" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(220, 160)
+layout_mode = 2
+size_flags_horizontal = 0
+expand_mode = 1
+stretch_mode = 5
