@@ -1,6 +1,7 @@
 extends SceneTree
 
 const ContentAlphaResourceManifestValidator = preload("res://scripts/data/content_alpha_resource_manifest_validator.gd")
+const ContentAlphaResourceManifestLoader = preload("res://scripts/data/content_alpha_resource_manifest_loader.gd")
 
 const MANIFEST_PATH := "res://data/content_alpha/resource_manifest.json"
 
@@ -15,6 +16,8 @@ func _initialize() -> void:
 	_run("resource manifest rejects missing index path", _test_missing_index_path_fails)
 	_run("resource manifest rejects missing source project", _test_missing_source_project_fails)
 	_run("resource manifest rejects missing source path", _test_missing_source_path_fails)
+	_run("resource manifest loader indexes packs by id", _test_loader_indexes_packs)
+	_run("resource manifest loader fails for missing pack id", _test_loader_missing_pack_fails)
 	quit(_failed)
 
 
@@ -90,6 +93,33 @@ func _test_missing_source_path_fails() -> Dictionary:
 	copied.resource_packs[0].source_paths[0] = "E:/newsanguo/missing_hero_table.xlsx"
 	var validation: Dictionary = ContentAlphaResourceManifestValidator.validate_manifest(copied)
 	return _expect_error_contains(validation, "source_paths missing path")
+
+
+func _test_loader_indexes_packs() -> Dictionary:
+	var load_result: Dictionary = ContentAlphaResourceManifestLoader.load_and_validate(MANIFEST_PATH)
+	if not load_result.ok:
+		return {"ok": false, "message": "expected manifest loader success, got %s" % [load_result.errors]}
+	var pack_result: Dictionary = ContentAlphaResourceManifestLoader.resolve_pack(load_result.packs, "candidate_hero_portraits")
+	if not pack_result.ok:
+		return {"ok": false, "message": "expected candidate_hero_portraits pack, got %s" % [pack_result.errors]}
+	if str(pack_result.pack.ownership_status) != "project_owner_resource":
+		return {"ok": false, "message": "expected project_owner_resource pack"}
+	if str(pack_result.pack.index_path) != "res://data/content_alpha/hero_portrait_index.json":
+		return {"ok": false, "message": "unexpected hero portrait index path"}
+	return {"ok": true}
+
+
+func _test_loader_missing_pack_fails() -> Dictionary:
+	var load_result: Dictionary = ContentAlphaResourceManifestLoader.load_and_validate(MANIFEST_PATH)
+	if not load_result.ok:
+		return {"ok": false, "message": "expected manifest loader success, got %s" % [load_result.errors]}
+	var pack_result: Dictionary = ContentAlphaResourceManifestLoader.resolve_pack(load_result.packs, "missing_pack")
+	if pack_result.ok:
+		return {"ok": false, "message": "expected missing pack to fail"}
+	for error in pack_result.errors:
+		if str(error).contains("content alpha resource pack missing missing_pack"):
+			return {"ok": true}
+	return {"ok": false, "message": "expected missing pack error, got %s" % [pack_result.errors]}
 
 
 func _load_manifest() -> Dictionary:

@@ -92,6 +92,15 @@
   - 验证：
     - `test_content_alpha_resource_manifest.gd` 通过，确认真实来源路径有效，缺来源项目和缺来源文件会失败。
 
+- [x] Task 10：候选资源清单读取入口
+  - 状态：已完成。
+  - 范围：新增 `ContentAlphaResourceManifestLoader`，统一读取 `resource_manifest.json`、执行清单校验，并按资源包 ID 建立查找表。
+  - 根因：后续内容工具和 UI 不应各自直接解析资源清单 JSON；必须先经过统一加载与校验入口，避免绕过来源路径、所有权状态和索引路径校验。
+  - 边界：只提供读取和解析入口，不自动修复缺失路径，不复制资源，不替换资源包 ID。
+  - 验收：清单文件缺失、JSON 非对象、清单校验失败、资源包 ID 缺失都必须失败；`candidate_hero_portraits` 必须能解析出真实索引路径和自有资源状态。
+  - 验证：
+    - `test_content_alpha_resource_manifest.gd` 通过，确认清单可加载成资源包查找表，缺失资源包 ID 明确失败。
+
 ## 当前缺口
 
 - 半身像资源来自项目负责人另一个自有项目；后续缺口是正式 UI 导入流程、资源命名映射和打包方式。
