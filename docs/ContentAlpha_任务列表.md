@@ -254,8 +254,17 @@
     - `Godot --headless --export-pack "Windows Desktop" builds\content_alpha\newsanguo_content_alpha.pck` 通过，导出日志包含候选名册数据和浏览场景。
     - `py -3.14 tools\validate_content_alpha_package.py --pck builds\content_alpha\newsanguo_content_alpha.pck` 通过，`.pck` 大小为 `181542608` bytes。
 
+- [x] Task 26：Content Alpha 资源工作台场景
+  - 状态：已完成。
+  - 范围：新增 `ContentAlphaWorkbench` 独立场景和脚本，以 Tab 方式组织候选武将名册浏览组件、可复用半身像浏览组件，并显示 Content Alpha 聚合校验摘要。
+  - 根因：半身像池、候选名册和浏览组件已经分散可用，但缺少一个内部工作台承载后续筛选和核对流程；继续塞进右侧调试面板会扩大调试 UI 职责。
+  - 边界：工作台是 Content Alpha 内部资源工具，不是 Beta 正式游戏 UI；不写正式武将属性，不改变模拟状态，不保存筛选结果。
+  - 验收：工作台必须包含候选名册和半身像池两个 Tab；默认加载必须显示 212 条候选、212 张图池和 426 条源绑定摘要。
+  - 验证：
+    - `test_content_alpha_workbench.gd` 通过，确认工作台节点结构、默认加载和聚合摘要。
+
 ## 当前缺口
 
 - 半身像资源来自项目负责人另一个自有三国项目；项目内导入流程、运行时 `res://` 加载、`.pck` 打包烟测、212 张可复用半身像池、头像绑定候选武将名册和包校验一致性检查已经完成。
 - 正式武将数据、技能、官职、势力剧本尚未进入 Content Alpha 内容包；本阶段不复用源项目技能、传记、君略或数值，候选名册也不代表正式武将库。
-- 正式 UI 信息架构和视觉风格仍未落地；当前只准备可复用半身像池入口、候选武将名册、选择状态工具、独立浏览组件与调试面板可见摘要。
+- 正式 UI 信息架构和视觉风格仍未落地；当前只准备 Content Alpha 资源工作台、可复用半身像池入口、候选武将名册、选择状态工具、独立浏览组件与调试面板可见摘要。
