@@ -283,8 +283,40 @@
     - `Godot --headless --export-pack "Windows Desktop" builds\content_alpha\newsanguo_content_alpha.pck` 通过，导出日志包含 `content_alpha_workbench.scn`。
     - `py -3.14 tools\validate_content_alpha_package.py --pck builds\content_alpha\newsanguo_content_alpha.pck` 通过，`.pck` 大小为 `181554272` bytes。
 
+- [x] Task 29：Content Alpha UI 信息架构规格
+  - 状态：已完成。
+  - 范围：新增 `data/content_alpha/ui_navigation_spec.json`，声明战略大地图、城市详情、候选武将工作台、正式武将名册、任命出阵、战报、事件日志和存档读档等 8 个界面的数据源、入口、允许动作、实现状态和阻塞项；Godot 侧新增校验器、读取入口，并接入 Content Alpha 聚合校验、工作台摘要和包校验脚本。
+  - 根因：前面已完成资源工作台和调试入口，但正式 UI 仍缺少可追踪的信息架构边界；如果只在文档里描述，很容易把规划页面误当作已实现 UI，或让 UI 层绕过真实数据源。
+  - 边界：规格只定义信息架构、数据来源和状态，不制作 Beta 正式 UI，不补齐视觉风格、线框图或正式交互稿；`planned` 界面必须保留阻塞项。
+  - 验收：规格必须包含 8 个必需界面；状态只允许 `debug_available / content_alpha_available / planned`；规划界面必须声明阻塞项；`res://` 数据源必须真实存在；聚合校验和包校验必须输出 UI 规格数量。
+  - 验证：
+    - `test_ui_navigation_spec.gd` 通过，确认默认规格、读取入口和非法状态/缺资源失败。
+    - `test_content_alpha_validation_runner.gd` 通过，确认聚合校验包含 `ui_navigation_screens=8`、可用界面 2 个、规划界面 6 个。
+    - `test_content_alpha_workbench.gd` 通过，确认工作台摘要显示 UI 规格数量。
+    - `py -3.14 tools\validate_content_alpha_package.py` 通过，确认包准备校验包含 UI 信息架构规格。
+
+- [x] Task 30：Content Alpha 工作台浏览 UI 信息架构
+  - 状态：已完成。
+  - 范围：新增 `UiNavigationSpecPanel` 独立场景和脚本，在 Content Alpha 工作台增加 `UiNavigation` Tab，展示 8 个 UI 规格界面的状态列表、数据源、入口、动作、阻塞项和 Beta 边界说明。
+  - 根因：UI 信息架构如果只能通过 JSON 或校验日志查看，设计和实现核对成本较高；工作台应把规格变成可见的内部工具，同时继续暴露规划界面尚未完成的事实。
+  - 边界：该 Tab 只浏览规格，不创建正式界面、不改变模拟状态、不把 `planned` 页面包装成已实现玩法。
+  - 验收：工作台必须有第三个 UI 信息架构 Tab；默认加载必须显示 8 个界面、1 个调试可用、1 个 Alpha 可用和 6 个规划；选择正式武将名册必须显示 `planned` 状态和 Beta 边界。
+  - 验证：
+    - `test_ui_navigation_spec_panel.gd` 通过，确认面板节点、默认加载和正式武将名册选择详情。
+    - `test_content_alpha_workbench.gd` 通过，确认工作台第三个 Tab 和 8 条 UI 规格记录。
+
+- [x] Task 31：正式 UI 风格方向确认
+  - 状态：已完成。
+  - 范围：生成并确认第一版正式 UI 风格方向图，归档到 `docs/资源/ui_style_concepts/content_alpha_formal_ui_style_v1.png`，并新增 `docs/UI_正式界面风格方向.md` 记录视觉关键词、信息架构落地原则和未完成边界。
+  - 根因：正式 UI 风格不能在没有视觉确认的情况下直接进入 Godot 实装，否则容易把不合适的视觉方向固化到场景和控件结构里。
+  - 边界：当前只确认视觉方向，不代表线框图、交互流程、主题资源或正式 UI 控件已经完成。
+  - 验收：风格方向必须覆盖战略大地图、右侧城市/武将信息、底部命令栏和半身像卡片；文档必须说明该图不是 Beta 正式 UI 成品。
+  - 验证：
+    - 项目负责人已确认该风格方向“都合适”。
+    - `docs/UI_正式界面风格方向.md` 已记录实装原则和未完成边界。
+
 ## 当前缺口
 
 - 半身像资源来自项目负责人另一个自有三国项目；项目内导入流程、运行时 `res://` 加载、`.pck` 打包烟测、212 张可复用半身像池、头像绑定候选武将名册和包校验一致性检查已经完成。
 - 正式武将数据、技能、官职、势力剧本尚未进入 Content Alpha 内容包；本阶段不复用源项目技能、传记、君略或数值，候选名册也不代表正式武将库。
-- 正式 UI 信息架构和视觉风格仍未落地；当前只准备 Content Alpha 资源工作台及主场景调试入口、可复用半身像池入口、候选武将名册、选择状态工具、独立浏览组件与调试面板可见摘要。
+- 正式 UI 线框图、交互规范和 Godot 正式控件仍未落地；当前已准备 Content Alpha 资源工作台及主场景调试入口、可复用半身像池入口、候选武将名册、选择状态工具、独立浏览组件、UI 信息架构规格、工作台 UI 规格浏览入口、正式 UI 风格方向图与调试面板可见摘要。

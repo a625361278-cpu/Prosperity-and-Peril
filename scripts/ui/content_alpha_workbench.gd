@@ -6,6 +6,7 @@ const ContentAlphaValidationRunner = preload("res://scripts/data/content_alpha_v
 @onready var _tabs: TabContainer = $Root/WorkbenchTabs
 @onready var _candidate_browser = $Root/WorkbenchTabs/CandidateRoster/CandidateOfficerRosterBrowserPanel
 @onready var _portrait_browser = $Root/WorkbenchTabs/PortraitPool/ReusableHeroPortraitBrowserPanel
+@onready var _ui_navigation_panel = $Root/WorkbenchTabs/UiNavigation/UiNavigationSpecPanel
 
 
 func _ready() -> void:
@@ -28,6 +29,10 @@ func load_default_workbench() -> Dictionary:
 	if not portrait_result.ok:
 		errors.append_array(portrait_result.errors)
 
+	var ui_navigation_result: Dictionary = _ui_navigation_spec_panel().load_default_spec()
+	if not ui_navigation_result.ok:
+		errors.append_array(ui_navigation_result.errors)
+
 	if not errors.is_empty():
 		_show_error(errors)
 		return {
@@ -41,10 +46,12 @@ func load_default_workbench() -> Dictionary:
 
 
 func set_validation_summary(summary: Dictionary) -> void:
-	_summary_label().text = "Content Alpha 工作台: 图池=%s 候选=%s 源绑定=%s 首图=%s %s" % [
+	_summary_label().text = "Content Alpha 工作台: 图池=%s 候选=%s 源绑定=%s UI规格=%s 规划=%s 首图=%s %s" % [
 		str(summary.reusable_portraits),
 		str(summary.candidate_officers),
 		str(summary.indexed_heroes),
+		str(summary.ui_navigation_screens),
+		str(summary.ui_navigation_planned_screens),
 		str(summary.first_candidate_officer_id),
 		str(summary.first_candidate_display_name_cn),
 	]
@@ -64,6 +71,10 @@ func get_candidate_item_count() -> int:
 
 func get_portrait_item_count() -> int:
 	return _portrait_pool_browser().get_item_count()
+
+
+func get_ui_navigation_item_count() -> int:
+	return _ui_navigation_spec_panel().get_item_count()
 
 
 func _show_error(errors: Array) -> void:
@@ -92,3 +103,9 @@ func _portrait_pool_browser():
 	if _portrait_browser != null:
 		return _portrait_browser
 	return get_node("Root/WorkbenchTabs/PortraitPool/ReusableHeroPortraitBrowserPanel")
+
+
+func _ui_navigation_spec_panel():
+	if _ui_navigation_panel != null:
+		return _ui_navigation_panel
+	return get_node("Root/WorkbenchTabs/UiNavigation/UiNavigationSpecPanel")

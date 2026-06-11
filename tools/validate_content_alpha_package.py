@@ -12,6 +12,7 @@ from pathlib import Path
 IMPORT_MANIFEST = Path("data/content_alpha/hero_portrait_import_manifest.json")
 PORTRAIT_POOL = Path("data/content_alpha/reusable_hero_portrait_pool.json")
 CANDIDATE_ROSTER = Path("data/content_alpha/candidate_officer_roster.json")
+UI_NAVIGATION_SPEC = Path("data/content_alpha/ui_navigation_spec.json")
 DISALLOWED_POOL_FIELDS = {"source_power", "source_up_point", "skill_ids", "secret_ids", "biography_cn"}
 DISALLOWED_ROSTER_FIELDS = DISALLOWED_POOL_FIELDS | {
     "force_id",
@@ -24,6 +25,17 @@ DISALLOWED_ROSTER_FIELDS = DISALLOWED_POOL_FIELDS | {
     "politics",
     "charm",
 }
+REQUIRED_UI_SCREEN_IDS = {
+    "strategic_map",
+    "city_detail_panel",
+    "candidate_officer_workbench",
+    "formal_officer_roster",
+    "appointment_sortie_panel",
+    "battle_report_panel",
+    "event_log_panel",
+    "save_load_panel",
+}
+ALLOWED_UI_STATUSES = {"debug_available", "content_alpha_available", "planned"}
 
 
 def _load_manifest(path: Path) -> dict:
@@ -147,6 +159,61 @@ def validate_candidate_officer_roster(roster_path: Path, imported_target_paths: 
     }
 
 
+def validate_ui_navigation_spec(spec_path: Path) -> dict:
+    if not spec_path.exists():
+        raise FileNotFoundError(f"ui navigation spec not found: {spec_path}")
+    payload = json.loads(spec_path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError(f"ui navigation spec root must be object: {spec_path}")
+    source = payload.get("source")
+    if not isinstance(source, dict):
+        raise ValueError("ui navigation spec source must be object")
+    boundary_rule = str(source.get("boundary_rule", ""))
+    if "not a finished Beta UI" not in boundary_rule:
+        raise ValueError("ui navigation spec boundary must state it is not a finished Beta UI")
+    screens = payload.get("screens")
+    if not isinstance(screens, list) or not screens:
+        raise ValueError("ui navigation spec screens must be a non-empty array")
+
+    screen_ids: set[str] = set()
+    planned_count = 0
+    available_count = 0
+    for index, screen in enumerate(screens):
+        if not isinstance(screen, dict):
+            raise ValueError(f"ui navigation spec screens[{index}] must be object")
+        screen_id = str(screen.get("id", ""))
+        if not screen_id:
+            raise ValueError(f"ui navigation spec screens[{index}] missing id")
+        if screen_id in screen_ids:
+            raise ValueError(f"duplicate ui navigation screen id: {screen_id}")
+        screen_ids.add(screen_id)
+        status = str(screen.get("implementation_status", ""))
+        if status not in ALLOWED_UI_STATUSES:
+            raise ValueError(f"ui navigation spec screens[{index}] invalid status: {status}")
+        if status == "planned":
+            planned_count += 1
+            blockers = screen.get("blocked_until")
+            if not isinstance(blockers, list) or not blockers:
+                raise ValueError(f"ui navigation spec planned screen missing blockers: {screen_id}")
+        else:
+            available_count += 1
+        data_sources = screen.get("primary_data_sources")
+        if not isinstance(data_sources, list) or not data_sources:
+            raise ValueError(f"ui navigation spec screen missing data sources: {screen_id}")
+        for source_path in data_sources:
+            source_text = str(source_path)
+            if source_text.startswith("res://") and not Path(source_text.removeprefix("res://")).exists():
+                raise FileNotFoundError(f"ui navigation spec data source missing: {source_text}")
+    missing = sorted(REQUIRED_UI_SCREEN_IDS.difference(screen_ids))
+    if missing:
+        raise ValueError(f"ui navigation spec missing screens: {missing}")
+    return {
+        "ui_navigation_screens": len(screens),
+        "ui_navigation_available": available_count,
+        "ui_navigation_planned": planned_count,
+    }
+
+
 def validate_pck(pck_path: Path) -> dict:
     if not pck_path.exists():
         raise FileNotFoundError(f"exported pck not found: {pck_path}")
@@ -163,16 +230,21 @@ def main() -> int:
     parser.add_argument("--manifest", type=Path, default=IMPORT_MANIFEST)
     parser.add_argument("--portrait-pool", type=Path, default=PORTRAIT_POOL)
     parser.add_argument("--candidate-roster", type=Path, default=CANDIDATE_ROSTER)
+    parser.add_argument("--ui-navigation-spec", type=Path, default=UI_NAVIGATION_SPEC)
     parser.add_argument("--pck", type=Path)
     args = parser.parse_args()
 
     import_summary = validate_imported_resources(args.manifest)
     pool_summary = validate_reusable_portrait_pool(args.portrait_pool, import_summary["target_paths"])
     roster_summary = validate_candidate_officer_roster(args.candidate_roster, import_summary["target_paths"])
+    ui_summary = validate_ui_navigation_spec(args.ui_navigation_spec)
     print("imported_assets:", import_summary["asset_count"])
     print("hero_bindings:", import_summary["hero_binding_count"])
     print("reusable_portraits:", pool_summary["reusable_portrait_count"])
     print("candidate_officers:", roster_summary["candidate_officer_count"])
+    print("ui_navigation_screens:", ui_summary["ui_navigation_screens"])
+    print("ui_navigation_available:", ui_summary["ui_navigation_available"])
+    print("ui_navigation_planned:", ui_summary["ui_navigation_planned"])
     if args.pck is not None:
         pck_summary = validate_pck(args.pck)
         print("pck_path:", pck_summary["pck_path"])

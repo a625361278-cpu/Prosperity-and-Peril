@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "source": {
+    "route_stage": "Content Alpha UI information architecture",
+    "boundary_rule": "this spec defines navigation and data sources only; it is not a finished Beta UI",
+    "implementation_rule": "screens marked planned must not be presented as implemented gameplay UI",
+    "requirements_source": "docs/项目版本路线与执行边界.md Content Alpha and Beta UI goals"
+  },
+  "screens": [
+    {
+      "id": "strategic_map",
+      "title_cn": "战略大地图",
+      "category": "core_gameplay",
+      "implementation_status": "debug_available",
+      "primary_data_sources": [
+        "res://data/prototype_v0_1/core_test_data.json",
+        "runtime_state.cities",
+        "runtime_state.routes",
+        "runtime_state.armies"
+      ],
+      "entry_points": [
+        "res://scenes/main.tscn"
+      ],
+      "allowed_actions": [
+        "选择城市",
+        "选择部队",
+        "打开 Content Alpha 工作台"
+      ],
+      "blocked_until": [
+        "完整三国地图坐标与地形专项",
+        "正式城市菜单与部队命令面板"
+      ]
+    },
+    {
+      "id": "city_detail_panel",
+      "title_cn": "城市详情",
+      "category": "core_gameplay",
+      "implementation_status": "planned",
+      "primary_data_sources": [
+        "runtime_state.cities",
+        "runtime_state.forces"
+      ],
+      "entry_points": [
+        "战略大地图选择城市"
+      ],
+      "allowed_actions": [
+        "查看城市兵力粮草",
+        "查看民心治安",
+        "查看士族支持与整合状态"
+      ],
+      "blocked_until": [
+        "正式城市库",
+        "正式城市面板交互稿"
+      ]
+    },
+    {
+      "id": "candidate_officer_workbench",
+      "title_cn": "候选武将工作台",
+      "category": "content_alpha_tool",
+      "implementation_status": "content_alpha_available",
+      "primary_data_sources": [
+        "res://data/content_alpha/candidate_officer_roster.json",
+        "res://data/content_alpha/reusable_hero_portrait_pool.json"
+      ],
+      "entry_points": [
+        "调试面板 Content Alpha 工作台按钮"
+      ],
+      "allowed_actions": [
+        "浏览头像绑定候选武将",
+        "筛选 candidate/selected/rejected 状态",
+        "浏览可复用半身像池"
+      ],
+      "blocked_until": [
+        "正式武将库字段设计",
+        "正式武将选择与落库流程"
+      ]
+    },
+    {
+      "id": "formal_officer_roster",
+      "title_cn": "正式武将名册",
+      "category": "core_gameplay",
+      "implementation_status": "planned",
+      "primary_data_sources": [
+        "res://data/content_alpha/candidate_officer_roster.json",
+        "future.formal_officer_master"
+      ],
+      "entry_points": [
+        "主界面武将入口",
+        "城市详情武将入口"
+      ],
+      "allowed_actions": [
+        "查看正式武将属性",
+        "查看头像",
+        "查看忠诚与关系"
+      ],
+      "blocked_until": [
+        "正式武将属性表",
+        "技能/战法库",
+        "正式头像选择确认"
+      ]
+    },
+    {
+      "id": "appointment_sortie_panel",
+      "title_cn": "任命与出阵",
+      "category": "core_gameplay",
+      "implementation_status": "planned",
+      "primary_data_sources": [
+        "runtime_state.cities",
+        "runtime_state.officers",
+        "runtime_state.routes",
+        "simulation.appointment_system",
+        "simulation.sortie_system"
+      ],
+      "entry_points": [
+        "城市详情",
+        "武将详情"
+      ],
+      "allowed_actions": [
+        "任命太守",
+        "创建出阵",
+        "校验兵粮"
+      ],
+      "blocked_until": [
+        "正式城市菜单",
+        "正式武将选择器",
+        "路线选择 UI"
+      ]
+    },
+    {
+      "id": "battle_report_panel",
+      "title_cn": "战报",
+      "category": "feedback",
+      "implementation_status": "planned",
+      "primary_data_sources": [
+        "runtime_state.battle_logs",
+        "runtime_state.armies",
+        "runtime_state.cities"
+      ],
+      "entry_points": [
+        "大地图战斗结果提示",
+        "日志入口"
+      ],
+      "allowed_actions": [
+        "查看战斗结果",
+        "查看攻守损失",
+        "跳转目标城市"
+      ],
+      "blocked_until": [
+        "正式战报信息层级",
+        "战斗结果事件流"
+      ]
+    },
+    {
+      "id": "event_log_panel",
+      "title_cn": "事件与日志",
+      "category": "feedback",
+      "implementation_status": "planned",
+      "primary_data_sources": [
+        "runtime_state.change_logs",
+        "runtime_state.battle_logs",
+        "future.event_chain"
+      ],
+      "entry_points": [
+        "主界面日志入口",
+        "战报入口"
+      ],
+      "allowed_actions": [
+        "查看状态变化",
+        "查看战斗日志",
+        "查看历史事件"
+      ],
+      "blocked_until": [
+        "完整历史事件链",
+        "统一日志分类"
+      ]
+    },
+    {
+      "id": "save_load_panel",
+      "title_cn": "存档读档",
+      "category": "system",
+      "implementation_status": "planned",
+      "primary_data_sources": [
+        "res://scripts/save/save_system.gd",
+        "runtime_state"
+      ],
+      "entry_points": [
+        "主菜单",
+        "游戏内系统菜单"
+      ],
+      "allowed_actions": [
+        "保存局内动态状态",
+        "读取存档",
+        "显示 schema 版本"
+      ],
+      "blocked_until": [
+        "正式系统菜单",
+        "存档槽 UI"
+      ]
+    }
+  ]
+}

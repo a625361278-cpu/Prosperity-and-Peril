@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/content_alpha_workbench.gd" id="1_workbench"]
 [ext_resource type="PackedScene" path="res://scenes/candidate_officer_roster_browser_panel.tscn" id="2_candidate"]
 [ext_resource type="PackedScene" path="res://scenes/reusable_hero_portrait_browser_panel.tscn" id="3_portrait"]
+[ext_resource type="PackedScene" path="res://scenes/ui_navigation_spec_panel.tscn" id="4_ui_spec"]
 
 [node name="ContentAlphaWorkbench" type="Control"]
 layout_mode = 3
@@ -53,4 +54,12 @@ layout_mode = 2
 metadata/_tab_index = 1
 
 [node name="ReusableHeroPortraitBrowserPanel" parent="Root/WorkbenchTabs/PortraitPool" instance=ExtResource("3_portrait")]
+layout_mode = 2
+
+[node name="UiNavigation" type="MarginContainer" parent="Root/WorkbenchTabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="UiNavigationSpecPanel" parent="Root/WorkbenchTabs/UiNavigation" instance=ExtResource("4_ui_spec")]
 layout_mode = 2
