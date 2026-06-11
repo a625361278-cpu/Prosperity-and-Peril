@@ -16,6 +16,13 @@ size_flags_horizontal = 3
 text = "半身像候选预览: 待加载"
 autowrap_mode = 3
 
+[node name="ContentAlphaValidationText" type="Label" parent="."]
+custom_minimum_size = Vector2(380, 42)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Content Alpha 校验: 待加载"
+autowrap_mode = 3
+
 [node name="PortraitPreviewImage" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(148, 120)
 layout_mode = 2

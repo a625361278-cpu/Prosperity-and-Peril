@@ -85,9 +85,13 @@ func _test_debug_panel_portrait_preview_area() -> Dictionary:
 	var panel: Control = scene.instantiate()
 	get_root().add_child(panel)
 	var preview_text := panel.get_node_or_null("PanelBackground/MarginContainer/VBoxContainer/HeroPortraitPreviewPanel/PortraitPreviewText")
+	var validation_text := panel.get_node_or_null("PanelBackground/MarginContainer/VBoxContainer/HeroPortraitPreviewPanel/ContentAlphaValidationText")
 	if preview_text == null:
 		panel.queue_free()
 		return {"ok": false, "message": "PortraitPreviewText missing"}
+	if validation_text == null:
+		panel.queue_free()
+		return {"ok": false, "message": "ContentAlphaValidationText missing"}
 	if preview_text.custom_minimum_size.y < 80.0:
 		panel.queue_free()
 		return {"ok": false, "message": "PortraitPreviewText height is too small"}

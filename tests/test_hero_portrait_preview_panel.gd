@@ -26,8 +26,9 @@ func _test_panel_nodes() -> Dictionary:
 		return panel
 	var root: VBoxContainer = panel.node
 	var text := root.get_node_or_null("PortraitPreviewText")
+	var validation_text := root.get_node_or_null("ContentAlphaValidationText")
 	var image := root.get_node_or_null("PortraitPreviewImage")
-	if text == null or image == null:
+	if text == null or validation_text == null or image == null:
 		root.queue_free()
 		return {"ok": false, "message": "portrait preview panel nodes missing"}
 	if image.texture != null:
@@ -49,6 +50,19 @@ func _test_panel_setters() -> Dictionary:
 	if not text.text.contains("2000501 赵云 halfBody=UI_gj_gg_basemap_hero_1004"):
 		root.queue_free()
 		return {"ok": false, "message": "panel did not format audited portrait row"}
+	root.set_validation_summary({
+		"pack_id": "candidate_hero_portraits",
+		"indexed_heroes": 426,
+		"preview_rows": 3,
+		"first_hero_id": 1001,
+		"first_hero_name_cn": "刘备",
+		"first_texture_width": 1300,
+		"first_texture_height": 1080,
+	})
+	var validation_text: Label = root.get_node("ContentAlphaValidationText")
+	if not validation_text.text.contains("资源包=candidate_hero_portraits 英雄=426 预览=3 首图=1001 刘备 1300x1080"):
+		root.queue_free()
+		return {"ok": false, "message": "panel did not format content alpha validation summary"}
 	var image := Image.create(2, 2, false, Image.FORMAT_RGBA8)
 	image.fill(Color(0.0, 1.0, 0.0, 1.0))
 	root.set_preview_texture(ImageTexture.create_from_image(image))
@@ -78,6 +92,10 @@ func _test_panel_loads_default_preview() -> Dictionary:
 	if not text.text.contains("1001 刘备 halfBody=UI_gj_gg_basemap_hero_1001"):
 		root.queue_free()
 		return {"ok": false, "message": "default preview text missing first audited row"}
+	var validation_text: Label = root.get_node("ContentAlphaValidationText")
+	if not validation_text.text.contains("资源包=candidate_hero_portraits 英雄=426 预览=3 首图=1001 刘备 1300x1080"):
+		root.queue_free()
+		return {"ok": false, "message": "default preview validation summary missing"}
 	if image.texture == null:
 		root.queue_free()
 		return {"ok": false, "message": "default preview image texture missing"}

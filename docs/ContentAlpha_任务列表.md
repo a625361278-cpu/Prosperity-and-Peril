@@ -120,6 +120,16 @@
   - 验证：
     - `test_content_alpha_validation_runner.gd` 通过，确认默认内容链路贯通，缺失清单和非法预览数量明确失败。
 
+- [x] Task 13：调试面板显示 Content Alpha 校验摘要
+  - 状态：已完成。
+  - 范围：在半身像候选预览组件中增加 `ContentAlphaValidationText`，默认加载候选半身像时同步运行 `ContentAlphaValidationRunner` 并显示资源包、索引数量、预览数量和首张真实图片尺寸。
+  - 根因：聚合校验如果只存在于测试脚本里，编辑器运行时无法直观看到当前内容链路是否贯通；调试面板应该展示真实校验摘要，而不是只显示图片加载结果。
+  - 边界：只显示校验摘要，不把摘要当作正式 UI，不绕过任何清单、索引或图片解码错误。
+  - 验收：调试面板必须包含校验摘要节点；默认预览成功时必须显示 `candidate_hero_portraits`、426 条英雄、3 条预览和 `1001 刘备 1300x1080`。
+  - 验证：
+    - `test_hero_portrait_preview_panel.gd` 通过，确认组件可格式化并加载默认校验摘要。
+    - `test_debug_panel_layout.gd` 通过，确认调试面板包含 Content Alpha 校验摘要节点。
+
 ## 当前缺口
 
 - 半身像资源来自项目负责人另一个自有项目；后续缺口是正式 UI 导入流程、资源命名映射和打包方式。
