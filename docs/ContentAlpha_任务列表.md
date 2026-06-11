@@ -130,8 +130,30 @@
     - `test_hero_portrait_preview_panel.gd` 通过，确认组件可格式化并加载默认校验摘要。
     - `test_debug_panel_layout.gd` 通过，确认调试面板包含 Content Alpha 校验摘要节点。
 
+- [x] Task 14：半身像项目内导入流程与清单
+  - 状态：已完成。
+  - 范围：新增 `tools/import_hero_portrait_assets.py`，按已审计索引把唯一 `halfBody` PNG 导入到 `assets/content_alpha/hero_portraits`，生成 `hero_portrait_import_manifest.json`；资源清单新增 `import_manifest_path` 指向项目内导入清单。
+  - 根因：外部候选路径只能证明资源存在，不能证明项目打包时能拿到对应 PNG；必须把导入后的目标路径、大小、哈希、尺寸和英雄绑定写成可验证清单。
+  - 边界：按唯一 `halfBody` 导入，不为 426 个英雄重复复制同一张 NPC 图；英雄与图片的关系仍以审计索引和导入清单绑定为准，不用 ID 推导文件名。
+  - 验收：导入清单必须包含 212 张唯一项目内 PNG 和 426 条英雄绑定；缺目标文件、哈希不一致或绑定目标不匹配必须失败；`2000501` 必须继续绑定 `UI_gj_gg_basemap_hero_1004`。
+  - 验证：
+    - `py -3.14 tools\import_hero_portrait_assets.py` 通过，导入 212 张唯一 PNG，生成 426 条英雄绑定。
+    - `test_hero_portrait_import_manifest.gd` 通过，确认导入清单、目标 PNG、哈希、尺寸和非 ID 推导绑定。
+    - `test_content_alpha_resource_manifest.gd` 通过，确认资源清单显式引用导入清单。
+
+- [x] Task 15：运行时半身像加载切换到项目内资源
+  - 状态：已完成。
+  - 范围：`HeroPortraitPackLoader` 读取资源包时同步加载导入清单，把每个索引记录补上项目内 `portrait_res_path`；`HeroPortraitTextureLoader` 在存在导入路径时优先从 `res://assets/content_alpha/hero_portraits` 加载。
+  - 根因：调试面板和后续 UI 如果继续读取另一个项目的绝对路径，打包和跨机器运行都会断；既然资源包已经声明导入清单，默认运行时链路必须使用项目内资源。
+  - 边界：索引级测试仍允许验证外部源路径，作为审计来源校验；默认资源包链路不允许导入清单缺失、绑定缺失或 `halfBody` 不一致。
+  - 验收：默认 Content Alpha 校验必须使用 `imported_res` 路径；`1001` 必须加载 `res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_1001.png`；直接索引行仍可验证外部源图。
+  - 验证：
+    - `test_content_alpha_validation_runner.gd` 通过，确认默认链路使用项目内导入资源。
+    - `test_hero_portrait_texture_loader.gd` 通过，确认导入资源优先、外部源索引仍可单独校验。
+    - `test_hero_portrait_preview_panel.gd` 和 `test_debug_panel_layout.gd` 通过，确认调试面板继续显示半身像预览。
+
 ## 当前缺口
 
-- 半身像资源来自项目负责人另一个自有项目；后续缺口是正式 UI 导入流程、资源命名映射和打包方式。
+- 半身像资源来自项目负责人另一个自有项目；项目内导入流程和运行时 `res://` 加载已经建立，后续缺口是正式打包验收。
 - 正式武将数据、技能、官职、势力剧本尚未进入 Content Alpha 内容包；当前测试武将也尚未具备权威头像绑定字段。
 - 正式 UI 信息架构和视觉风格仍未落地；当前只准备资源索引入口。

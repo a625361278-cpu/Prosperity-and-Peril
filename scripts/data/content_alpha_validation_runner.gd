@@ -45,6 +45,7 @@ static func validate_hero_portrait_pack(manifest_path: String, pack_id: String, 
 			"first_texture_width": int(texture_result.width),
 			"first_texture_height": int(texture_result.height),
 			"first_texture_source_path": str(texture_result.source_path),
+			"first_texture_path_kind": str(texture_result.path_kind),
 		},
 	}
 

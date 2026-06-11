@@ -15,6 +15,7 @@ func _initialize() -> void:
 	_run("resource manifest rejects missing ownership", _test_missing_ownership_fails)
 	_run("resource manifest rejects invalid ownership", _test_invalid_ownership_fails)
 	_run("resource manifest rejects missing index path", _test_missing_index_path_fails)
+	_run("resource manifest rejects missing import manifest path", _test_missing_import_manifest_path_fails)
 	_run("resource manifest rejects missing source project", _test_missing_source_project_fails)
 	_run("resource manifest rejects missing source path", _test_missing_source_path_fails)
 	_run("resource manifest loader indexes packs by id", _test_loader_indexes_packs)
@@ -77,6 +78,16 @@ func _test_missing_index_path_fails() -> Dictionary:
 	return _expect_error_contains(validation, "index_path missing file")
 
 
+func _test_missing_import_manifest_path_fails() -> Dictionary:
+	var manifest := _load_manifest()
+	if not manifest.ok:
+		return manifest
+	var copied: Dictionary = manifest.data.duplicate(true)
+	copied.resource_packs[0].import_manifest_path = "res://data/content_alpha/missing_import_manifest.json"
+	var validation: Dictionary = ContentAlphaResourceManifestValidator.validate_manifest(copied)
+	return _expect_error_contains(validation, "import_manifest_path missing file")
+
+
 func _test_missing_source_project_fails() -> Dictionary:
 	var manifest := _load_manifest()
 	if not manifest.ok:
@@ -108,6 +119,8 @@ func _test_loader_indexes_packs() -> Dictionary:
 		return {"ok": false, "message": "expected project_owner_resource pack"}
 	if str(pack_result.pack.index_path) != "res://data/content_alpha/hero_portrait_index.json":
 		return {"ok": false, "message": "unexpected hero portrait index path"}
+	if str(pack_result.pack.import_manifest_path) != "res://data/content_alpha/hero_portrait_import_manifest.json":
+		return {"ok": false, "message": "unexpected hero portrait import manifest path"}
 	return {"ok": true}
 
 
@@ -134,6 +147,8 @@ func _test_hero_portrait_pack_loader() -> Dictionary:
 		return {"ok": false, "message": "hero portrait pack lookup missing hero 1001"}
 	if str(pack_result.lookup["1001"].half_body) != "UI_gj_gg_basemap_hero_1001":
 		return {"ok": false, "message": "hero portrait pack lookup did not preserve halfBody mapping"}
+	if str(pack_result.lookup["1001"].portrait_res_path) != "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_1001.png":
+		return {"ok": false, "message": "hero portrait pack lookup did not attach imported res path"}
 	return {"ok": true}
 
 

@@ -9,9 +9,10 @@ static func load_texture_from_row(row: Dictionary) -> Dictionary:
 	if not errors.is_empty():
 		return _failure(errors)
 
-	var source_path := _normalized_path(str(row.portrait_source_path))
-	if not FileAccess.file_exists(source_path):
-		return _failure(["hero portrait texture source file missing: %s" % source_path])
+	var texture_path_result := _texture_path(row)
+	if not texture_path_result.ok:
+		return _failure(texture_path_result.errors)
+	var source_path := str(texture_path_result.path)
 
 	var image := Image.new()
 	var load_error := image.load(source_path)
@@ -34,6 +35,7 @@ static func load_texture_from_row(row: Dictionary) -> Dictionary:
 		"name_cn": str(row.name_cn),
 		"half_body": str(row.half_body),
 		"source_path": source_path,
+		"path_kind": str(texture_path_result.path_kind),
 	}
 
 
@@ -46,7 +48,41 @@ static func _validate_row(row: Dictionary) -> Array[String]:
 			errors.append("hero portrait texture row empty %s" % field)
 	if row.has("hero_id") and not _is_integer_number(row.hero_id):
 		errors.append("hero portrait texture row hero_id must be an integer")
+	if row.has("portrait_res_path") and str(row.portrait_res_path).is_empty():
+		errors.append("hero portrait texture row empty portrait_res_path")
 	return errors
+
+
+static func _texture_path(row: Dictionary) -> Dictionary:
+	if row.has("portrait_res_path") and not str(row.portrait_res_path).is_empty():
+		var imported_path := _normalized_path(str(row.portrait_res_path))
+		if not FileAccess.file_exists(imported_path):
+			return {
+				"ok": false,
+				"errors": ["hero portrait texture imported file missing: %s" % imported_path],
+				"path": "",
+				"path_kind": "",
+			}
+		return {
+			"ok": true,
+			"errors": [],
+			"path": imported_path,
+			"path_kind": "imported_res",
+		}
+	var source_path := _normalized_path(str(row.portrait_source_path))
+	if not FileAccess.file_exists(source_path):
+		return {
+			"ok": false,
+			"errors": ["hero portrait texture source file missing: %s" % source_path],
+			"path": "",
+			"path_kind": "",
+		}
+	return {
+		"ok": true,
+		"errors": [],
+		"path": source_path,
+		"path_kind": "source_path",
+	}
 
 
 static func _is_integer_number(value) -> bool:

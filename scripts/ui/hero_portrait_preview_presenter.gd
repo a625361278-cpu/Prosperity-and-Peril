@@ -13,13 +13,16 @@ static func build_preview_rows(lookup: Dictionary, hero_ids: Array) -> Dictionar
 			continue
 		var record: Dictionary = resolved.record
 		_validate_record_path(record, errors)
-		rows.append({
+		var row := {
 			"hero_id": int(record.id),
 			"name_cn": str(record.name_cn),
 			"name_key": str(record.name_key),
 			"half_body": str(record.half_body),
 			"portrait_source_path": str(record.portrait_source_path),
-		})
+		}
+		if record.has("portrait_res_path"):
+			row.portrait_res_path = str(record.portrait_res_path)
+		rows.append(row)
 	if not errors.is_empty():
 		return {
 			"ok": false,
@@ -59,6 +62,12 @@ static func _validate_record_path(record: Dictionary, errors: Array[String]) -> 
 		errors.append("hero portrait preview record empty portrait_source_path")
 	elif not FileAccess.file_exists(portrait_path):
 		errors.append("hero portrait preview source file missing: %s" % portrait_path)
+	if record.has("portrait_res_path"):
+		var imported_path := str(record.portrait_res_path)
+		if imported_path.is_empty():
+			errors.append("hero portrait preview record empty portrait_res_path")
+		elif not FileAccess.file_exists(imported_path):
+			errors.append("hero portrait preview imported file missing: %s" % imported_path)
 
 
 static func _first_numeric_ids(lookup: Dictionary, limit: int) -> Array:

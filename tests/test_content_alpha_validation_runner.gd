@@ -42,6 +42,10 @@ func _test_default_chain() -> Dictionary:
 		return {"ok": false, "message": "unexpected first texture size"}
 	if not FileAccess.file_exists(str(summary.first_texture_source_path)):
 		return {"ok": false, "message": "expected first texture source path to exist"}
+	if str(summary.first_texture_path_kind) != "imported_res":
+		return {"ok": false, "message": "content alpha validation must use imported res texture path"}
+	if not str(summary.first_texture_source_path).begins_with("res://assets/content_alpha/hero_portraits/"):
+		return {"ok": false, "message": "content alpha validation did not use project imported portrait"}
 	return {"ok": true}
 
 

@@ -6,6 +6,7 @@ const REQUIRED_PACK_FIELDS := [
 	"id",
 	"kind",
 	"index_path",
+	"import_manifest_path",
 	"source_project",
 	"ownership_status",
 	"source_paths",
@@ -67,6 +68,8 @@ static func _validate_ownership(index: int, pack: Dictionary, errors: Array[Stri
 static func _validate_paths(index: int, pack: Dictionary, errors: Array[String]) -> void:
 	if pack.has("index_path") and not FileAccess.file_exists(str(pack.index_path)):
 		errors.append("content alpha resource manifest resource_packs[%d].index_path missing file %s" % [index, str(pack.index_path)])
+	if pack.has("import_manifest_path") and not FileAccess.file_exists(str(pack.import_manifest_path)):
+		errors.append("content alpha resource manifest resource_packs[%d].import_manifest_path missing file %s" % [index, str(pack.import_manifest_path)])
 	if pack.has("source_project") and not _path_exists(str(pack.source_project)):
 		errors.append("content alpha resource manifest resource_packs[%d].source_project missing path %s" % [index, str(pack.source_project)])
 	if pack.has("source_paths") and pack.source_paths is Array:

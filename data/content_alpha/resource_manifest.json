@@ -5,6 +5,7 @@
       "id": "candidate_hero_portraits",
       "kind": "hero_portrait",
       "index_path": "res://data/content_alpha/hero_portrait_index.json",
+      "import_manifest_path": "res://data/content_alpha/hero_portrait_import_manifest.json",
       "source_paths": [
         "E:\\work\\dajunshi\\new\\resource\\数据表\\hero_英雄.xlsx",
         "E:\\work\\dajunshi\\new\\resource\\数据表\\lang_多语言.xlsx",

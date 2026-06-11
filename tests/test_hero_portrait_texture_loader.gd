@@ -1,6 +1,7 @@
 extends SceneTree
 
 const HeroPortraitIndexLoader = preload("res://scripts/data/hero_portrait_index_loader.gd")
+const HeroPortraitPackLoader = preload("res://scripts/data/hero_portrait_pack_loader.gd")
 const HeroPortraitPreviewPresenter = preload("res://scripts/ui/hero_portrait_preview_presenter.gd")
 const HeroPortraitTextureLoader = preload("res://scripts/ui/hero_portrait_texture_loader.gd")
 
@@ -12,6 +13,7 @@ var _failed := 0
 
 func _initialize() -> void:
 	_run("hero portrait texture loader reads audited png", _test_loads_audited_png)
+	_run("hero portrait texture loader prefers imported project png", _test_loads_imported_png)
 	_run("hero portrait texture loader fails for non image file", _test_non_image_file_fails)
 	_run("hero portrait texture loader fails for incomplete row", _test_incomplete_row_fails)
 	quit(_failed)
@@ -39,6 +41,25 @@ func _test_loads_audited_png() -> Dictionary:
 		return {"ok": false, "message": "expected ImageTexture result"}
 	if int(texture_result.hero_id) != 1001 or str(texture_result.half_body) != "UI_gj_gg_basemap_hero_1001":
 		return {"ok": false, "message": "texture metadata did not preserve audited portrait row"}
+	if str(texture_result.path_kind) != "source_path":
+		return {"ok": false, "message": "audited index row should load from source path"}
+	return {"ok": true}
+
+
+func _test_loads_imported_png() -> Dictionary:
+	var pack_result: Dictionary = HeroPortraitPackLoader.load_default_pack()
+	if not pack_result.ok:
+		return {"ok": false, "message": "portrait pack load failed: %s" % [pack_result.errors]}
+	var preview_result: Dictionary = HeroPortraitPreviewPresenter.build_preview_rows(pack_result.lookup, [1001])
+	if not preview_result.ok:
+		return {"ok": false, "message": "preview row failed: %s" % [preview_result.errors]}
+	var texture_result: Dictionary = HeroPortraitTextureLoader.load_texture_from_row(preview_result.rows[0])
+	if not texture_result.ok:
+		return {"ok": false, "message": "expected imported texture load success, got %s" % [texture_result.errors]}
+	if str(texture_result.path_kind) != "imported_res":
+		return {"ok": false, "message": "expected imported texture path to be preferred"}
+	if str(texture_result.source_path) != "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_1001.png":
+		return {"ok": false, "message": "unexpected imported texture source path"}
 	return {"ok": true}
 
 
