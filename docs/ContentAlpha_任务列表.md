@@ -273,6 +273,16 @@
     - `test_main_content_alpha_workbench.gd` 通过，确认主场景隐藏挂载和切换加载。
     - `test_debug_panel_layout.gd` 通过，确认按钮存在且调试面板根节点仍忽略鼠标。
 
+- [x] Task 28：Content Alpha 工作台打包烟测
+  - 状态：已完成。
+  - 范围：重新导出 `builds/content_alpha/newsanguo_content_alpha.pck`，确认 Content Alpha 工作台场景、主场景入口、候选名册、半身像池和相关脚本进入 Godot 打包资源。
+  - 根因：工作台和主场景入口已经成为 Content Alpha 当前资源筛选入口；只通过编辑器测试还不能证明导出包会包含这些场景和脚本。
+  - 边界：仍只导出 `.pck` 烟测产物，不提交 `builds/` 临时包，不生成平台 exe。
+  - 验收：导出日志必须包含 `content_alpha_workbench.scn` 和主场景 remap；包校验必须继续输出 212 张导入 PNG、212 条候选武将和非空 `.pck`。
+  - 验证：
+    - `Godot --headless --export-pack "Windows Desktop" builds\content_alpha\newsanguo_content_alpha.pck` 通过，导出日志包含 `content_alpha_workbench.scn`。
+    - `py -3.14 tools\validate_content_alpha_package.py --pck builds\content_alpha\newsanguo_content_alpha.pck` 通过，`.pck` 大小为 `181554272` bytes。
+
 ## 当前缺口
 
 - 半身像资源来自项目负责人另一个自有三国项目；项目内导入流程、运行时 `res://` 加载、`.pck` 打包烟测、212 张可复用半身像池、头像绑定候选武将名册和包校验一致性检查已经完成。
