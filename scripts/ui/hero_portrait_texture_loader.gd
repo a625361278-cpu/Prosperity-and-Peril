@@ -1,7 +1,7 @@
 extends RefCounted
 
 
-const REQUIRED_ROW_FIELDS := ["hero_id", "name_cn", "half_body", "portrait_source_path"]
+const REQUIRED_ROW_FIELDS := ["hero_id", "name_cn", "half_body"]
 
 
 static func load_texture_from_row(row: Dictionary) -> Dictionary:
@@ -39,10 +39,14 @@ static func _validate_row(row: Dictionary) -> Array[String]:
 			errors.append("hero portrait texture row missing %s" % field)
 		elif str(row[field]).is_empty():
 			errors.append("hero portrait texture row empty %s" % field)
+	if not row.has("portrait_res_path") and not row.has("portrait_source_path"):
+		errors.append("hero portrait texture row missing portrait_res_path or portrait_source_path")
 	if row.has("hero_id") and not _is_integer_number(row.hero_id):
 		errors.append("hero portrait texture row hero_id must be an integer")
 	if row.has("portrait_res_path") and str(row.portrait_res_path).is_empty():
 		errors.append("hero portrait texture row empty portrait_res_path")
+	if row.has("portrait_source_path") and str(row.portrait_source_path).is_empty():
+		errors.append("hero portrait texture row empty portrait_source_path")
 	return errors
 
 

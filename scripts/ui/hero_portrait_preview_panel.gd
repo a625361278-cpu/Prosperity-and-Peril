@@ -1,8 +1,8 @@
 extends VBoxContainer
 
 const ContentAlphaValidationRunner = preload("res://scripts/data/content_alpha_validation_runner.gd")
-const HeroPortraitPackLoader = preload("res://scripts/data/hero_portrait_pack_loader.gd")
-const HeroPortraitPreviewPresenter = preload("res://scripts/ui/hero_portrait_preview_presenter.gd")
+const ReusableHeroPortraitPoolLoader = preload("res://scripts/data/reusable_hero_portrait_pool_loader.gd")
+const ReusableHeroPortraitPoolPresenter = preload("res://scripts/ui/reusable_hero_portrait_pool_presenter.gd")
 const HeroPortraitTextureLoader = preload("res://scripts/ui/hero_portrait_texture_loader.gd")
 
 const HERO_PORTRAIT_PREVIEW_LIMIT := 3
@@ -13,15 +13,15 @@ const HERO_PORTRAIT_PREVIEW_LIMIT := 3
 
 
 func load_default_preview() -> Dictionary:
-	var load_result: Dictionary = HeroPortraitPackLoader.load_default_pack()
+	var load_result: Dictionary = ReusableHeroPortraitPoolLoader.load_default_pool()
 	if not load_result.ok:
 		_show_error(load_result.errors)
 		return {
 			"ok": false,
 			"errors": load_result.errors,
 		}
-	var preview_result: Dictionary = HeroPortraitPreviewPresenter.build_default_preview_rows(
-		load_result.lookup,
+	var preview_result: Dictionary = ReusableHeroPortraitPoolPresenter.build_default_preview_rows(
+		load_result.records,
 		HERO_PORTRAIT_PREVIEW_LIMIT
 	)
 	if not preview_result.ok:

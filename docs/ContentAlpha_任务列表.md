@@ -184,8 +184,19 @@
     - `test_hero_portrait_preview_panel.gd` 通过，确认调试面板组件显示 `可复用=212`。
     - `test_debug_panel_layout.gd` 通过，确认调试面板仍能加载半身像预览组件。
 
+- [x] Task 19：半身像预览列表切换到可复用图池
+  - 状态：已完成。
+  - 范围：新增 `ReusableHeroPortraitPoolPresenter`，调试面板默认预览从 `ReusableHeroPortraitPoolLoader` 读取 212 张可复用半身像池；`HeroPortraitTextureLoader` 支持只通过项目内 `portrait_res_path` 加载纹理，不再要求 UI 预览行携带外部源项目路径。
+  - 根因：源项目 426 条英雄绑定只是审计映射来源，不等同于本项目武将候选名单；用户已明确本阶段只看半身像能否复用，最终可以只做有半身像的约 200 名武将。
+  - 边界：预览列表只展示可复用图片候选，不自动生成正式武将属性；外部源路径仍可用于审计测试，但默认运行时预览走项目内导入资源。
+  - 验收：默认预览必须来自 212 张可复用图池；缺项目内 PNG 必须失败；纹理加载在只有 `portrait_res_path` 时必须成功；调试面板仍显示首图刘备和 `可复用=212` 摘要。
+  - 验证：
+    - `test_reusable_hero_portrait_pool_presenter.gd` 通过，确认图池预览行、非法数量和缺图片失败。
+    - `test_hero_portrait_texture_loader.gd` 通过，确认项目内资源路径可独立加载。
+    - `test_hero_portrait_preview_panel.gd` 与 `test_debug_panel_layout.gd` 通过，确认面板预览切换后仍可运行。
+
 ## 当前缺口
 
 - 半身像资源来自项目负责人另一个自有三国项目；项目内导入流程、运行时 `res://` 加载、`.pck` 打包烟测和 212 张可复用半身像池已经完成。
 - 正式武将数据、技能、官职、势力剧本尚未进入 Content Alpha 内容包；本阶段不复用源项目技能、传记、君略或数值，只从半身像池选择可用武将。
-- 正式 UI 信息架构和视觉风格仍未落地；当前只准备资源索引入口与调试面板可见摘要。
+- 正式 UI 信息架构和视觉风格仍未落地；当前只准备可复用半身像池入口与调试面板可见摘要。
