@@ -17,3 +17,4 @@
 - `content_alpha/resource_manifest.json`：Content Alpha 候选资源包清单，用于记录来源项目、索引路径、所有权状态和允许用途。
 - `content_alpha/hero_portrait_import_manifest.json`：由 `tools/import_hero_portrait_assets.py` 复制项目内半身像 PNG 后生成的导入清单，用于校验目标资源、哈希、尺寸和英雄绑定。
 - `content_alpha/reusable_hero_portrait_pool.json`：由 `tools/export_reusable_hero_portrait_pool.py` 从项目内导入清单导出的 212 张可复用半身像池；只记录图片、尺寸、哈希和源英雄名参考，不导入源项目技能、传记、君略、官职或势力等玩法字段。
+- `content_alpha/candidate_officer_roster.json`：由 `tools/export_candidate_officer_roster.py` 从可复用半身像池导出的 212 条头像绑定候选武将名册；只记录候选 ID、显示名、选择状态、头像路径和来源参考，不代表正式武将库。

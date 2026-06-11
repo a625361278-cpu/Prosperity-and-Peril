@@ -213,8 +213,20 @@
   - 验证：
     - `py -3.14 tools\validate_content_alpha_package.py` 通过，确认 212 张导入 PNG、426 条源绑定和 212 张可复用半身像池一致。
 
+- [x] Task 22：头像绑定候选武将名册
+  - 状态：已完成。
+  - 范围：新增 `tools/export_candidate_officer_roster.py`，从 212 张可复用半身像池导出 `data/content_alpha/candidate_officer_roster.json`；Godot 侧新增候选名册校验器和读取入口；Content Alpha 聚合校验和包校验脚本同步接入候选名册。
+  - 根因：后续正式武将库需要一个可筛选的“有头像候选名单”，但不能把源项目技能、传记、君略或数值误导入成本项目正式武将内容。
+  - 边界：候选名册只包含 `candidate_officer_id / display_name_cn / selection_status / half_body / portrait_res_path / source_reference`；不包含统率、武力、智力、政治、魅力、势力、官职、技能、传记或君略。
+  - 验收：候选名册必须包含 212 条记录；每条记录必须指向项目内导入 PNG；默认状态为 `candidate`；泄漏玩法字段、缺图或非法选择状态必须失败；赵云头像候选必须保留两个源绑定用于识别同图复用。
+  - 验证：
+    - `py -3.14 tools\export_candidate_officer_roster.py` 通过，导出 212 条候选武将。
+    - `test_candidate_officer_roster.gd` 通过，确认名册结构、读取、字段边界、缺图失败和非法状态失败。
+    - `test_content_alpha_validation_runner.gd` 通过，确认聚合校验包含 212 条候选武将。
+    - `py -3.14 tools\validate_content_alpha_package.py` 通过，确认候选名册与项目内导入 PNG 一致。
+
 ## 当前缺口
 
-- 半身像资源来自项目负责人另一个自有三国项目；项目内导入流程、运行时 `res://` 加载、`.pck` 打包烟测、212 张可复用半身像池和包校验一致性检查已经完成。
-- 正式武将数据、技能、官职、势力剧本尚未进入 Content Alpha 内容包；本阶段不复用源项目技能、传记、君略或数值，只从半身像池选择可用武将。
+- 半身像资源来自项目负责人另一个自有三国项目；项目内导入流程、运行时 `res://` 加载、`.pck` 打包烟测、212 张可复用半身像池、头像绑定候选武将名册和包校验一致性检查已经完成。
+- 正式武将数据、技能、官职、势力剧本尚未进入 Content Alpha 内容包；本阶段不复用源项目技能、传记、君略或数值，候选名册也不代表正式武将库。
 - 正式 UI 信息架构和视觉风格仍未落地；当前只准备可复用半身像池入口、独立浏览组件与调试面板可见摘要。

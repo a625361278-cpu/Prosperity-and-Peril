@@ -11,7 +11,19 @@ from pathlib import Path
 
 IMPORT_MANIFEST = Path("data/content_alpha/hero_portrait_import_manifest.json")
 PORTRAIT_POOL = Path("data/content_alpha/reusable_hero_portrait_pool.json")
+CANDIDATE_ROSTER = Path("data/content_alpha/candidate_officer_roster.json")
 DISALLOWED_POOL_FIELDS = {"source_power", "source_up_point", "skill_ids", "secret_ids", "biography_cn"}
+DISALLOWED_ROSTER_FIELDS = DISALLOWED_POOL_FIELDS | {
+    "force_id",
+    "faction_id",
+    "office",
+    "stats",
+    "leadership",
+    "war",
+    "intelligence",
+    "politics",
+    "charm",
+}
 
 
 def _load_manifest(path: Path) -> dict:
@@ -96,6 +108,45 @@ def validate_reusable_portrait_pool(pool_path: Path, imported_target_paths: set[
     }
 
 
+def validate_candidate_officer_roster(roster_path: Path, imported_target_paths: set[str]) -> dict:
+    if not roster_path.exists():
+        raise FileNotFoundError(f"candidate officer roster not found: {roster_path}")
+    payload = json.loads(roster_path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError(f"candidate officer roster root must be object: {roster_path}")
+    records = payload.get("records")
+    if not isinstance(records, list) or not records:
+        raise ValueError("candidate officer roster records must be a non-empty array")
+    candidate_count = payload.get("candidate_count")
+    if int(candidate_count) != len(records):
+        raise ValueError(f"candidate officer roster candidate_count mismatch: {candidate_count} != {len(records)}")
+
+    candidate_ids: set[str] = set()
+    half_bodies: set[str] = set()
+    for index, record in enumerate(records):
+        if not isinstance(record, dict):
+            raise ValueError(f"candidate officer roster records[{index}] must be object")
+        leaked = sorted(DISALLOWED_ROSTER_FIELDS.intersection(record.keys()))
+        if leaked:
+            raise ValueError(f"candidate officer roster records[{index}] leaked gameplay fields: {leaked}")
+        candidate_id = str(record.get("candidate_officer_id", ""))
+        if not candidate_id.startswith("CANDIDATE_"):
+            raise ValueError(f"candidate officer roster records[{index}] invalid candidate_officer_id: {candidate_id}")
+        if candidate_id in candidate_ids:
+            raise ValueError(f"duplicate candidate officer id: {candidate_id}")
+        candidate_ids.add(candidate_id)
+        half_body = str(record.get("half_body", ""))
+        if half_body in half_bodies:
+            raise ValueError(f"duplicate candidate officer half_body: {half_body}")
+        half_bodies.add(half_body)
+        portrait_res_path = str(record.get("portrait_res_path", ""))
+        if portrait_res_path not in imported_target_paths:
+            raise ValueError(f"candidate officer roster path is not an imported asset: {portrait_res_path}")
+    return {
+        "candidate_officer_count": len(records),
+    }
+
+
 def validate_pck(pck_path: Path) -> dict:
     if not pck_path.exists():
         raise FileNotFoundError(f"exported pck not found: {pck_path}")
@@ -111,14 +162,17 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Validate Content Alpha package readiness.")
     parser.add_argument("--manifest", type=Path, default=IMPORT_MANIFEST)
     parser.add_argument("--portrait-pool", type=Path, default=PORTRAIT_POOL)
+    parser.add_argument("--candidate-roster", type=Path, default=CANDIDATE_ROSTER)
     parser.add_argument("--pck", type=Path)
     args = parser.parse_args()
 
     import_summary = validate_imported_resources(args.manifest)
     pool_summary = validate_reusable_portrait_pool(args.portrait_pool, import_summary["target_paths"])
+    roster_summary = validate_candidate_officer_roster(args.candidate_roster, import_summary["target_paths"])
     print("imported_assets:", import_summary["asset_count"])
     print("hero_bindings:", import_summary["hero_binding_count"])
     print("reusable_portraits:", pool_summary["reusable_portrait_count"])
+    print("candidate_officers:", roster_summary["candidate_officer_count"])
     if args.pck is not None:
         pck_summary = validate_pck(args.pck)
         print("pck_path:", pck_summary["pck_path"])

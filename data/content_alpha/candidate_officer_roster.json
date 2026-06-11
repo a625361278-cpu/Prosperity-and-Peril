@@ -1,0 +1,4686 @@
+{
+  "schema_version": 1,
+  "source": {
+    "portrait_pool_path": "res://data/content_alpha/reusable_hero_portrait_pool.json",
+    "roster_rule": "candidate roster is identity and portrait binding only; it is not the final officer database",
+    "gameplay_field_rule": "do not add stats, skills, factions, offices, biography, or strategy text to this roster",
+    "selection_rule": "final officer roster may select a smaller set from portrait-backed candidates"
+  },
+  "candidate_count": 212,
+  "records": [
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_1001",
+      "display_name_cn": "刘备",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_1001",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_1001.png",
+      "source_reference": {
+        "representative_source_hero_id": 1001,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1001,
+            "source_name_key": "hero_name_1001",
+            "source_name_cn": "刘备"
+          },
+          {
+            "source_hero_id": 1003111,
+            "source_name_key": "hero_name_1003111",
+            "source_name_cn": "刘备"
+          },
+          {
+            "source_hero_id": 1003201,
+            "source_name_key": "hero_name_1003201",
+            "source_name_cn": "刘备"
+          },
+          {
+            "source_hero_id": 1012002,
+            "source_name_key": "hero_name_1012002",
+            "source_name_cn": "刘备"
+          },
+          {
+            "source_hero_id": 1014002,
+            "source_name_key": "hero_name_1014002",
+            "source_name_cn": "刘备"
+          },
+          {
+            "source_hero_id": 2000101,
+            "source_name_key": "hero_name_2000101",
+            "source_name_cn": "刘备"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_1002",
+      "display_name_cn": "关羽",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_1002",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_1002.png",
+      "source_reference": {
+        "representative_source_hero_id": 1002,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1002,
+            "source_name_key": "hero_name_1002",
+            "source_name_cn": "关羽"
+          },
+          {
+            "source_hero_id": 1003112,
+            "source_name_key": "hero_name_1003112",
+            "source_name_cn": "关羽"
+          },
+          {
+            "source_hero_id": 1003202,
+            "source_name_key": "hero_name_1003202",
+            "source_name_cn": "关羽"
+          },
+          {
+            "source_hero_id": 1012003,
+            "source_name_key": "hero_name_1012003",
+            "source_name_cn": "关羽"
+          },
+          {
+            "source_hero_id": 1014003,
+            "source_name_key": "hero_name_1014003",
+            "source_name_cn": "关羽"
+          },
+          {
+            "source_hero_id": 2000102,
+            "source_name_key": "hero_name_2000102",
+            "source_name_cn": "关羽"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_1003",
+      "display_name_cn": "张飞",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_1003",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_1003.png",
+      "source_reference": {
+        "representative_source_hero_id": 1003,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1003,
+            "source_name_key": "hero_name_1003",
+            "source_name_cn": "张飞"
+          },
+          {
+            "source_hero_id": 1003113,
+            "source_name_key": "hero_name_1003113",
+            "source_name_cn": "张飞"
+          },
+          {
+            "source_hero_id": 1003203,
+            "source_name_key": "hero_name_1003203",
+            "source_name_cn": "张飞"
+          },
+          {
+            "source_hero_id": 1012004,
+            "source_name_key": "hero_name_1012004",
+            "source_name_cn": "张飞"
+          },
+          {
+            "source_hero_id": 1014004,
+            "source_name_key": "hero_name_1014004",
+            "source_name_cn": "张飞"
+          },
+          {
+            "source_hero_id": 2000103,
+            "source_name_key": "hero_name_2000103",
+            "source_name_cn": "张飞"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_1004",
+      "display_name_cn": "赵云",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_1004",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_1004.png",
+      "source_reference": {
+        "representative_source_hero_id": 1004,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1004,
+            "source_name_key": "hero_name_1004",
+            "source_name_cn": "赵云"
+          },
+          {
+            "source_hero_id": 2000501,
+            "source_name_key": "hero_name_2000501",
+            "source_name_cn": "赵云"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_1005",
+      "display_name_cn": "马超",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_1005",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_1005.png",
+      "source_reference": {
+        "representative_source_hero_id": 1005,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1005,
+            "source_name_key": "hero_name_1005",
+            "source_name_cn": "马超"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_1006",
+      "display_name_cn": "黄忠",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_1006",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_1006.png",
+      "source_reference": {
+        "representative_source_hero_id": 1006,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1006,
+            "source_name_key": "hero_name_1006",
+            "source_name_cn": "黄忠"
+          },
+          {
+            "source_hero_id": 2000502,
+            "source_name_key": "hero_name_2000502",
+            "source_name_cn": "黄忠"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_1007",
+      "display_name_cn": "诸葛亮",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_1007",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_1007.png",
+      "source_reference": {
+        "representative_source_hero_id": 1007,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1007,
+            "source_name_key": "hero_name_1007",
+            "source_name_cn": "诸葛亮"
+          },
+          {
+            "source_hero_id": 2000301,
+            "source_name_key": "hero_name_2000301",
+            "source_name_cn": "诸葛亮"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_1008",
+      "display_name_cn": "庞统",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_1008",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_1008.png",
+      "source_reference": {
+        "representative_source_hero_id": 1008,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1008,
+            "source_name_key": "hero_name_1008",
+            "source_name_cn": "庞统"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_1009",
+      "display_name_cn": "徐庶",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_1009",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_1009.png",
+      "source_reference": {
+        "representative_source_hero_id": 1009,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1009,
+            "source_name_key": "hero_name_1009",
+            "source_name_cn": "徐庶"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_1104",
+      "display_name_cn": "祝融",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_1104",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_1104.png",
+      "source_reference": {
+        "representative_source_hero_id": 1104,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1104,
+            "source_name_key": "hero_name_1104",
+            "source_name_cn": "祝融"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_1106",
+      "display_name_cn": "黄月英",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_1106",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_1106.png",
+      "source_reference": {
+        "representative_source_hero_id": 1106,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1106,
+            "source_name_key": "hero_name_1106",
+            "source_name_cn": "黄月英"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_2001",
+      "display_name_cn": "曹操",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_2001",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_2001.png",
+      "source_reference": {
+        "representative_source_hero_id": 2001,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2001,
+            "source_name_key": "hero_name_2001",
+            "source_name_cn": "曹操"
+          },
+          {
+            "source_hero_id": 1006101,
+            "source_name_key": "hero_name_1006101",
+            "source_name_cn": "曹操"
+          },
+          {
+            "source_hero_id": 1006211,
+            "source_name_key": "hero_name_1006211",
+            "source_name_cn": "曹操"
+          },
+          {
+            "source_hero_id": 1012005,
+            "source_name_key": "hero_name_1012005",
+            "source_name_cn": "曹操"
+          },
+          {
+            "source_hero_id": 1014005,
+            "source_name_key": "hero_name_1014005",
+            "source_name_cn": "曹操"
+          },
+          {
+            "source_hero_id": 2000201,
+            "source_name_key": "hero_name_2000201",
+            "source_name_cn": "曹操"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_2004",
+      "display_name_cn": "典韦",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_2004",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_2004.png",
+      "source_reference": {
+        "representative_source_hero_id": 2004,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2004,
+            "source_name_key": "hero_name_2004",
+            "source_name_cn": "典韦"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_2005",
+      "display_name_cn": "许褚",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_2005",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_2005.png",
+      "source_reference": {
+        "representative_source_hero_id": 2005,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2005,
+            "source_name_key": "hero_name_2005",
+            "source_name_cn": "许褚"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_2006",
+      "display_name_cn": "张辽",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_2006",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_2006.png",
+      "source_reference": {
+        "representative_source_hero_id": 2006,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2006,
+            "source_name_key": "hero_name_2006",
+            "source_name_cn": "张辽"
+          },
+          {
+            "source_hero_id": 2000401,
+            "source_name_key": "hero_name_2000401",
+            "source_name_cn": "张辽"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_2007",
+      "display_name_cn": "荀彧",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_2007",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_2007.png",
+      "source_reference": {
+        "representative_source_hero_id": 2007,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2007,
+            "source_name_key": "hero_name_2007",
+            "source_name_cn": "荀彧"
+          },
+          {
+            "source_hero_id": 1012006,
+            "source_name_key": "hero_name_1012006",
+            "source_name_cn": "荀彧"
+          },
+          {
+            "source_hero_id": 1014006,
+            "source_name_key": "hero_name_1014006",
+            "source_name_cn": "荀彧"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_2101",
+      "display_name_cn": "夏侯惇",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_2101",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_2101.png",
+      "source_reference": {
+        "representative_source_hero_id": 2101,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2101,
+            "source_name_key": "hero_name_2101",
+            "source_name_cn": "夏侯惇"
+          },
+          {
+            "source_hero_id": 1006102,
+            "source_name_key": "hero_name_1006102",
+            "source_name_cn": "夏侯惇"
+          },
+          {
+            "source_hero_id": 1006212,
+            "source_name_key": "hero_name_1006212",
+            "source_name_cn": "夏侯惇"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_2106",
+      "display_name_cn": "于禁",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_2106",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_2106.png",
+      "source_reference": {
+        "representative_source_hero_id": 2106,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2106,
+            "source_name_key": "hero_name_2106",
+            "source_name_cn": "于禁"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_2107",
+      "display_name_cn": "郭嘉",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_2107",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_2107.png",
+      "source_reference": {
+        "representative_source_hero_id": 2107,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2107,
+            "source_name_key": "hero_name_2107",
+            "source_name_cn": "郭嘉"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_2108",
+      "display_name_cn": "程昱",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_2108",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_2108.png",
+      "source_reference": {
+        "representative_source_hero_id": 2108,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2108,
+            "source_name_key": "hero_name_2108",
+            "source_name_cn": "程昱"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_2110",
+      "display_name_cn": "甄姬",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_2110",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_2110.png",
+      "source_reference": {
+        "representative_source_hero_id": 2110,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2110,
+            "source_name_key": "hero_name_2110",
+            "source_name_cn": "甄姬"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_2202",
+      "display_name_cn": "曹丕",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_2202",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_2202.png",
+      "source_reference": {
+        "representative_source_hero_id": 2202,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2202,
+            "source_name_key": "hero_name_2202",
+            "source_name_cn": "曹丕"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_3001",
+      "display_name_cn": "孙坚",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_3001",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_3001.png",
+      "source_reference": {
+        "representative_source_hero_id": 3001,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3001,
+            "source_name_key": "hero_name_3001",
+            "source_name_cn": "孙坚"
+          },
+          {
+            "source_hero_id": 1008001,
+            "source_name_key": "hero_name_1008001",
+            "source_name_cn": "孙坚"
+          },
+          {
+            "source_hero_id": 1012007,
+            "source_name_key": "hero_name_1012007",
+            "source_name_cn": "孙坚"
+          },
+          {
+            "source_hero_id": 1014007,
+            "source_name_key": "hero_name_1014007",
+            "source_name_cn": "孙坚"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_3002",
+      "display_name_cn": "孙策",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_3002",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_3002.png",
+      "source_reference": {
+        "representative_source_hero_id": 3002,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3002,
+            "source_name_key": "hero_name_3002",
+            "source_name_cn": "孙策"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_3003",
+      "display_name_cn": "孙权",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_3003",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_3003.png",
+      "source_reference": {
+        "representative_source_hero_id": 3003,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3003,
+            "source_name_key": "hero_name_3003",
+            "source_name_cn": "孙权"
+          },
+          {
+            "source_hero_id": 2000411,
+            "source_name_key": "hero_name_2000411",
+            "source_name_cn": "孙权"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_3004",
+      "display_name_cn": "太史慈",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_3004",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_3004.png",
+      "source_reference": {
+        "representative_source_hero_id": 3004,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3004,
+            "source_name_key": "hero_name_3004",
+            "source_name_cn": "太史慈"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_3005",
+      "display_name_cn": "甘宁",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_3005",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_3005.png",
+      "source_reference": {
+        "representative_source_hero_id": 3005,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3005,
+            "source_name_key": "hero_name_3005",
+            "source_name_cn": "甘宁"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_3006",
+      "display_name_cn": "周瑜",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_3006",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_3006.png",
+      "source_reference": {
+        "representative_source_hero_id": 3006,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3006,
+            "source_name_key": "hero_name_3006",
+            "source_name_cn": "周瑜"
+          },
+          {
+            "source_hero_id": 2000302,
+            "source_name_key": "hero_name_2000302",
+            "source_name_cn": "周瑜"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_3007",
+      "display_name_cn": "鲁肃",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_3007",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_3007.png",
+      "source_reference": {
+        "representative_source_hero_id": 3007,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3007,
+            "source_name_key": "hero_name_3007",
+            "source_name_cn": "鲁肃"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_3008",
+      "display_name_cn": "吕蒙",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_3008",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_3008.png",
+      "source_reference": {
+        "representative_source_hero_id": 3008,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3008,
+            "source_name_key": "hero_name_3008",
+            "source_name_cn": "吕蒙"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_3009",
+      "display_name_cn": "陆逊",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_3009",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_3009.png",
+      "source_reference": {
+        "representative_source_hero_id": 3009,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3009,
+            "source_name_key": "hero_name_3009",
+            "source_name_cn": "陆逊"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_4001",
+      "display_name_cn": "张角",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_4001",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_4001.png",
+      "source_reference": {
+        "representative_source_hero_id": 4001,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 4001,
+            "source_name_key": "hero_name_4001",
+            "source_name_cn": "张角"
+          },
+          {
+            "source_hero_id": 1014011,
+            "source_name_key": "hero_name_1014011",
+            "source_name_cn": "张角"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_5105",
+      "display_name_cn": "蔡文姬",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_5105",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_5105.png",
+      "source_reference": {
+        "representative_source_hero_id": 5105,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 5105,
+            "source_name_key": "hero_name_5105",
+            "source_name_cn": "蔡文姬"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_6001",
+      "display_name_cn": "董卓",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_6001",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_6001.png",
+      "source_reference": {
+        "representative_source_hero_id": 6001,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 6001,
+            "source_name_key": "hero_name_6001",
+            "source_name_cn": "董卓"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_6002",
+      "display_name_cn": "吕布",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_6002",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_6002.png",
+      "source_reference": {
+        "representative_source_hero_id": 6002,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 6002,
+            "source_name_key": "hero_name_6002",
+            "source_name_cn": "吕布"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_6003",
+      "display_name_cn": "貂蝉",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_6003",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_6003.png",
+      "source_reference": {
+        "representative_source_hero_id": 6003,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 6003,
+            "source_name_key": "hero_name_6003",
+            "source_name_cn": "貂蝉"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_6004",
+      "display_name_cn": "贾诩",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_6004",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_6004.png",
+      "source_reference": {
+        "representative_source_hero_id": 6004,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 6004,
+            "source_name_key": "hero_name_6004",
+            "source_name_cn": "贾诩"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_7001",
+      "display_name_cn": "袁术",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_7001",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_7001.png",
+      "source_reference": {
+        "representative_source_hero_id": 7001,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 7001,
+            "source_name_key": "hero_name_7001",
+            "source_name_cn": "袁术"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_8001",
+      "display_name_cn": "袁绍",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_8001",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_8001.png",
+      "source_reference": {
+        "representative_source_hero_id": 8001,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 8001,
+            "source_name_key": "hero_name_8001",
+            "source_name_cn": "袁绍"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_GJ_GG_BASEMAP_HERO_99001",
+      "display_name_cn": "华佗",
+      "selection_status": "candidate",
+      "half_body": "UI_gj_gg_basemap_hero_99001",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_99001.png",
+      "source_reference": {
+        "representative_source_hero_id": 99001,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 99001,
+            "source_name_key": "hero_name_99001",
+            "source_name_cn": "华佗"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_NPC_HIGH_2",
+      "display_name_cn": "韩溯",
+      "selection_status": "candidate",
+      "half_body": "UI_npc_high_2",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_npc_high_2.png",
+      "source_reference": {
+        "representative_source_hero_id": 1006201,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1006201,
+            "source_name_key": "hero_name_1006201",
+            "source_name_cn": "韩溯"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_NPC_HIGH_3",
+      "display_name_cn": "车胄",
+      "selection_status": "candidate",
+      "half_body": "UI_npc_high_3",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_npc_high_3.png",
+      "source_reference": {
+        "representative_source_hero_id": 1282101,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1282101,
+            "source_name_key": "hero_name_1282101",
+            "source_name_cn": "车胄"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_NPC_LOW_1",
+      "display_name_cn": "官兵主将",
+      "selection_status": "candidate",
+      "half_body": "UI_npc_low_1",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_npc_low_1.png",
+      "source_reference": {
+        "representative_source_hero_id": 1003101,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1003101,
+            "source_name_key": "hero_name_1003101",
+            "source_name_cn": "官兵主将"
+          },
+          {
+            "source_hero_id": 1003211,
+            "source_name_key": "hero_name_1003211",
+            "source_name_cn": "官兵主将"
+          },
+          {
+            "source_hero_id": 1008011,
+            "source_name_key": "hero_name_1008011",
+            "source_name_cn": "乱军主将"
+          },
+          {
+            "source_hero_id": 1191101,
+            "source_name_key": "hero_name_1191101",
+            "source_name_cn": "乌桓统领"
+          },
+          {
+            "source_hero_id": 1201201,
+            "source_name_key": "hero_name_1201201",
+            "source_name_cn": "乱军统领"
+          },
+          {
+            "source_hero_id": 1202201,
+            "source_name_key": "hero_name_1202201",
+            "source_name_cn": "乱军统领"
+          },
+          {
+            "source_hero_id": 1221301,
+            "source_name_key": "hero_name_1221301",
+            "source_name_cn": "西凉统领"
+          },
+          {
+            "source_hero_id": 1222301,
+            "source_name_key": "hero_name_1222301",
+            "source_name_cn": "乱军统领"
+          },
+          {
+            "source_hero_id": 1261301,
+            "source_name_key": "hero_name_1261301",
+            "source_name_cn": "山越统领"
+          },
+          {
+            "source_hero_id": 1271201,
+            "source_name_key": "hero_name_1271201",
+            "source_name_cn": "统领甲"
+          },
+          {
+            "source_hero_id": 1271211,
+            "source_name_key": "hero_name_1271211",
+            "source_name_cn": "统领乙"
+          },
+          {
+            "source_hero_id": 1272201,
+            "source_name_key": "hero_name_1272201",
+            "source_name_cn": "乱军统领"
+          },
+          {
+            "source_hero_id": 1283101,
+            "source_name_key": "hero_name_1283101",
+            "source_name_cn": "乱军统领"
+          },
+          {
+            "source_hero_id": 1311201,
+            "source_name_key": "hero_name_1311201",
+            "source_name_cn": "乱军统领"
+          },
+          {
+            "source_hero_id": 1312201,
+            "source_name_key": "hero_name_1312201",
+            "source_name_cn": "西凉将领"
+          },
+          {
+            "source_hero_id": 1411101,
+            "source_name_key": "hero_name_1411101",
+            "source_name_cn": "演习统领"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_NPC_LOW_17",
+      "display_name_cn": "刺客首领",
+      "selection_status": "candidate",
+      "half_body": "UI_npc_low_17",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_npc_low_17.png",
+      "source_reference": {
+        "representative_source_hero_id": 1341301,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1341301,
+            "source_name_key": "hero_name_1341301",
+            "source_name_cn": "刺客首领"
+          },
+          {
+            "source_hero_id": 1341302,
+            "source_name_key": "hero_name_1341302",
+            "source_name_cn": "刺客"
+          },
+          {
+            "source_hero_id": 1341303,
+            "source_name_key": "hero_name_1341303",
+            "source_name_cn": "刺客"
+          },
+          {
+            "source_hero_id": 1341304,
+            "source_name_key": "hero_name_1341304",
+            "source_name_cn": "刺客"
+          },
+          {
+            "source_hero_id": 1341305,
+            "source_name_key": "hero_name_1341305",
+            "source_name_cn": "刺客"
+          },
+          {
+            "source_hero_id": 1341306,
+            "source_name_key": "hero_name_1341306",
+            "source_name_cn": "刺客"
+          },
+          {
+            "source_hero_id": 1341307,
+            "source_name_key": "hero_name_1341307",
+            "source_name_cn": "刺客"
+          },
+          {
+            "source_hero_id": 1341308,
+            "source_name_key": "hero_name_1341308",
+            "source_name_cn": "刺客"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_NPC_LOW_2",
+      "display_name_cn": "官兵副将",
+      "selection_status": "candidate",
+      "half_body": "UI_npc_low_2",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_npc_low_2.png",
+      "source_reference": {
+        "representative_source_hero_id": 1003102,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1003102,
+            "source_name_key": "hero_name_1003102",
+            "source_name_cn": "官兵副将"
+          },
+          {
+            "source_hero_id": 1003212,
+            "source_name_key": "hero_name_1003212",
+            "source_name_cn": "官兵副将"
+          },
+          {
+            "source_hero_id": 1008012,
+            "source_name_key": "hero_name_1008012",
+            "source_name_cn": "乱军副将"
+          },
+          {
+            "source_hero_id": 1191102,
+            "source_name_key": "hero_name_1191102",
+            "source_name_cn": "乌桓精锐"
+          },
+          {
+            "source_hero_id": 1191103,
+            "source_name_key": "hero_name_1191103",
+            "source_name_cn": "乌桓精锐"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_NPC_LOW_3",
+      "display_name_cn": "官兵",
+      "selection_status": "candidate",
+      "half_body": "UI_npc_low_3",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_npc_low_3.png",
+      "source_reference": {
+        "representative_source_hero_id": 1003103,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1003103,
+            "source_name_key": "hero_name_1003103",
+            "source_name_cn": "官兵"
+          },
+          {
+            "source_hero_id": 1003104,
+            "source_name_key": "hero_name_1003104",
+            "source_name_cn": "官兵"
+          },
+          {
+            "source_hero_id": 1003105,
+            "source_name_key": "hero_name_1003105",
+            "source_name_cn": "官兵"
+          },
+          {
+            "source_hero_id": 1003106,
+            "source_name_key": "hero_name_1003106",
+            "source_name_cn": "官兵"
+          },
+          {
+            "source_hero_id": 1003213,
+            "source_name_key": "hero_name_1003213",
+            "source_name_cn": "官兵"
+          },
+          {
+            "source_hero_id": 1008013,
+            "source_name_key": "hero_name_1008013",
+            "source_name_cn": "乱军士兵"
+          },
+          {
+            "source_hero_id": 1008014,
+            "source_name_key": "hero_name_1008014",
+            "source_name_cn": "乱军士兵"
+          },
+          {
+            "source_hero_id": 1191104,
+            "source_name_key": "hero_name_1191104",
+            "source_name_cn": "乌桓士兵"
+          },
+          {
+            "source_hero_id": 1191105,
+            "source_name_key": "hero_name_1191105",
+            "source_name_cn": "乌桓士兵"
+          },
+          {
+            "source_hero_id": 1191106,
+            "source_name_key": "hero_name_1191106",
+            "source_name_cn": "乌桓士兵"
+          },
+          {
+            "source_hero_id": 1191107,
+            "source_name_key": "hero_name_1191107",
+            "source_name_cn": "乌桓士兵"
+          },
+          {
+            "source_hero_id": 1201204,
+            "source_name_key": "hero_name_1201204",
+            "source_name_cn": "乱军步兵"
+          },
+          {
+            "source_hero_id": 1201205,
+            "source_name_key": "hero_name_1201205",
+            "source_name_cn": "乱军步兵"
+          },
+          {
+            "source_hero_id": 1202204,
+            "source_name_key": "hero_name_1202204",
+            "source_name_cn": "乱军步兵"
+          },
+          {
+            "source_hero_id": 1202205,
+            "source_name_key": "hero_name_1202205",
+            "source_name_cn": "乱军步兵"
+          },
+          {
+            "source_hero_id": 1211103,
+            "source_name_key": "hero_name_1211103",
+            "source_name_cn": "徐州步兵"
+          },
+          {
+            "source_hero_id": 1211104,
+            "source_name_key": "hero_name_1211104",
+            "source_name_cn": "徐州步兵"
+          },
+          {
+            "source_hero_id": 1222304,
+            "source_name_key": "hero_name_1222304",
+            "source_name_cn": "乱军步兵"
+          },
+          {
+            "source_hero_id": 1222305,
+            "source_name_key": "hero_name_1222305",
+            "source_name_cn": "乱军步兵"
+          },
+          {
+            "source_hero_id": 1261302,
+            "source_name_key": "hero_name_1261302",
+            "source_name_cn": "山越士兵"
+          },
+          {
+            "source_hero_id": 1261303,
+            "source_name_key": "hero_name_1261303",
+            "source_name_cn": "山越士兵"
+          },
+          {
+            "source_hero_id": 1261304,
+            "source_name_key": "hero_name_1261304",
+            "source_name_cn": "山越士兵"
+          },
+          {
+            "source_hero_id": 1261305,
+            "source_name_key": "hero_name_1261305",
+            "source_name_cn": "山越士兵"
+          },
+          {
+            "source_hero_id": 1261306,
+            "source_name_key": "hero_name_1261306",
+            "source_name_cn": "山越士兵"
+          },
+          {
+            "source_hero_id": 1261307,
+            "source_name_key": "hero_name_1261307",
+            "source_name_cn": "山越士兵"
+          },
+          {
+            "source_hero_id": 1271204,
+            "source_name_key": "hero_name_1271204",
+            "source_name_cn": "演习步兵"
+          },
+          {
+            "source_hero_id": 1271205,
+            "source_name_key": "hero_name_1271205",
+            "source_name_cn": "演习步兵"
+          },
+          {
+            "source_hero_id": 1271214,
+            "source_name_key": "hero_name_1271214",
+            "source_name_cn": "演习步兵"
+          },
+          {
+            "source_hero_id": 1271215,
+            "source_name_key": "hero_name_1271215",
+            "source_name_cn": "演习步兵"
+          },
+          {
+            "source_hero_id": 1272204,
+            "source_name_key": "hero_name_1272204",
+            "source_name_cn": "乱军步兵"
+          },
+          {
+            "source_hero_id": 1272205,
+            "source_name_key": "hero_name_1272205",
+            "source_name_cn": "乱军步兵"
+          },
+          {
+            "source_hero_id": 1281102,
+            "source_name_key": "hero_name_1281102",
+            "source_name_cn": "潜伏步兵"
+          },
+          {
+            "source_hero_id": 1282104,
+            "source_name_key": "hero_name_1282104",
+            "source_name_cn": "徐州步兵"
+          },
+          {
+            "source_hero_id": 1282105,
+            "source_name_key": "hero_name_1282105",
+            "source_name_cn": "徐州步兵"
+          },
+          {
+            "source_hero_id": 1283104,
+            "source_name_key": "hero_name_1283104",
+            "source_name_cn": "乱军步兵"
+          },
+          {
+            "source_hero_id": 1283105,
+            "source_name_key": "hero_name_1283105",
+            "source_name_cn": "乱军步兵"
+          },
+          {
+            "source_hero_id": 1311204,
+            "source_name_key": "hero_name_1311204",
+            "source_name_cn": "乱军步兵"
+          },
+          {
+            "source_hero_id": 1311205,
+            "source_name_key": "hero_name_1311205",
+            "source_name_cn": "乱军步兵"
+          },
+          {
+            "source_hero_id": 1411104,
+            "source_name_key": "hero_name_1411104",
+            "source_name_cn": "演习步兵"
+          },
+          {
+            "source_hero_id": 1411105,
+            "source_name_key": "hero_name_1411105",
+            "source_name_cn": "演习步兵"
+          },
+          {
+            "source_hero_id": 2000211,
+            "source_name_key": "hero_name_2000211",
+            "source_name_cn": "西凉兵"
+          },
+          {
+            "source_hero_id": 2000212,
+            "source_name_key": "hero_name_2000212",
+            "source_name_cn": "西凉兵"
+          },
+          {
+            "source_hero_id": 2000213,
+            "source_name_key": "hero_name_2000213",
+            "source_name_cn": "西凉兵"
+          },
+          {
+            "source_hero_id": 2000312,
+            "source_name_key": "hero_name_2000312",
+            "source_name_cn": "曹军士兵"
+          },
+          {
+            "source_hero_id": 2000313,
+            "source_name_key": "hero_name_2000313",
+            "source_name_cn": "曹军士兵"
+          },
+          {
+            "source_hero_id": 2000314,
+            "source_name_key": "hero_name_2000314",
+            "source_name_cn": "曹军士兵"
+          },
+          {
+            "source_hero_id": 2000315,
+            "source_name_key": "hero_name_2000315",
+            "source_name_cn": "曹军士兵"
+          },
+          {
+            "source_hero_id": 2000316,
+            "source_name_key": "hero_name_2000316",
+            "source_name_cn": "曹军士兵"
+          },
+          {
+            "source_hero_id": 2000317,
+            "source_name_key": "hero_name_2000317",
+            "source_name_cn": "曹军士兵"
+          },
+          {
+            "source_hero_id": 2000318,
+            "source_name_key": "hero_name_2000318",
+            "source_name_cn": "曹军士兵"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_NPC_LOW_4",
+      "display_name_cn": "乱军骑兵",
+      "selection_status": "candidate",
+      "half_body": "UI_npc_low_4",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_npc_low_4.png",
+      "source_reference": {
+        "representative_source_hero_id": 1201202,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1201202,
+            "source_name_key": "hero_name_1201202",
+            "source_name_cn": "乱军骑兵"
+          },
+          {
+            "source_hero_id": 1201203,
+            "source_name_key": "hero_name_1201203",
+            "source_name_cn": "乱军骑兵"
+          },
+          {
+            "source_hero_id": 1202202,
+            "source_name_key": "hero_name_1202202",
+            "source_name_cn": "乱军骑兵"
+          },
+          {
+            "source_hero_id": 1202203,
+            "source_name_key": "hero_name_1202203",
+            "source_name_cn": "乱军骑兵"
+          },
+          {
+            "source_hero_id": 1211101,
+            "source_name_key": "hero_name_1211101",
+            "source_name_cn": "徐州骑兵"
+          },
+          {
+            "source_hero_id": 1211102,
+            "source_name_key": "hero_name_1211102",
+            "source_name_cn": "徐州骑兵"
+          },
+          {
+            "source_hero_id": 1222302,
+            "source_name_key": "hero_name_1222302",
+            "source_name_cn": "乱军骑兵"
+          },
+          {
+            "source_hero_id": 1222303,
+            "source_name_key": "hero_name_1222303",
+            "source_name_cn": "乱军骑兵"
+          },
+          {
+            "source_hero_id": 1271202,
+            "source_name_key": "hero_name_1271202",
+            "source_name_cn": "演习骑兵"
+          },
+          {
+            "source_hero_id": 1271203,
+            "source_name_key": "hero_name_1271203",
+            "source_name_cn": "演习骑兵"
+          },
+          {
+            "source_hero_id": 1271212,
+            "source_name_key": "hero_name_1271212",
+            "source_name_cn": "演习骑兵"
+          },
+          {
+            "source_hero_id": 1271213,
+            "source_name_key": "hero_name_1271213",
+            "source_name_cn": "演习骑兵"
+          },
+          {
+            "source_hero_id": 1272202,
+            "source_name_key": "hero_name_1272202",
+            "source_name_cn": "乱军骑兵"
+          },
+          {
+            "source_hero_id": 1272203,
+            "source_name_key": "hero_name_1272203",
+            "source_name_cn": "乱军骑兵"
+          },
+          {
+            "source_hero_id": 1281101,
+            "source_name_key": "hero_name_1281101",
+            "source_name_cn": "潜伏骑兵"
+          },
+          {
+            "source_hero_id": 1282102,
+            "source_name_key": "hero_name_1282102",
+            "source_name_cn": "徐州骑兵"
+          },
+          {
+            "source_hero_id": 1282103,
+            "source_name_key": "hero_name_1282103",
+            "source_name_cn": "徐州骑兵"
+          },
+          {
+            "source_hero_id": 1283102,
+            "source_name_key": "hero_name_1283102",
+            "source_name_cn": "乱军骑兵"
+          },
+          {
+            "source_hero_id": 1283103,
+            "source_name_key": "hero_name_1283103",
+            "source_name_cn": "乱军骑兵"
+          },
+          {
+            "source_hero_id": 1311202,
+            "source_name_key": "hero_name_1311202",
+            "source_name_cn": "乱军骑兵"
+          },
+          {
+            "source_hero_id": 1311203,
+            "source_name_key": "hero_name_1311203",
+            "source_name_cn": "乱军骑兵"
+          },
+          {
+            "source_hero_id": 1312202,
+            "source_name_key": "hero_name_1312202",
+            "source_name_cn": "西凉骑兵"
+          },
+          {
+            "source_hero_id": 1312203,
+            "source_name_key": "hero_name_1312203",
+            "source_name_cn": "西凉骑兵"
+          },
+          {
+            "source_hero_id": 1312204,
+            "source_name_key": "hero_name_1312204",
+            "source_name_cn": "西凉骑兵"
+          },
+          {
+            "source_hero_id": 1312205,
+            "source_name_key": "hero_name_1312205",
+            "source_name_cn": "西凉骑兵"
+          },
+          {
+            "source_hero_id": 1312206,
+            "source_name_key": "hero_name_1312206",
+            "source_name_cn": "西凉骑兵"
+          },
+          {
+            "source_hero_id": 1312207,
+            "source_name_key": "hero_name_1312207",
+            "source_name_cn": "西凉骑兵"
+          },
+          {
+            "source_hero_id": 1411102,
+            "source_name_key": "hero_name_1411102",
+            "source_name_cn": "演习骑兵"
+          },
+          {
+            "source_hero_id": 1411103,
+            "source_name_key": "hero_name_1411103",
+            "source_name_cn": "演习骑兵"
+          },
+          {
+            "source_hero_id": 2000214,
+            "source_name_key": "hero_name_2000214",
+            "source_name_cn": "西凉兵"
+          },
+          {
+            "source_hero_id": 2000215,
+            "source_name_key": "hero_name_2000215",
+            "source_name_cn": "西凉兵"
+          },
+          {
+            "source_hero_id": 2000216,
+            "source_name_key": "hero_name_2000216",
+            "source_name_cn": "西凉兵"
+          },
+          {
+            "source_hero_id": 2000217,
+            "source_name_key": "hero_name_2000217",
+            "source_name_cn": "西凉兵"
+          },
+          {
+            "source_hero_id": 2000311,
+            "source_name_key": "hero_name_2000311",
+            "source_name_cn": "曹军士兵"
+          },
+          {
+            "source_hero_id": 2000511,
+            "source_name_key": "hero_name_2000511",
+            "source_name_cn": "曹军士兵"
+          },
+          {
+            "source_hero_id": 2000512,
+            "source_name_key": "hero_name_2000512",
+            "source_name_cn": "曹军士兵"
+          },
+          {
+            "source_hero_id": 2000513,
+            "source_name_key": "hero_name_2000513",
+            "source_name_cn": "曹军士兵"
+          },
+          {
+            "source_hero_id": 2000514,
+            "source_name_key": "hero_name_2000514",
+            "source_name_cn": "曹军士兵"
+          },
+          {
+            "source_hero_id": 2000515,
+            "source_name_key": "hero_name_2000515",
+            "source_name_cn": "曹军士兵"
+          },
+          {
+            "source_hero_id": 2000516,
+            "source_name_key": "hero_name_2000516",
+            "source_name_cn": "曹军士兵"
+          },
+          {
+            "source_hero_id": 2000517,
+            "source_name_key": "hero_name_2000517",
+            "source_name_cn": "曹军士兵"
+          },
+          {
+            "source_hero_id": 2000518,
+            "source_name_key": "hero_name_2000518",
+            "source_name_cn": "曹军士兵"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_NPC_LOW_5",
+      "display_name_cn": "乱军弓兵",
+      "selection_status": "candidate",
+      "half_body": "UI_npc_low_5",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_npc_low_5.png",
+      "source_reference": {
+        "representative_source_hero_id": 1201206,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1201206,
+            "source_name_key": "hero_name_1201206",
+            "source_name_cn": "乱军弓兵"
+          },
+          {
+            "source_hero_id": 1201207,
+            "source_name_key": "hero_name_1201207",
+            "source_name_cn": "乱军弓兵"
+          },
+          {
+            "source_hero_id": 1202206,
+            "source_name_key": "hero_name_1202206",
+            "source_name_cn": "乱军弓兵"
+          },
+          {
+            "source_hero_id": 1202207,
+            "source_name_key": "hero_name_1202207",
+            "source_name_cn": "乱军弓兵"
+          },
+          {
+            "source_hero_id": 1211105,
+            "source_name_key": "hero_name_1211105",
+            "source_name_cn": "徐州弓兵"
+          },
+          {
+            "source_hero_id": 1211106,
+            "source_name_key": "hero_name_1211106",
+            "source_name_cn": "徐州弓兵"
+          },
+          {
+            "source_hero_id": 1222306,
+            "source_name_key": "hero_name_1222306",
+            "source_name_cn": "乱军弓兵"
+          },
+          {
+            "source_hero_id": 1222307,
+            "source_name_key": "hero_name_1222307",
+            "source_name_cn": "乱军弓兵"
+          },
+          {
+            "source_hero_id": 1271206,
+            "source_name_key": "hero_name_1271206",
+            "source_name_cn": "演习弓兵"
+          },
+          {
+            "source_hero_id": 1271207,
+            "source_name_key": "hero_name_1271207",
+            "source_name_cn": "演习弓兵"
+          },
+          {
+            "source_hero_id": 1271216,
+            "source_name_key": "hero_name_1271216",
+            "source_name_cn": "演习弓兵"
+          },
+          {
+            "source_hero_id": 1271217,
+            "source_name_key": "hero_name_1271217",
+            "source_name_cn": "演习弓兵"
+          },
+          {
+            "source_hero_id": 1272206,
+            "source_name_key": "hero_name_1272206",
+            "source_name_cn": "乱军弓兵"
+          },
+          {
+            "source_hero_id": 1272207,
+            "source_name_key": "hero_name_1272207",
+            "source_name_cn": "乱军弓兵"
+          },
+          {
+            "source_hero_id": 1281103,
+            "source_name_key": "hero_name_1281103",
+            "source_name_cn": "潜伏弓兵"
+          },
+          {
+            "source_hero_id": 1282106,
+            "source_name_key": "hero_name_1282106",
+            "source_name_cn": "徐州弓兵"
+          },
+          {
+            "source_hero_id": 1282107,
+            "source_name_key": "hero_name_1282107",
+            "source_name_cn": "徐州弓兵"
+          },
+          {
+            "source_hero_id": 1283106,
+            "source_name_key": "hero_name_1283106",
+            "source_name_cn": "乱军弓兵"
+          },
+          {
+            "source_hero_id": 1283107,
+            "source_name_key": "hero_name_1283107",
+            "source_name_cn": "乱军弓兵"
+          },
+          {
+            "source_hero_id": 1311206,
+            "source_name_key": "hero_name_1311206",
+            "source_name_cn": "乱军弓兵"
+          },
+          {
+            "source_hero_id": 1311207,
+            "source_name_key": "hero_name_1311207",
+            "source_name_cn": "乱军弓兵"
+          },
+          {
+            "source_hero_id": 1411106,
+            "source_name_key": "hero_name_1411106",
+            "source_name_cn": "演习弓兵"
+          },
+          {
+            "source_hero_id": 1411107,
+            "source_name_key": "hero_name_1411107",
+            "source_name_cn": "演习弓兵"
+          },
+          {
+            "source_hero_id": 2000218,
+            "source_name_key": "hero_name_2000218",
+            "source_name_cn": "西凉兵"
+          },
+          {
+            "source_hero_id": 2000412,
+            "source_name_key": "hero_name_2000412",
+            "source_name_cn": "吴军士兵"
+          },
+          {
+            "source_hero_id": 2000413,
+            "source_name_key": "hero_name_2000413",
+            "source_name_cn": "吴军士兵"
+          },
+          {
+            "source_hero_id": 2000414,
+            "source_name_key": "hero_name_2000414",
+            "source_name_cn": "吴军士兵"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_NPC_LOW_6",
+      "display_name_cn": "黄巾主将",
+      "selection_status": "candidate",
+      "half_body": "UI_npc_low_6",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_npc_low_6.png",
+      "source_reference": {
+        "representative_source_hero_id": 1006111,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1006111,
+            "source_name_key": "hero_name_1006111",
+            "source_name_cn": "黄巾主将"
+          },
+          {
+            "source_hero_id": 1006202,
+            "source_name_key": "hero_name_1006202",
+            "source_name_cn": "黄巾主将"
+          },
+          {
+            "source_hero_id": 1012013,
+            "source_name_key": "hero_name_1012013",
+            "source_name_cn": "黄巾将领"
+          },
+          {
+            "source_hero_id": 1012014,
+            "source_name_key": "hero_name_1012014",
+            "source_name_cn": "黄巾将领"
+          },
+          {
+            "source_hero_id": 1180201,
+            "source_name_key": "hero_name_1180201",
+            "source_name_cn": "黄巾统领"
+          },
+          {
+            "source_hero_id": 1192101,
+            "source_name_key": "hero_name_1192101",
+            "source_name_cn": "黄巾统领"
+          },
+          {
+            "source_hero_id": 1262101,
+            "source_name_key": "hero_name_1262101",
+            "source_name_cn": "黄巾统领"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_NPC_LOW_7",
+      "display_name_cn": "黄巾副将",
+      "selection_status": "candidate",
+      "half_body": "UI_npc_low_7",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_npc_low_7.png",
+      "source_reference": {
+        "representative_source_hero_id": 1006112,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1006112,
+            "source_name_key": "hero_name_1006112",
+            "source_name_cn": "黄巾副将"
+          },
+          {
+            "source_hero_id": 1006203,
+            "source_name_key": "hero_name_1006203",
+            "source_name_cn": "黄巾副将"
+          },
+          {
+            "source_hero_id": 1014014,
+            "source_name_key": "hero_name_1014014",
+            "source_name_cn": "黄巾力士"
+          },
+          {
+            "source_hero_id": 1014015,
+            "source_name_key": "hero_name_1014015",
+            "source_name_cn": "黄巾力士"
+          },
+          {
+            "source_hero_id": 1014016,
+            "source_name_key": "hero_name_1014016",
+            "source_name_cn": "黄巾勇士"
+          },
+          {
+            "source_hero_id": 1014017,
+            "source_name_key": "hero_name_1014017",
+            "source_name_cn": "黄巾勇士"
+          },
+          {
+            "source_hero_id": 1014018,
+            "source_name_key": "hero_name_1014018",
+            "source_name_cn": "黄巾勇士"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_NPC_LOW_8",
+      "display_name_cn": "黄巾方士",
+      "selection_status": "candidate",
+      "half_body": "UI_npc_low_8",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_npc_low_8.png",
+      "source_reference": {
+        "representative_source_hero_id": 1006113,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1006113,
+            "source_name_key": "hero_name_1006113",
+            "source_name_cn": "黄巾方士"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_NPC_LOW_9",
+      "display_name_cn": "黄巾兵",
+      "selection_status": "candidate",
+      "half_body": "UI_npc_low_9",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_npc_low_9.png",
+      "source_reference": {
+        "representative_source_hero_id": 1006114,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1006114,
+            "source_name_key": "hero_name_1006114",
+            "source_name_cn": "黄巾兵"
+          },
+          {
+            "source_hero_id": 1006204,
+            "source_name_key": "hero_name_1006204",
+            "source_name_cn": "黄巾兵"
+          },
+          {
+            "source_hero_id": 1012015,
+            "source_name_key": "hero_name_1012015",
+            "source_name_cn": "黄巾兵"
+          },
+          {
+            "source_hero_id": 1012016,
+            "source_name_key": "hero_name_1012016",
+            "source_name_cn": "黄巾兵"
+          },
+          {
+            "source_hero_id": 1012017,
+            "source_name_key": "hero_name_1012017",
+            "source_name_cn": "黄巾兵"
+          },
+          {
+            "source_hero_id": 1012018,
+            "source_name_key": "hero_name_1012018",
+            "source_name_cn": "黄巾兵"
+          },
+          {
+            "source_hero_id": 2000111,
+            "source_name_key": "hero_name_2000111",
+            "source_name_cn": "黄巾兵"
+          },
+          {
+            "source_hero_id": 2000112,
+            "source_name_key": "hero_name_2000112",
+            "source_name_cn": "黄巾兵"
+          },
+          {
+            "source_hero_id": 2000113,
+            "source_name_key": "hero_name_2000113",
+            "source_name_cn": "黄巾兵"
+          },
+          {
+            "source_hero_id": 2000114,
+            "source_name_key": "hero_name_2000114",
+            "source_name_cn": "黄巾兵"
+          },
+          {
+            "source_hero_id": 2000115,
+            "source_name_key": "hero_name_2000115",
+            "source_name_cn": "黄巾兵"
+          },
+          {
+            "source_hero_id": 2000116,
+            "source_name_key": "hero_name_2000116",
+            "source_name_cn": "黄巾兵"
+          },
+          {
+            "source_hero_id": 2000117,
+            "source_name_key": "hero_name_2000117",
+            "source_name_cn": "黄巾兵"
+          },
+          {
+            "source_hero_id": 2000118,
+            "source_name_key": "hero_name_2000118",
+            "source_name_cn": "黄巾兵"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_10001",
+      "display_name_cn": "刘表",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_10001",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_10001.png",
+      "source_reference": {
+        "representative_source_hero_id": 10001,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 10001,
+            "source_name_key": "hero_name_10001",
+            "source_name_cn": "刘表"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_10101",
+      "display_name_cn": "黄祖",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_10101",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_10101.png",
+      "source_reference": {
+        "representative_source_hero_id": 10101,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 10101,
+            "source_name_key": "hero_name_10101",
+            "source_name_cn": "黄祖"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_10102",
+      "display_name_cn": "蔡瑁",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_10102",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_10102.png",
+      "source_reference": {
+        "representative_source_hero_id": 10102,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 10102,
+            "source_name_key": "hero_name_10102",
+            "source_name_cn": "蔡瑁"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_10201",
+      "display_name_cn": "刘琦",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_10201",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_10201.png",
+      "source_reference": {
+        "representative_source_hero_id": 10201,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 10201,
+            "source_name_key": "hero_name_10201",
+            "source_name_cn": "刘琦"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_10202",
+      "display_name_cn": "刘琮",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_10202",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_10202.png",
+      "source_reference": {
+        "representative_source_hero_id": 10202,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 10202,
+            "source_name_key": "hero_name_10202",
+            "source_name_cn": "刘琮"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_10203",
+      "display_name_cn": "蔡中",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_10203",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_10203.png",
+      "source_reference": {
+        "representative_source_hero_id": 10203,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 10203,
+            "source_name_key": "hero_name_10203",
+            "source_name_cn": "蔡中"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_10204",
+      "display_name_cn": "蔡和",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_10204",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_10204.png",
+      "source_reference": {
+        "representative_source_hero_id": 10204,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 10204,
+            "source_name_key": "hero_name_10204",
+            "source_name_cn": "蔡和"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_10205",
+      "display_name_cn": "蒯良",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_10205",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_10205.png",
+      "source_reference": {
+        "representative_source_hero_id": 10205,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 10205,
+            "source_name_key": "hero_name_10205",
+            "source_name_cn": "蒯良"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_10206",
+      "display_name_cn": "蒯越",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_10206",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_10206.png",
+      "source_reference": {
+        "representative_source_hero_id": 10206,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 10206,
+            "source_name_key": "hero_name_10206",
+            "source_name_cn": "蒯越"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_11001",
+      "display_name_cn": "马腾",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_11001",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_11001.png",
+      "source_reference": {
+        "representative_source_hero_id": 11001,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 11001,
+            "source_name_key": "hero_name_11001",
+            "source_name_cn": "马腾"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_11002",
+      "display_name_cn": "韩遂",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_11002",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_11002.png",
+      "source_reference": {
+        "representative_source_hero_id": 11002,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 11002,
+            "source_name_key": "hero_name_11002",
+            "source_name_cn": "韩遂"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_1101",
+      "display_name_cn": "魏延",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_1101",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_1101.png",
+      "source_reference": {
+        "representative_source_hero_id": 1101,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1101,
+            "source_name_key": "hero_name_1101",
+            "source_name_cn": "魏延"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_1102",
+      "display_name_cn": "姜维",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_1102",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_1102.png",
+      "source_reference": {
+        "representative_source_hero_id": 1102,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1102,
+            "source_name_key": "hero_name_1102",
+            "source_name_cn": "姜维"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_1103",
+      "display_name_cn": "孟获",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_1103",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_1103.png",
+      "source_reference": {
+        "representative_source_hero_id": 1103,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1103,
+            "source_name_key": "hero_name_1103",
+            "source_name_cn": "孟获"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_1105",
+      "display_name_cn": "法正",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_1105",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_1105.png",
+      "source_reference": {
+        "representative_source_hero_id": 1105,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1105,
+            "source_name_key": "hero_name_1105",
+            "source_name_cn": "法正"
+          },
+          {
+            "source_hero_id": 2000503,
+            "source_name_key": "hero_name_2000503",
+            "source_name_cn": "法正"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_1107",
+      "display_name_cn": "马良",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_1107",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_1107.png",
+      "source_reference": {
+        "representative_source_hero_id": 1107,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1107,
+            "source_name_key": "hero_name_1107",
+            "source_name_cn": "马良"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_1108",
+      "display_name_cn": "蒲元",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_1108",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_1108.png",
+      "source_reference": {
+        "representative_source_hero_id": 1108,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1108,
+            "source_name_key": "hero_name_1108",
+            "source_name_cn": "蒲元"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_11101",
+      "display_name_cn": "庞德",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_11101",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_11101.png",
+      "source_reference": {
+        "representative_source_hero_id": 11101,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 11101,
+            "source_name_key": "hero_name_11101",
+            "source_name_cn": "庞德"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_11201",
+      "display_name_cn": "马休",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_11201",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_11201.png",
+      "source_reference": {
+        "representative_source_hero_id": 11201,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 11201,
+            "source_name_key": "hero_name_11201",
+            "source_name_cn": "马休"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_11202",
+      "display_name_cn": "马铁",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_11202",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_11202.png",
+      "source_reference": {
+        "representative_source_hero_id": 11202,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 11202,
+            "source_name_key": "hero_name_11202",
+            "source_name_cn": "马铁"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_11203",
+      "display_name_cn": "成宜",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_11203",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_11203.png",
+      "source_reference": {
+        "representative_source_hero_id": 11203,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 11203,
+            "source_name_key": "hero_name_11203",
+            "source_name_cn": "成宜"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_11204",
+      "display_name_cn": "阎行",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_11204",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_11204.png",
+      "source_reference": {
+        "representative_source_hero_id": 11204,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 11204,
+            "source_name_key": "hero_name_11204",
+            "source_name_cn": "阎行"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_12001",
+      "display_name_cn": "刘焉",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_12001",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_12001.png",
+      "source_reference": {
+        "representative_source_hero_id": 12001,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 12001,
+            "source_name_key": "hero_name_12001",
+            "source_name_cn": "刘焉"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_12002",
+      "display_name_cn": "张鲁",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_12002",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_12002.png",
+      "source_reference": {
+        "representative_source_hero_id": 12002,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 12002,
+            "source_name_key": "hero_name_12002",
+            "source_name_cn": "张鲁"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_1201",
+      "display_name_cn": "刘封",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_1201",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_1201.png",
+      "source_reference": {
+        "representative_source_hero_id": 1201,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1201,
+            "source_name_key": "hero_name_1201",
+            "source_name_cn": "刘封"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_1202",
+      "display_name_cn": "刘禅",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_1202",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_1202.png",
+      "source_reference": {
+        "representative_source_hero_id": 1202,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1202,
+            "source_name_key": "hero_name_1202",
+            "source_name_cn": "刘禅"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_1203",
+      "display_name_cn": "关平",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_1203",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_1203.png",
+      "source_reference": {
+        "representative_source_hero_id": 1203,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1203,
+            "source_name_key": "hero_name_1203",
+            "source_name_cn": "关平"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_1204",
+      "display_name_cn": "周仓",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_1204",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_1204.png",
+      "source_reference": {
+        "representative_source_hero_id": 1204,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1204,
+            "source_name_key": "hero_name_1204",
+            "source_name_cn": "周仓"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_1205",
+      "display_name_cn": "马岱",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_1205",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_1205.png",
+      "source_reference": {
+        "representative_source_hero_id": 1205,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1205,
+            "source_name_key": "hero_name_1205",
+            "source_name_cn": "马岱"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_1206",
+      "display_name_cn": "马谡",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_1206",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_1206.png",
+      "source_reference": {
+        "representative_source_hero_id": 1206,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1206,
+            "source_name_key": "hero_name_1206",
+            "source_name_cn": "马谡"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_1207",
+      "display_name_cn": "廖化",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_1207",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_1207.png",
+      "source_reference": {
+        "representative_source_hero_id": 1207,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1207,
+            "source_name_key": "hero_name_1207",
+            "source_name_cn": "廖化"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_1208",
+      "display_name_cn": "糜竺",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_1208",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_1208.png",
+      "source_reference": {
+        "representative_source_hero_id": 1208,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1208,
+            "source_name_key": "hero_name_1208",
+            "source_name_cn": "糜竺"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_1209",
+      "display_name_cn": "简雍",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_1209",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_1209.png",
+      "source_reference": {
+        "representative_source_hero_id": 1209,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1209,
+            "source_name_key": "hero_name_1209",
+            "source_name_cn": "简雍"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_1210",
+      "display_name_cn": "孙乾",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_1210",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_1210.png",
+      "source_reference": {
+        "representative_source_hero_id": 1210,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 1210,
+            "source_name_key": "hero_name_1210",
+            "source_name_cn": "孙乾"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_12101",
+      "display_name_cn": "刘璋",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_12101",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_12101.png",
+      "source_reference": {
+        "representative_source_hero_id": 12101,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 12101,
+            "source_name_key": "hero_name_12101",
+            "source_name_cn": "刘璋"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2002",
+      "display_name_cn": "曹仁",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2002",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2002.png",
+      "source_reference": {
+        "representative_source_hero_id": 2002,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2002,
+            "source_name_key": "hero_name_2002",
+            "source_name_cn": "曹仁"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2003",
+      "display_name_cn": "曹洪",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2003",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2003.png",
+      "source_reference": {
+        "representative_source_hero_id": 2003,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2003,
+            "source_name_key": "hero_name_2003",
+            "source_name_cn": "曹洪"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2008",
+      "display_name_cn": "荀攸",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2008",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2008.png",
+      "source_reference": {
+        "representative_source_hero_id": 2008,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2008,
+            "source_name_key": "hero_name_2008",
+            "source_name_cn": "荀攸"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2009",
+      "display_name_cn": "司马懿",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2009",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2009.png",
+      "source_reference": {
+        "representative_source_hero_id": 2009,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2009,
+            "source_name_key": "hero_name_2009",
+            "source_name_cn": "司马懿"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2102",
+      "display_name_cn": "夏侯渊",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2102",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2102.png",
+      "source_reference": {
+        "representative_source_hero_id": 2102,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2102,
+            "source_name_key": "hero_name_2102",
+            "source_name_cn": "夏侯渊"
+          },
+          {
+            "source_hero_id": 1006103,
+            "source_name_key": "hero_name_1006103",
+            "source_name_cn": "夏侯渊"
+          },
+          {
+            "source_hero_id": 1006213,
+            "source_name_key": "hero_name_1006213",
+            "source_name_cn": "夏侯渊"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2103",
+      "display_name_cn": "乐进",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2103",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2103.png",
+      "source_reference": {
+        "representative_source_hero_id": 2103,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2103,
+            "source_name_key": "hero_name_2103",
+            "source_name_cn": "乐进"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2104",
+      "display_name_cn": "李典",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2104",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2104.png",
+      "source_reference": {
+        "representative_source_hero_id": 2104,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2104,
+            "source_name_key": "hero_name_2104",
+            "source_name_cn": "李典"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2105",
+      "display_name_cn": "徐晃",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2105",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2105.png",
+      "source_reference": {
+        "representative_source_hero_id": 2105,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2105,
+            "source_name_key": "hero_name_2105",
+            "source_name_cn": "徐晃"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2109",
+      "display_name_cn": "刘晔",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2109",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2109.png",
+      "source_reference": {
+        "representative_source_hero_id": 2109,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2109,
+            "source_name_key": "hero_name_2109",
+            "source_name_cn": "刘晔"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2201",
+      "display_name_cn": "曹嵩",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2201",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2201.png",
+      "source_reference": {
+        "representative_source_hero_id": 2201,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2201,
+            "source_name_key": "hero_name_2201",
+            "source_name_cn": "曹嵩"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2203",
+      "display_name_cn": "曹植",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2203",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2203.png",
+      "source_reference": {
+        "representative_source_hero_id": 2203,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2203,
+            "source_name_key": "hero_name_2203",
+            "source_name_cn": "曹植"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2204",
+      "display_name_cn": "曹彰",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2204",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2204.png",
+      "source_reference": {
+        "representative_source_hero_id": 2204,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2204,
+            "source_name_key": "hero_name_2204",
+            "source_name_cn": "曹彰"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2205",
+      "display_name_cn": "曹冲",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2205",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2205.png",
+      "source_reference": {
+        "representative_source_hero_id": 2205,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2205,
+            "source_name_key": "hero_name_2205",
+            "source_name_cn": "曹冲"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2206",
+      "display_name_cn": "曹睿",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2206",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2206.png",
+      "source_reference": {
+        "representative_source_hero_id": 2206,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2206,
+            "source_name_key": "hero_name_2206",
+            "source_name_cn": "曹睿"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2207",
+      "display_name_cn": "司马师",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2207",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2207.png",
+      "source_reference": {
+        "representative_source_hero_id": 2207,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2207,
+            "source_name_key": "hero_name_2207",
+            "source_name_cn": "司马师"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2208",
+      "display_name_cn": "司马昭",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2208",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2208.png",
+      "source_reference": {
+        "representative_source_hero_id": 2208,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2208,
+            "source_name_key": "hero_name_2208",
+            "source_name_cn": "司马昭"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2209",
+      "display_name_cn": "司马炎",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2209",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2209.png",
+      "source_reference": {
+        "representative_source_hero_id": 2209,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2209,
+            "source_name_key": "hero_name_2209",
+            "source_name_cn": "司马炎"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2210",
+      "display_name_cn": "陈琳",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2210",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2210.png",
+      "source_reference": {
+        "representative_source_hero_id": 2210,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2210,
+            "source_name_key": "hero_name_2210",
+            "source_name_cn": "陈琳"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2211",
+      "display_name_cn": "文鸯",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2211",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2211.png",
+      "source_reference": {
+        "representative_source_hero_id": 2211,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2211,
+            "source_name_key": "hero_name_2211",
+            "source_name_cn": "文鸯"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2212",
+      "display_name_cn": "臧霸",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2212",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2212.png",
+      "source_reference": {
+        "representative_source_hero_id": 2212,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2212,
+            "source_name_key": "hero_name_2212",
+            "source_name_cn": "臧霸"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2213",
+      "display_name_cn": "孙观",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2213",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2213.png",
+      "source_reference": {
+        "representative_source_hero_id": 2213,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2213,
+            "source_name_key": "hero_name_2213",
+            "source_name_cn": "孙观"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_2214",
+      "display_name_cn": "卞喜",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_2214",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_2214.png",
+      "source_reference": {
+        "representative_source_hero_id": 2214,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 2214,
+            "source_name_key": "hero_name_2214",
+            "source_name_cn": "卞喜"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_3101",
+      "display_name_cn": "黄盖",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_3101",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_3101.png",
+      "source_reference": {
+        "representative_source_hero_id": 3101,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3101,
+            "source_name_key": "hero_name_3101",
+            "source_name_cn": "黄盖"
+          },
+          {
+            "source_hero_id": 1012008,
+            "source_name_key": "hero_name_1012008",
+            "source_name_cn": "黄盖"
+          },
+          {
+            "source_hero_id": 1014008,
+            "source_name_key": "hero_name_1014008",
+            "source_name_cn": "黄盖"
+          },
+          {
+            "source_hero_id": 2000303,
+            "source_name_key": "hero_name_2000303",
+            "source_name_cn": "黄盖"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_3102",
+      "display_name_cn": "程普",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_3102",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_3102.png",
+      "source_reference": {
+        "representative_source_hero_id": 3102,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3102,
+            "source_name_key": "hero_name_3102",
+            "source_name_cn": "程普"
+          },
+          {
+            "source_hero_id": 1008002,
+            "source_name_key": "hero_name_1008002",
+            "source_name_cn": "程普"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_3103",
+      "display_name_cn": "韩当",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_3103",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_3103.png",
+      "source_reference": {
+        "representative_source_hero_id": 3103,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3103,
+            "source_name_key": "hero_name_3103",
+            "source_name_cn": "韩当"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_3104",
+      "display_name_cn": "祖茂",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_3104",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_3104.png",
+      "source_reference": {
+        "representative_source_hero_id": 3104,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3104,
+            "source_name_key": "hero_name_3104",
+            "source_name_cn": "祖茂"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_3105",
+      "display_name_cn": "凌统",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_3105",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_3105.png",
+      "source_reference": {
+        "representative_source_hero_id": 3105,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3105,
+            "source_name_key": "hero_name_3105",
+            "source_name_cn": "凌统"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_3106",
+      "display_name_cn": "丁奉",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_3106",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_3106.png",
+      "source_reference": {
+        "representative_source_hero_id": 3106,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3106,
+            "source_name_key": "hero_name_3106",
+            "source_name_cn": "丁奉"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_3107",
+      "display_name_cn": "徐盛",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_3107",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_3107.png",
+      "source_reference": {
+        "representative_source_hero_id": 3107,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3107,
+            "source_name_key": "hero_name_3107",
+            "source_name_cn": "徐盛"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_3108",
+      "display_name_cn": "周泰",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_3108",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_3108.png",
+      "source_reference": {
+        "representative_source_hero_id": 3108,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3108,
+            "source_name_key": "hero_name_3108",
+            "source_name_cn": "周泰"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_3201",
+      "display_name_cn": "孙登",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_3201",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_3201.png",
+      "source_reference": {
+        "representative_source_hero_id": 3201,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3201,
+            "source_name_key": "hero_name_3201",
+            "source_name_cn": "孙登"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_3202",
+      "display_name_cn": "吴国太",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_3202",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_3202.png",
+      "source_reference": {
+        "representative_source_hero_id": 3202,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3202,
+            "source_name_key": "hero_name_3202",
+            "source_name_cn": "吴国太"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_3203",
+      "display_name_cn": "大乔",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_3203",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_3203.png",
+      "source_reference": {
+        "representative_source_hero_id": 3203,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3203,
+            "source_name_key": "hero_name_3203",
+            "source_name_cn": "大乔"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_3204",
+      "display_name_cn": "小乔",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_3204",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_3204.png",
+      "source_reference": {
+        "representative_source_hero_id": 3204,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3204,
+            "source_name_key": "hero_name_3204",
+            "source_name_cn": "小乔"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_3205",
+      "display_name_cn": "孙尚香",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_3205",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_3205.png",
+      "source_reference": {
+        "representative_source_hero_id": 3205,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3205,
+            "source_name_key": "hero_name_3205",
+            "source_name_cn": "孙尚香"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_3206",
+      "display_name_cn": "吴景",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_3206",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_3206.png",
+      "source_reference": {
+        "representative_source_hero_id": 3206,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3206,
+            "source_name_key": "hero_name_3206",
+            "source_name_cn": "吴景"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_3207",
+      "display_name_cn": "孙静",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_3207",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_3207.png",
+      "source_reference": {
+        "representative_source_hero_id": 3207,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3207,
+            "source_name_key": "hero_name_3207",
+            "source_name_cn": "孙静"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_3208",
+      "display_name_cn": "朱治",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_3208",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_3208.png",
+      "source_reference": {
+        "representative_source_hero_id": 3208,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3208,
+            "source_name_key": "hero_name_3208",
+            "source_name_cn": "朱治"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_3209",
+      "display_name_cn": "张昭",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_3209",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_3209.png",
+      "source_reference": {
+        "representative_source_hero_id": 3209,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3209,
+            "source_name_key": "hero_name_3209",
+            "source_name_cn": "张昭"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_3210",
+      "display_name_cn": "诸葛瑾",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_3210",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_3210.png",
+      "source_reference": {
+        "representative_source_hero_id": 3210,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 3210,
+            "source_name_key": "hero_name_3210",
+            "source_name_cn": "诸葛瑾"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_4002",
+      "display_name_cn": "张宝",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_4002",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_4002.png",
+      "source_reference": {
+        "representative_source_hero_id": 4002,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 4002,
+            "source_name_key": "hero_name_4002",
+            "source_name_cn": "张宝"
+          },
+          {
+            "source_hero_id": 1012011,
+            "source_name_key": "hero_name_1012011",
+            "source_name_cn": "张宝"
+          },
+          {
+            "source_hero_id": 1014012,
+            "source_name_key": "hero_name_1014012",
+            "source_name_cn": "张宝"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_4003",
+      "display_name_cn": "张梁",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_4003",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_4003.png",
+      "source_reference": {
+        "representative_source_hero_id": 4003,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 4003,
+            "source_name_key": "hero_name_4003",
+            "source_name_cn": "张梁"
+          },
+          {
+            "source_hero_id": 1012012,
+            "source_name_key": "hero_name_1012012",
+            "source_name_cn": "张梁"
+          },
+          {
+            "source_hero_id": 1014013,
+            "source_name_key": "hero_name_1014013",
+            "source_name_cn": "张梁"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_4101",
+      "display_name_cn": "黄劭",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_4101",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_4101.png",
+      "source_reference": {
+        "representative_source_hero_id": 4101,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 4101,
+            "source_name_key": "hero_name_4101",
+            "source_name_cn": "黄劭"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_4102",
+      "display_name_cn": "管亥",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_4102",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_4102.png",
+      "source_reference": {
+        "representative_source_hero_id": 4102,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 4102,
+            "source_name_key": "hero_name_4102",
+            "source_name_cn": "管亥"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_4103",
+      "display_name_cn": "裴元绍",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_4103",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_4103.png",
+      "source_reference": {
+        "representative_source_hero_id": 4103,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 4103,
+            "source_name_key": "hero_name_4103",
+            "source_name_cn": "裴元绍"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_4104",
+      "display_name_cn": "赵弘",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_4104",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_4104.png",
+      "source_reference": {
+        "representative_source_hero_id": 4104,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 4104,
+            "source_name_key": "hero_name_4104",
+            "source_name_cn": "赵弘"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_4201",
+      "display_name_cn": "韩忠",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_4201",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_4201.png",
+      "source_reference": {
+        "representative_source_hero_id": 4201,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 4201,
+            "source_name_key": "hero_name_4201",
+            "source_name_cn": "韩忠"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_4202",
+      "display_name_cn": "程远志",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_4202",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_4202.png",
+      "source_reference": {
+        "representative_source_hero_id": 4202,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 4202,
+            "source_name_key": "hero_name_4202",
+            "source_name_cn": "程远志"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_4203",
+      "display_name_cn": "高升",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_4203",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_4203.png",
+      "source_reference": {
+        "representative_source_hero_id": 4203,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 4203,
+            "source_name_key": "hero_name_4203",
+            "source_name_cn": "高升"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_4204",
+      "display_name_cn": "何仪",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_4204",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_4204.png",
+      "source_reference": {
+        "representative_source_hero_id": 4204,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 4204,
+            "source_name_key": "hero_name_4204",
+            "source_name_cn": "何仪"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_4205",
+      "display_name_cn": "孙仲",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_4205",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_4205.png",
+      "source_reference": {
+        "representative_source_hero_id": 4205,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 4205,
+            "source_name_key": "hero_name_4205",
+            "source_name_cn": "孙仲"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_5001",
+      "display_name_cn": "何进",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_5001",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_5001.png",
+      "source_reference": {
+        "representative_source_hero_id": 5001,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 5001,
+            "source_name_key": "hero_name_5001",
+            "source_name_cn": "何进"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_5002",
+      "display_name_cn": "皇甫嵩",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_5002",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_5002.png",
+      "source_reference": {
+        "representative_source_hero_id": 5002,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 5002,
+            "source_name_key": "hero_name_5002",
+            "source_name_cn": "皇甫嵩"
+          },
+          {
+            "source_hero_id": 1012001,
+            "source_name_key": "hero_name_1012001",
+            "source_name_cn": "皇甫嵩"
+          },
+          {
+            "source_hero_id": 1014001,
+            "source_name_key": "hero_name_1014001",
+            "source_name_cn": "皇甫嵩"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_5003",
+      "display_name_cn": "卢植",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_5003",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_5003.png",
+      "source_reference": {
+        "representative_source_hero_id": 5003,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 5003,
+            "source_name_key": "hero_name_5003",
+            "source_name_cn": "卢植"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_5004",
+      "display_name_cn": "朱儁",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_5004",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_5004.png",
+      "source_reference": {
+        "representative_source_hero_id": 5004,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 5004,
+            "source_name_key": "hero_name_5004",
+            "source_name_cn": "朱儁"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_5005",
+      "display_name_cn": "陈宫",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_5005",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_5005.png",
+      "source_reference": {
+        "representative_source_hero_id": 5005,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 5005,
+            "source_name_key": "hero_name_5005",
+            "source_name_cn": "陈宫"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_5006",
+      "display_name_cn": "刘虞",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_5006",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_5006.png",
+      "source_reference": {
+        "representative_source_hero_id": 5006,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 5006,
+            "source_name_key": "hero_name_5006",
+            "source_name_cn": "刘虞"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_5101",
+      "display_name_cn": "丁原",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_5101",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_5101.png",
+      "source_reference": {
+        "representative_source_hero_id": 5101,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 5101,
+            "source_name_key": "hero_name_5101",
+            "source_name_cn": "丁原"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_5102",
+      "display_name_cn": "王允",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_5102",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_5102.png",
+      "source_reference": {
+        "representative_source_hero_id": 5102,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 5102,
+            "source_name_key": "hero_name_5102",
+            "source_name_cn": "王允"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_5103",
+      "display_name_cn": "董承",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_5103",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_5103.png",
+      "source_reference": {
+        "representative_source_hero_id": 5103,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 5103,
+            "source_name_key": "hero_name_5103",
+            "source_name_cn": "董承"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_5104",
+      "display_name_cn": "蔡邕",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_5104",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_5104.png",
+      "source_reference": {
+        "representative_source_hero_id": 5104,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 5104,
+            "source_name_key": "hero_name_5104",
+            "source_name_cn": "蔡邕"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_5106",
+      "display_name_cn": "孔融",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_5106",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_5106.png",
+      "source_reference": {
+        "representative_source_hero_id": 5106,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 5106,
+            "source_name_key": "hero_name_5106",
+            "source_name_cn": "孔融"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_5107",
+      "display_name_cn": "刘繇",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_5107",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_5107.png",
+      "source_reference": {
+        "representative_source_hero_id": 5107,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 5107,
+            "source_name_key": "hero_name_5107",
+            "source_name_cn": "刘繇"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_5108",
+      "display_name_cn": "陶谦",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_5108",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_5108.png",
+      "source_reference": {
+        "representative_source_hero_id": 5108,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 5108,
+            "source_name_key": "hero_name_5108",
+            "source_name_cn": "陶谦"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_5201",
+      "display_name_cn": "韩馥",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_5201",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_5201.png",
+      "source_reference": {
+        "representative_source_hero_id": 5201,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 5201,
+            "source_name_key": "hero_name_5201",
+            "source_name_cn": "韩馥"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_5202",
+      "display_name_cn": "刘岱",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_5202",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_5202.png",
+      "source_reference": {
+        "representative_source_hero_id": 5202,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 5202,
+            "source_name_key": "hero_name_5202",
+            "source_name_cn": "刘岱"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_5203",
+      "display_name_cn": "张杨",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_5203",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_5203.png",
+      "source_reference": {
+        "representative_source_hero_id": 5203,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 5203,
+            "source_name_key": "hero_name_5203",
+            "source_name_cn": "张杨"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_6005",
+      "display_name_cn": "李儒",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_6005",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_6005.png",
+      "source_reference": {
+        "representative_source_hero_id": 6005,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 6005,
+            "source_name_key": "hero_name_6005",
+            "source_name_cn": "李儒"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_6101",
+      "display_name_cn": "华雄",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_6101",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_6101.png",
+      "source_reference": {
+        "representative_source_hero_id": 6101,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 6101,
+            "source_name_key": "hero_name_6101",
+            "source_name_cn": "华雄"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_6102",
+      "display_name_cn": "李傕",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_6102",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_6102.png",
+      "source_reference": {
+        "representative_source_hero_id": 6102,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 6102,
+            "source_name_key": "hero_name_6102",
+            "source_name_cn": "李傕"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_6103",
+      "display_name_cn": "郭汜",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_6103",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_6103.png",
+      "source_reference": {
+        "representative_source_hero_id": 6103,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 6103,
+            "source_name_key": "hero_name_6103",
+            "source_name_cn": "郭汜"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_6104",
+      "display_name_cn": "曹性",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_6104",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_6104.png",
+      "source_reference": {
+        "representative_source_hero_id": 6104,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 6104,
+            "source_name_key": "hero_name_6104",
+            "source_name_cn": "曹性"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_6105",
+      "display_name_cn": "高顺",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_6105",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_6105.png",
+      "source_reference": {
+        "representative_source_hero_id": 6105,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 6105,
+            "source_name_key": "hero_name_6105",
+            "source_name_cn": "高顺"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_6201",
+      "display_name_cn": "董白",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_6201",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_6201.png",
+      "source_reference": {
+        "representative_source_hero_id": 6201,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 6201,
+            "source_name_key": "hero_name_6201",
+            "source_name_cn": "董白"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_6202",
+      "display_name_cn": "董旻",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_6202",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_6202.png",
+      "source_reference": {
+        "representative_source_hero_id": 6202,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 6202,
+            "source_name_key": "hero_name_6202",
+            "source_name_cn": "董旻"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_6203",
+      "display_name_cn": "牛辅",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_6203",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_6203.png",
+      "source_reference": {
+        "representative_source_hero_id": 6203,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 6203,
+            "source_name_key": "hero_name_6203",
+            "source_name_cn": "牛辅"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_6204",
+      "display_name_cn": "樊稠",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_6204",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_6204.png",
+      "source_reference": {
+        "representative_source_hero_id": 6204,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 6204,
+            "source_name_key": "hero_name_6204",
+            "source_name_cn": "樊稠"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_6205",
+      "display_name_cn": "张济",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_6205",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_6205.png",
+      "source_reference": {
+        "representative_source_hero_id": 6205,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 6205,
+            "source_name_key": "hero_name_6205",
+            "source_name_cn": "张济"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_6206",
+      "display_name_cn": "魏续",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_6206",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_6206.png",
+      "source_reference": {
+        "representative_source_hero_id": 6206,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 6206,
+            "source_name_key": "hero_name_6206",
+            "source_name_cn": "魏续"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_6207",
+      "display_name_cn": "宋宪",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_6207",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_6207.png",
+      "source_reference": {
+        "representative_source_hero_id": 6207,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 6207,
+            "source_name_key": "hero_name_6207",
+            "source_name_cn": "宋宪"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_6208",
+      "display_name_cn": "邹氏",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_6208",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_6208.png",
+      "source_reference": {
+        "representative_source_hero_id": 6208,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 6208,
+            "source_name_key": "hero_name_6208",
+            "source_name_cn": "邹氏"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_7002",
+      "display_name_cn": "纪灵",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_7002",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_7002.png",
+      "source_reference": {
+        "representative_source_hero_id": 7002,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 7002,
+            "source_name_key": "hero_name_7002",
+            "source_name_cn": "纪灵"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_7101",
+      "display_name_cn": "张勋",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_7101",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_7101.png",
+      "source_reference": {
+        "representative_source_hero_id": 7101,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 7101,
+            "source_name_key": "hero_name_7101",
+            "source_name_cn": "张勋"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_7102",
+      "display_name_cn": "桥蕤",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_7102",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_7102.png",
+      "source_reference": {
+        "representative_source_hero_id": 7102,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 7102,
+            "source_name_key": "hero_name_7102",
+            "source_name_cn": "桥蕤"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_7103",
+      "display_name_cn": "阎象",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_7103",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_7103.png",
+      "source_reference": {
+        "representative_source_hero_id": 7103,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 7103,
+            "source_name_key": "hero_name_7103",
+            "source_name_cn": "阎象"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_7104",
+      "display_name_cn": "袁涣",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_7104",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_7104.png",
+      "source_reference": {
+        "representative_source_hero_id": 7104,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 7104,
+            "source_name_key": "hero_name_7104",
+            "source_name_cn": "袁涣"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_7201",
+      "display_name_cn": "袁胤",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_7201",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_7201.png",
+      "source_reference": {
+        "representative_source_hero_id": 7201,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 7201,
+            "source_name_key": "hero_name_7201",
+            "source_name_cn": "袁胤"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_7202",
+      "display_name_cn": "韩胤",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_7202",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_7202.png",
+      "source_reference": {
+        "representative_source_hero_id": 7202,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 7202,
+            "source_name_key": "hero_name_7202",
+            "source_name_cn": "韩胤"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_7203",
+      "display_name_cn": "乐就",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_7203",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_7203.png",
+      "source_reference": {
+        "representative_source_hero_id": 7203,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 7203,
+            "source_name_key": "hero_name_7203",
+            "source_name_cn": "乐就"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_7204",
+      "display_name_cn": "雷薄",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_7204",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_7204.png",
+      "source_reference": {
+        "representative_source_hero_id": 7204,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 7204,
+            "source_name_key": "hero_name_7204",
+            "source_name_cn": "雷薄"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_7205",
+      "display_name_cn": "杨弘",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_7205",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_7205.png",
+      "source_reference": {
+        "representative_source_hero_id": 7205,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 7205,
+            "source_name_key": "hero_name_7205",
+            "source_name_cn": "杨弘"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_8002",
+      "display_name_cn": "颜良",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_8002",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_8002.png",
+      "source_reference": {
+        "representative_source_hero_id": 8002,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 8002,
+            "source_name_key": "hero_name_8002",
+            "source_name_cn": "颜良"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_8003",
+      "display_name_cn": "文丑",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_8003",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_8003.png",
+      "source_reference": {
+        "representative_source_hero_id": 8003,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 8003,
+            "source_name_key": "hero_name_8003",
+            "source_name_cn": "文丑"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_8004",
+      "display_name_cn": "麴义",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_8004",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_8004.png",
+      "source_reference": {
+        "representative_source_hero_id": 8004,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 8004,
+            "source_name_key": "hero_name_8004",
+            "source_name_cn": "麴义"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_8005",
+      "display_name_cn": "田丰",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_8005",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_8005.png",
+      "source_reference": {
+        "representative_source_hero_id": 8005,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 8005,
+            "source_name_key": "hero_name_8005",
+            "source_name_cn": "田丰"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_8006",
+      "display_name_cn": "沮授",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_8006",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_8006.png",
+      "source_reference": {
+        "representative_source_hero_id": 8006,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 8006,
+            "source_name_key": "hero_name_8006",
+            "source_name_cn": "沮授"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_8101",
+      "display_name_cn": "高览",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_8101",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_8101.png",
+      "source_reference": {
+        "representative_source_hero_id": 8101,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 8101,
+            "source_name_key": "hero_name_8101",
+            "source_name_cn": "高览"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_8102",
+      "display_name_cn": "张郃",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_8102",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_8102.png",
+      "source_reference": {
+        "representative_source_hero_id": 8102,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 8102,
+            "source_name_key": "hero_name_8102",
+            "source_name_cn": "张郃"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_8103",
+      "display_name_cn": "许攸",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_8103",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_8103.png",
+      "source_reference": {
+        "representative_source_hero_id": 8103,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 8103,
+            "source_name_key": "hero_name_8103",
+            "source_name_cn": "许攸"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_8104",
+      "display_name_cn": "审配",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_8104",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_8104.png",
+      "source_reference": {
+        "representative_source_hero_id": 8104,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 8104,
+            "source_name_key": "hero_name_8104",
+            "source_name_cn": "审配"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_8201",
+      "display_name_cn": "袁谭",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_8201",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_8201.png",
+      "source_reference": {
+        "representative_source_hero_id": 8201,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 8201,
+            "source_name_key": "hero_name_8201",
+            "source_name_cn": "袁谭"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_8202",
+      "display_name_cn": "袁熙",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_8202",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_8202.png",
+      "source_reference": {
+        "representative_source_hero_id": 8202,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 8202,
+            "source_name_key": "hero_name_8202",
+            "source_name_cn": "袁熙"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_8203",
+      "display_name_cn": "袁尚",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_8203",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_8203.png",
+      "source_reference": {
+        "representative_source_hero_id": 8203,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 8203,
+            "source_name_key": "hero_name_8203",
+            "source_name_cn": "袁尚"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_8204",
+      "display_name_cn": "淳于琼",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_8204",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_8204.png",
+      "source_reference": {
+        "representative_source_hero_id": 8204,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 8204,
+            "source_name_key": "hero_name_8204",
+            "source_name_cn": "淳于琼"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_8205",
+      "display_name_cn": "逢纪",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_8205",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_8205.png",
+      "source_reference": {
+        "representative_source_hero_id": 8205,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 8205,
+            "source_name_key": "hero_name_8205",
+            "source_name_cn": "逢纪"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_8206",
+      "display_name_cn": "郭图",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_8206",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_8206.png",
+      "source_reference": {
+        "representative_source_hero_id": 8206,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 8206,
+            "source_name_key": "hero_name_8206",
+            "source_name_cn": "郭图"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_8207",
+      "display_name_cn": "荀谌",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_8207",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_8207.png",
+      "source_reference": {
+        "representative_source_hero_id": 8207,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 8207,
+            "source_name_key": "hero_name_8207",
+            "source_name_cn": "荀谌"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_9001",
+      "display_name_cn": "公孙瓒",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_9001",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_9001.png",
+      "source_reference": {
+        "representative_source_hero_id": 9001,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 9001,
+            "source_name_key": "hero_name_9001",
+            "source_name_cn": "公孙瓒"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_9101",
+      "display_name_cn": "公孙度",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_9101",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_9101.png",
+      "source_reference": {
+        "representative_source_hero_id": 9101,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 9101,
+            "source_name_key": "hero_name_9101",
+            "source_name_cn": "公孙度"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_9201",
+      "display_name_cn": "公孙越",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_9201",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_9201.png",
+      "source_reference": {
+        "representative_source_hero_id": 9201,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 9201,
+            "source_name_key": "hero_name_9201",
+            "source_name_cn": "公孙越"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_9202",
+      "display_name_cn": "公孙范",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_9202",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_9202.png",
+      "source_reference": {
+        "representative_source_hero_id": 9202,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 9202,
+            "source_name_key": "hero_name_9202",
+            "source_name_cn": "公孙范"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_9203",
+      "display_name_cn": "邹靖",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_9203",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_9203.png",
+      "source_reference": {
+        "representative_source_hero_id": 9203,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 9203,
+            "source_name_key": "hero_name_9203",
+            "source_name_cn": "邹靖"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_9204",
+      "display_name_cn": "关靖",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_9204",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_9204.png",
+      "source_reference": {
+        "representative_source_hero_id": 9204,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 9204,
+            "source_name_key": "hero_name_9204",
+            "source_name_cn": "关靖"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_9205",
+      "display_name_cn": "田楷",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_9205",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_9205.png",
+      "source_reference": {
+        "representative_source_hero_id": 9205,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 9205,
+            "source_name_key": "hero_name_9205",
+            "source_name_cn": "田楷"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_9206",
+      "display_name_cn": "严纲",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_9206",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_9206.png",
+      "source_reference": {
+        "representative_source_hero_id": 9206,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 9206,
+            "source_name_key": "hero_name_9206",
+            "source_name_cn": "严纲"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_9207",
+      "display_name_cn": "邹丹",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_9207",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_9207.png",
+      "source_reference": {
+        "representative_source_hero_id": 9207,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 9207,
+            "source_name_key": "hero_name_9207",
+            "source_name_cn": "邹丹"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_9208",
+      "display_name_cn": "单经",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_9208",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_9208.png",
+      "source_reference": {
+        "representative_source_hero_id": 9208,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 9208,
+            "source_name_key": "hero_name_9208",
+            "source_name_cn": "单经"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_99002",
+      "display_name_cn": "张绣",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_99002",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_99002.png",
+      "source_reference": {
+        "representative_source_hero_id": 99002,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 99002,
+            "source_name_key": "hero_name_99002",
+            "source_name_cn": "张绣"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_99003",
+      "display_name_cn": "张燕",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_99003",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_99003.png",
+      "source_reference": {
+        "representative_source_hero_id": 99003,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 99003,
+            "source_name_key": "hero_name_99003",
+            "source_name_cn": "张燕"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_99004",
+      "display_name_cn": "南华",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_99004",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_99004.png",
+      "source_reference": {
+        "representative_source_hero_id": 99004,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 99004,
+            "source_name_key": "hero_name_99004",
+            "source_name_cn": "南华"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_99005",
+      "display_name_cn": "于吉",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_99005",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_99005.png",
+      "source_reference": {
+        "representative_source_hero_id": 99005,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 99005,
+            "source_name_key": "hero_name_99005",
+            "source_name_cn": "于吉"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_99006",
+      "display_name_cn": "左慈",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_99006",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_99006.png",
+      "source_reference": {
+        "representative_source_hero_id": 99006,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 99006,
+            "source_name_key": "hero_name_99006",
+            "source_name_cn": "左慈"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_99101",
+      "display_name_cn": "陈纪",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_99101",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_99101.png",
+      "source_reference": {
+        "representative_source_hero_id": 99101,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 99101,
+            "source_name_key": "hero_name_99101",
+            "source_name_cn": "陈纪"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_99201",
+      "display_name_cn": "严白虎",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_99201",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_99201.png",
+      "source_reference": {
+        "representative_source_hero_id": 99201,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 99201,
+            "source_name_key": "hero_name_99201",
+            "source_name_cn": "严白虎"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_officer_id": "CANDIDATE_UI_ZJ_GG_BASEMAP_HERO_99202",
+      "display_name_cn": "杨奉",
+      "selection_status": "candidate",
+      "half_body": "UI_zj_gg_basemap_hero_99202",
+      "portrait_res_path": "res://assets/content_alpha/hero_portraits/UI_zj_gg_basemap_hero_99202.png",
+      "source_reference": {
+        "representative_source_hero_id": 99202,
+        "source_hero_bindings": [
+          {
+            "source_hero_id": 99202,
+            "source_name_key": "hero_name_99202",
+            "source_name_cn": "杨奉"
+          }
+        ]
+      }
+    }
+  ]
+}
