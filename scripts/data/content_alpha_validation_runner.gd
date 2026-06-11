@@ -1,6 +1,7 @@
 extends RefCounted
 
 const HeroPortraitPackLoader = preload("res://scripts/data/hero_portrait_pack_loader.gd")
+const ReusableHeroPortraitPoolLoader = preload("res://scripts/data/reusable_hero_portrait_pool_loader.gd")
 const HeroPortraitPreviewPresenter = preload("res://scripts/ui/hero_portrait_preview_presenter.gd")
 const HeroPortraitTextureLoader = preload("res://scripts/ui/hero_portrait_texture_loader.gd")
 
@@ -31,6 +32,16 @@ static func validate_hero_portrait_pack(manifest_path: String, pack_id: String, 
 	if not texture_result.ok:
 		return _failure(texture_result.errors)
 
+	var pool_result: Dictionary = ReusableHeroPortraitPoolLoader.load_default_pool()
+	if not pool_result.ok:
+		return _failure(pool_result.errors)
+	var first_pool_result: Dictionary = ReusableHeroPortraitPoolLoader.resolve_portrait(
+		pool_result.lookup,
+		str(texture_result.half_body)
+	)
+	if not first_pool_result.ok:
+		return _failure(first_pool_result.errors)
+
 	return {
 		"ok": true,
 		"errors": [],
@@ -38,6 +49,7 @@ static func validate_hero_portrait_pack(manifest_path: String, pack_id: String, 
 			"pack_id": str(pack_result.pack.id),
 			"pack_kind": str(pack_result.pack.kind),
 			"indexed_heroes": pack_result.lookup.size(),
+			"reusable_portraits": pool_result.records.size(),
 			"preview_rows": preview_result.rows.size(),
 			"first_hero_id": int(texture_result.hero_id),
 			"first_hero_name_cn": str(texture_result.name_cn),
@@ -46,6 +58,8 @@ static func validate_hero_portrait_pack(manifest_path: String, pack_id: String, 
 			"first_texture_height": int(texture_result.height),
 			"first_texture_source_path": str(texture_result.source_path),
 			"first_texture_path_kind": str(texture_result.path_kind),
+			"first_reusable_portrait_source_name_cn": str(first_pool_result.record.representative_source_name_cn),
+			"portrait_pool_scope_rule": str(pool_result.source.scope_rule),
 		},
 	}
 

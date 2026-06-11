@@ -32,6 +32,8 @@ func _test_default_chain() -> Dictionary:
 		return {"ok": false, "message": "unexpected pack id %s" % str(summary.pack_id)}
 	if int(summary.indexed_heroes) != 426:
 		return {"ok": false, "message": "unexpected indexed hero count %s" % str(summary.indexed_heroes)}
+	if int(summary.reusable_portraits) != 212:
+		return {"ok": false, "message": "unexpected reusable portrait count %s" % str(summary.reusable_portraits)}
 	if int(summary.preview_rows) != ContentAlphaValidationRunner.DEFAULT_PREVIEW_LIMIT:
 		return {"ok": false, "message": "unexpected preview row count"}
 	if int(summary.first_hero_id) != 1001 or str(summary.first_hero_name_cn) != "刘备":
@@ -46,6 +48,10 @@ func _test_default_chain() -> Dictionary:
 		return {"ok": false, "message": "content alpha validation must use imported res texture path"}
 	if not str(summary.first_texture_source_path).begins_with("res://assets/content_alpha/hero_portraits/"):
 		return {"ok": false, "message": "content alpha validation did not use project imported portrait"}
+	if str(summary.first_reusable_portrait_source_name_cn) != "刘备":
+		return {"ok": false, "message": "content alpha validation did not resolve reusable portrait pool"}
+	if not str(summary.portrait_pool_scope_rule).contains("do not import source gameplay fields"):
+		return {"ok": false, "message": "content alpha validation did not expose portrait pool scope rule"}
 	return {"ok": true}
 
 

@@ -53,6 +53,7 @@ func _test_panel_setters() -> Dictionary:
 	root.set_validation_summary({
 		"pack_id": "candidate_hero_portraits",
 		"indexed_heroes": 426,
+		"reusable_portraits": 212,
 		"preview_rows": 3,
 		"first_hero_id": 1001,
 		"first_hero_name_cn": "刘备",
@@ -60,7 +61,7 @@ func _test_panel_setters() -> Dictionary:
 		"first_texture_height": 1080,
 	})
 	var validation_text: Label = root.get_node("ContentAlphaValidationText")
-	if not validation_text.text.contains("资源包=candidate_hero_portraits 英雄=426 预览=3 首图=1001 刘备 1300x1080"):
+	if not validation_text.text.contains("资源包=candidate_hero_portraits 英雄=426 可复用=212 预览=3 首图=1001 刘备 1300x1080"):
 		root.queue_free()
 		return {"ok": false, "message": "panel did not format content alpha validation summary"}
 	var image := Image.create(2, 2, false, Image.FORMAT_RGBA8)
@@ -93,7 +94,7 @@ func _test_panel_loads_default_preview() -> Dictionary:
 		root.queue_free()
 		return {"ok": false, "message": "default preview text missing first audited row"}
 	var validation_text: Label = root.get_node("ContentAlphaValidationText")
-	if not validation_text.text.contains("资源包=candidate_hero_portraits 英雄=426 预览=3 首图=1001 刘备 1300x1080"):
+	if not validation_text.text.contains("资源包=candidate_hero_portraits 英雄=426 可复用=212 预览=3 首图=1001 刘备 1300x1080"):
 		root.queue_free()
 		return {"ok": false, "message": "default preview validation summary missing"}
 	if image.texture == null:

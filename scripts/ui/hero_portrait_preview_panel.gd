@@ -87,9 +87,10 @@ func _format_preview(rows: Array) -> String:
 
 
 func _format_validation_summary(summary: Dictionary) -> String:
-	return "Content Alpha 校验: 资源包=%s 英雄=%s 预览=%s 首图=%s %s %sx%s" % [
+	return "Content Alpha 校验: 资源包=%s 英雄=%s 可复用=%s 预览=%s 首图=%s %s %sx%s" % [
 		str(summary.pack_id),
 		str(summary.indexed_heroes),
+		str(summary.reusable_portraits),
 		str(summary.preview_rows),
 		str(summary.first_hero_id),
 		str(summary.first_hero_name_cn),
