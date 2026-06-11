@@ -1,0 +1,44 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/candidate_officer_roster_browser_panel.gd" id="1_roster_browser"]
+
+[node name="CandidateOfficerRosterBrowserPanel" type="VBoxContainer"]
+custom_minimum_size = Vector2(580, 560)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+script = ExtResource("1_roster_browser")
+
+[node name="StatusFilter" type="OptionButton" parent="."]
+custom_minimum_size = Vector2(220, 32)
+layout_mode = 2
+tooltip_text = "筛选候选武将选择状态"
+
+[node name="RosterSummary" type="Label" parent="."]
+custom_minimum_size = Vector2(560, 34)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "候选武将名册: 待加载"
+autowrap_mode = 3
+
+[node name="CandidateList" type="ItemList" parent="."]
+custom_minimum_size = Vector2(560, 250)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+allow_reselect = true
+
+[node name="CandidateDetail" type="Label" parent="."]
+custom_minimum_size = Vector2(560, 112)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "候选武将: 待加载"
+autowrap_mode = 3
+
+[node name="CandidateImage" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(220, 160)
+layout_mode = 2
+size_flags_horizontal = 0
+expand_mode = 1
+stretch_mode = 5
