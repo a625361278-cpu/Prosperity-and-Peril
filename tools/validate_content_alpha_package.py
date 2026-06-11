@@ -10,6 +10,8 @@ from pathlib import Path
 
 
 IMPORT_MANIFEST = Path("data/content_alpha/hero_portrait_import_manifest.json")
+PORTRAIT_POOL = Path("data/content_alpha/reusable_hero_portrait_pool.json")
+DISALLOWED_POOL_FIELDS = {"source_power", "source_up_point", "skill_ids", "secret_ids", "biography_cn"}
 
 
 def _load_manifest(path: Path) -> dict:
@@ -56,6 +58,41 @@ def validate_imported_resources(manifest_path: Path) -> dict:
     return {
         "asset_count": len(assets),
         "hero_binding_count": len(bindings),
+        "target_paths": target_paths,
+    }
+
+
+def validate_reusable_portrait_pool(pool_path: Path, imported_target_paths: set[str]) -> dict:
+    if not pool_path.exists():
+        raise FileNotFoundError(f"reusable portrait pool not found: {pool_path}")
+    payload = json.loads(pool_path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError(f"reusable portrait pool root must be object: {pool_path}")
+    records = payload.get("records")
+    if not isinstance(records, list) or not records:
+        raise ValueError("reusable portrait pool records must be a non-empty array")
+    asset_count = payload.get("asset_count")
+    if int(asset_count) != len(records):
+        raise ValueError(f"reusable portrait pool asset_count mismatch: {asset_count} != {len(records)}")
+
+    half_bodies: set[str] = set()
+    for index, record in enumerate(records):
+        if not isinstance(record, dict):
+            raise ValueError(f"reusable portrait pool records[{index}] must be object")
+        leaked = sorted(DISALLOWED_POOL_FIELDS.intersection(record.keys()))
+        if leaked:
+            raise ValueError(f"reusable portrait pool records[{index}] leaked source gameplay fields: {leaked}")
+        half_body = str(record.get("half_body", ""))
+        if not half_body:
+            raise ValueError(f"reusable portrait pool records[{index}] missing half_body")
+        if half_body in half_bodies:
+            raise ValueError(f"duplicate reusable portrait half_body: {half_body}")
+        half_bodies.add(half_body)
+        portrait_res_path = str(record.get("portrait_res_path", ""))
+        if portrait_res_path not in imported_target_paths:
+            raise ValueError(f"reusable portrait pool path is not an imported asset: {portrait_res_path}")
+    return {
+        "reusable_portrait_count": len(records),
     }
 
 
@@ -73,12 +110,15 @@ def validate_pck(pck_path: Path) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate Content Alpha package readiness.")
     parser.add_argument("--manifest", type=Path, default=IMPORT_MANIFEST)
+    parser.add_argument("--portrait-pool", type=Path, default=PORTRAIT_POOL)
     parser.add_argument("--pck", type=Path)
     args = parser.parse_args()
 
     import_summary = validate_imported_resources(args.manifest)
+    pool_summary = validate_reusable_portrait_pool(args.portrait_pool, import_summary["target_paths"])
     print("imported_assets:", import_summary["asset_count"])
     print("hero_bindings:", import_summary["hero_binding_count"])
+    print("reusable_portraits:", pool_summary["reusable_portrait_count"])
     if args.pck is not None:
         pck_summary = validate_pck(args.pck)
         print("pck_path:", pck_summary["pck_path"])

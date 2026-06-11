@@ -204,8 +204,17 @@
   - 验证：
     - `test_reusable_hero_portrait_browser_panel.gd` 通过，确认节点结构、默认加载、按 `halfBody` 选择和缺图失败。
 
+- [x] Task 21：打包校验接入可复用半身像池
+  - 状态：已完成。
+  - 范围：扩展 `tools/validate_content_alpha_package.py`，在校验导入清单和 `.pck` 基础上，同步校验 `reusable_hero_portrait_pool.json`。
+  - 根因：半身像池已经成为 Content Alpha 默认 UI 数据源；如果打包校验仍只看导入清单，可能漏掉池记录指向未导入 PNG 或源玩法字段泄漏。
+  - 边界：只校验池记录与已导入 PNG 一致，不检查正式武将属性，因为本阶段尚未生成正式武将库。
+  - 验收：包校验脚本必须输出 `reusable_portraits=212`；池记录必须全部指向已导入资源；出现 `skill_ids / secret_ids / biography_cn / source_power` 等源玩法字段必须失败。
+  - 验证：
+    - `py -3.14 tools\validate_content_alpha_package.py` 通过，确认 212 张导入 PNG、426 条源绑定和 212 张可复用半身像池一致。
+
 ## 当前缺口
 
-- 半身像资源来自项目负责人另一个自有三国项目；项目内导入流程、运行时 `res://` 加载、`.pck` 打包烟测和 212 张可复用半身像池已经完成。
+- 半身像资源来自项目负责人另一个自有三国项目；项目内导入流程、运行时 `res://` 加载、`.pck` 打包烟测、212 张可复用半身像池和包校验一致性检查已经完成。
 - 正式武将数据、技能、官职、势力剧本尚未进入 Content Alpha 内容包；本阶段不复用源项目技能、传记、君略或数值，只从半身像池选择可用武将。
 - 正式 UI 信息架构和视觉风格仍未落地；当前只准备可复用半身像池入口、独立浏览组件与调试面板可见摘要。
