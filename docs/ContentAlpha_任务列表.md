@@ -234,8 +234,18 @@
   - 验证：
     - `test_candidate_officer_roster_browser_panel.gd` 通过，确认节点结构、默认加载、状态筛选、赵云候选详情和缺图失败。
 
+- [x] Task 24：候选武将选择状态导出工具
+  - 状态：已完成。
+  - 范围：新增 `tools/update_candidate_officer_selection.py`，从候选武将名册读取记录，只允许把指定候选 ID 的 `selection_status` 更新为 `candidate/selected/rejected` 并导出到目标文件。
+  - 根因：后续筛选约 200 名武将时需要可重复、可审计的状态变更方式，不能让人手改 JSON 时误写技能、属性、势力或非法状态。
+  - 边界：工具只修改 `selection_status`；不写回正式武将库，不生成属性，不自动补齐没有头像的武将，不允许未知候选 ID 或非法状态。
+  - 验收：合法状态变更必须输出新名册和状态计数；未知候选 ID 必须失败；输出文件仍必须通过候选名册结构规则。
+  - 验证：
+    - `py -3.14 tools\update_candidate_officer_selection.py --output tmp\candidate_roster_selection_test.json --set CANDIDATE_UI_GJ_GG_BASEMAP_HERO_1001=selected --set CANDIDATE_UI_GJ_GG_BASEMAP_HERO_1002=rejected` 通过，输出 `selected=1 / rejected=1 / candidate=210`。
+    - 未知候选 ID 验证返回非 0，并输出 `candidate officer id not found`。
+
 ## 当前缺口
 
 - 半身像资源来自项目负责人另一个自有三国项目；项目内导入流程、运行时 `res://` 加载、`.pck` 打包烟测、212 张可复用半身像池、头像绑定候选武将名册和包校验一致性检查已经完成。
 - 正式武将数据、技能、官职、势力剧本尚未进入 Content Alpha 内容包；本阶段不复用源项目技能、传记、君略或数值，候选名册也不代表正式武将库。
-- 正式 UI 信息架构和视觉风格仍未落地；当前只准备可复用半身像池入口、候选武将名册、独立浏览组件与调试面板可见摘要。
+- 正式 UI 信息架构和视觉风格仍未落地；当前只准备可复用半身像池入口、候选武将名册、选择状态工具、独立浏览组件与调试面板可见摘要。
