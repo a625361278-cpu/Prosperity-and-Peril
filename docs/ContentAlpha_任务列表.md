@@ -152,8 +152,19 @@
     - `test_hero_portrait_texture_loader.gd` 通过，确认导入资源优先、外部源索引仍可单独校验。
     - `test_hero_portrait_preview_panel.gd` 和 `test_debug_panel_layout.gd` 通过，确认调试面板继续显示半身像预览。
 
+- [x] Task 16：Content Alpha 打包烟测
+  - 状态：已完成。
+  - 范围：新增 Windows Desktop `export_presets.cfg` 和 `tools/validate_content_alpha_package.py`，先验证项目内半身像导入资源全部使用 `res://` 目标路径，再用 Godot CLI 导出 `builds/content_alpha/newsanguo_content_alpha.pck`。
+  - 根因：完成项目内资源导入后，必须确认这些 PNG 会被 Godot 打包系统实际收集；只在编辑器里能加载不等于导出包可用。
+  - 边界：本任务只做 `.pck` 包烟测，不提交 `builds/` 临时产物，不生成平台 exe；Windows Desktop 预设为后续正式桌面导出提供基础。
+  - 验收：包就绪脚本必须确认 212 张导入 PNG 和 426 条英雄绑定；Godot `--export-pack` 必须成功生成非空 `.pck`；导出期间生成的 `.png.import` 和脚本 `.uid` 必须纳入版本库，保证导入设置可复现。
+  - 验证：
+    - `py -3.14 tools\validate_content_alpha_package.py` 通过。
+    - `Godot --headless --export-pack "Windows Desktop" builds\content_alpha\newsanguo_content_alpha.pck` 通过。
+    - `py -3.14 tools\validate_content_alpha_package.py --pck builds\content_alpha\newsanguo_content_alpha.pck` 通过，`.pck` 大小为 `181152528` bytes。
+
 ## 当前缺口
 
-- 半身像资源来自项目负责人另一个自有项目；项目内导入流程和运行时 `res://` 加载已经建立，后续缺口是正式打包验收。
+- 半身像资源来自项目负责人另一个自有项目；项目内导入流程、运行时 `res://` 加载和 `.pck` 打包烟测已经完成。
 - 正式武将数据、技能、官职、势力剧本尚未进入 Content Alpha 内容包；当前测试武将也尚未具备权威头像绑定字段。
 - 正式 UI 信息架构和视觉风格仍未落地；当前只准备资源索引入口。
