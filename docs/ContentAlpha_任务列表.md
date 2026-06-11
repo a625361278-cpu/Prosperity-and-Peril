@@ -244,6 +244,16 @@
     - `py -3.14 tools\update_candidate_officer_selection.py --output tmp\candidate_roster_selection_test.json --set CANDIDATE_UI_GJ_GG_BASEMAP_HERO_1001=selected --set CANDIDATE_UI_GJ_GG_BASEMAP_HERO_1002=rejected` 通过，输出 `selected=1 / rejected=1 / candidate=210`。
     - 未知候选 ID 验证返回非 0，并输出 `candidate officer id not found`。
 
+- [x] Task 25：候选名册进入 Content Alpha 打包烟测
+  - 状态：已完成。
+  - 范围：重新导出 `builds/content_alpha/newsanguo_content_alpha.pck`，确认候选武将名册 JSON、候选名册浏览场景和相关脚本进入 Godot 打包资源。
+  - 根因：上一版 `.pck` 在候选名册之前生成，不能证明新数据和新场景会被打包；Content Alpha 包校验必须覆盖当前真实资源链路。
+  - 边界：仍只导出 `.pck` 烟测产物，不提交 `builds/` 临时包，不生成平台 exe。
+  - 验收：导出日志必须包含 `candidate_officer_roster.json` 和 `candidate_officer_roster_browser_panel`；包校验脚本必须输出 `candidate_officers=212` 和非空 `.pck`。
+  - 验证：
+    - `Godot --headless --export-pack "Windows Desktop" builds\content_alpha\newsanguo_content_alpha.pck` 通过，导出日志包含候选名册数据和浏览场景。
+    - `py -3.14 tools\validate_content_alpha_package.py --pck builds\content_alpha\newsanguo_content_alpha.pck` 通过，`.pck` 大小为 `181542608` bytes。
+
 ## 当前缺口
 
 - 半身像资源来自项目负责人另一个自有三国项目；项目内导入流程、运行时 `res://` 加载、`.pck` 打包烟测、212 张可复用半身像池、头像绑定候选武将名册和包校验一致性检查已经完成。
