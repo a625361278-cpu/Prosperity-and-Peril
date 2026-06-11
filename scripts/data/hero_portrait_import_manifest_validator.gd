@@ -100,14 +100,13 @@ static func _validate_target_file(index: int, asset: Dictionary, errors: Array[S
 	if sha256 != str(asset.sha256):
 		errors.append("hero portrait import manifest assets[%d].sha256 mismatch" % index)
 
-	var image := Image.new()
-	var load_error := image.load(target_res_path)
-	if load_error != OK:
-		errors.append("hero portrait import manifest assets[%d].target_res_path image load failed error=%d" % [index, load_error])
+	var texture := ResourceLoader.load(target_res_path) as Texture2D
+	if texture == null:
+		errors.append("hero portrait import manifest assets[%d].target_res_path texture resource load failed %s" % [index, target_res_path])
 		return
-	if _is_integer_number(asset.width) and int(asset.width) != image.get_width():
+	if _is_integer_number(asset.width) and int(asset.width) != texture.get_width():
 		errors.append("hero portrait import manifest assets[%d].width mismatch" % index)
-	if _is_integer_number(asset.height) and int(asset.height) != image.get_height():
+	if _is_integer_number(asset.height) and int(asset.height) != texture.get_height():
 		errors.append("hero portrait import manifest assets[%d].height mismatch" % index)
 
 
