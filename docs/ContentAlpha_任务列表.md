@@ -163,8 +163,18 @@
     - `Godot --headless --export-pack "Windows Desktop" builds\content_alpha\newsanguo_content_alpha.pck` 通过。
     - `py -3.14 tools\validate_content_alpha_package.py --pck builds\content_alpha\newsanguo_content_alpha.pck` 通过，`.pck` 大小为 `181152528` bytes。
 
+- [x] Task 17：可复用半身像武将池
+  - 状态：已完成。
+  - 范围：新增 `tools/export_reusable_hero_portrait_pool.py`，从项目内半身像导入清单导出 `data/content_alpha/reusable_hero_portrait_pool.json`，形成 212 张唯一 `halfBody` PNG 的可复用候选池；Godot 侧新增校验器和读取入口。
+  - 根因：源项目也是三国题材，半身像可以复用，但源项目的技能、传记、君略、官职、势力和数值不是本项目业务规则；如果把这些字段导入，会污染正式武将设计。
+  - 边界：只记录图片资源、尺寸、哈希和源英雄名参考；不导入源项目玩法字段；最终武将库可以只从有半身像的约 200 名武将中选择，不强行补齐没有半身像的角色。
+  - 验收：池内必须正好对应 212 张项目内导入 PNG；缺图片必须失败；记录中出现 `skill_ids / secret_ids / biography_cn / source_power` 等源玩法字段必须失败；`UI_gj_gg_basemap_hero_1004` 必须保留 `1004` 和 `2000501` 两个赵云源绑定用于识别同图复用。
+  - 验证：
+    - `py -3.14 tools\export_reusable_hero_portrait_pool.py` 通过，导出 212 张可复用半身像。
+    - `test_reusable_hero_portrait_pool.gd` 通过，确认池结构、运行时读取、同图源绑定、源玩法字段泄漏失败和缺图片失败。
+
 ## 当前缺口
 
-- 半身像资源来自项目负责人另一个自有项目；项目内导入流程、运行时 `res://` 加载和 `.pck` 打包烟测已经完成。
-- 正式武将数据、技能、官职、势力剧本尚未进入 Content Alpha 内容包；当前测试武将也尚未具备权威头像绑定字段。
+- 半身像资源来自项目负责人另一个自有三国项目；项目内导入流程、运行时 `res://` 加载、`.pck` 打包烟测和 212 张可复用半身像池已经完成。
+- 正式武将数据、技能、官职、势力剧本尚未进入 Content Alpha 内容包；本阶段不复用源项目技能、传记、君略或数值，只从半身像池选择可用武将。
 - 正式 UI 信息架构和视觉风格仍未落地；当前只准备资源索引入口。
