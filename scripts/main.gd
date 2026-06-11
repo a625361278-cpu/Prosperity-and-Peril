@@ -7,6 +7,7 @@ const MarchSystem = preload("res://scripts/simulation/march_system.gd")
 
 @onready var _map_view: Node = $StrategicMapView
 @onready var _debug_panel: Control = $CanvasLayer/DebugPanel
+@onready var _content_alpha_workbench: Control = $CanvasLayer/ContentAlphaWorkbench
 
 var _runtime_state: Dictionary = {}
 
@@ -19,6 +20,8 @@ func _ready() -> void:
 	_runtime_state = state_result.state
 	if not _map_view.is_connected("map_entity_selected", _on_map_entity_selected):
 		_map_view.connect("map_entity_selected", _on_map_entity_selected)
+	if not _debug_panel.is_connected("content_alpha_workbench_requested", _on_content_alpha_workbench_requested):
+		_debug_panel.connect("content_alpha_workbench_requested", _on_content_alpha_workbench_requested)
 	var render_result: Dictionary = _map_view.render_state(state_result.state)
 	if not render_result.ok:
 		push_error("Strategic map render failed: %s" % [render_result.errors])
@@ -32,6 +35,21 @@ func _on_map_entity_selected(selection: Dictionary) -> void:
 		push_error("map selection received before runtime state was initialized")
 		return
 	_debug_panel.set_map_selection(_runtime_state, selection)
+
+
+func _on_content_alpha_workbench_requested() -> void:
+	var workbench := _content_alpha_workbench_node()
+	workbench.visible = not workbench.visible
+	if workbench.visible:
+		var load_result: Dictionary = workbench.load_default_workbench()
+		if not load_result.ok:
+			push_error("Content Alpha workbench failed: %s" % [load_result.errors])
+
+
+func _content_alpha_workbench_node() -> Control:
+	if _content_alpha_workbench != null:
+		return _content_alpha_workbench
+	return get_node("CanvasLayer/ContentAlphaWorkbench") as Control
 
 
 func _build_visual_slice_state() -> Dictionary:

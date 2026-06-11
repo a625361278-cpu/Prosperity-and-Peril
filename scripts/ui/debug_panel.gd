@@ -2,9 +2,16 @@ extends Control
 
 const DebugStatePresenter = preload("res://scripts/ui/debug_state_presenter.gd")
 
+signal content_alpha_workbench_requested
+
 @onready var _selection_label: Label = $PanelBackground/MarginContainer/VBoxContainer/SelectionText
+@onready var _workbench_button: Button = $PanelBackground/MarginContainer/VBoxContainer/ContentAlphaWorkbenchButton
 @onready var _portrait_preview_panel: VBoxContainer = $PanelBackground/MarginContainer/VBoxContainer/HeroPortraitPreviewPanel
 @onready var _label: Label = $PanelBackground/MarginContainer/VBoxContainer/ScrollContainer/DebugText
+
+
+func _ready() -> void:
+	_workbench_button_node().pressed.connect(_on_content_alpha_workbench_pressed)
 
 
 func set_runtime_state(state: Dictionary) -> void:
@@ -43,6 +50,10 @@ func set_portrait_preview_texture(texture: Texture2D) -> void:
 
 func clear_portrait_preview_texture() -> void:
 	_portrait_preview().clear_preview_texture()
+
+
+func _on_content_alpha_workbench_pressed() -> void:
+	content_alpha_workbench_requested.emit()
 
 
 func _format_snapshot(snapshot: Dictionary) -> String:
@@ -111,3 +122,9 @@ func _portrait_preview() -> VBoxContainer:
 	if _portrait_preview_panel != null:
 		return _portrait_preview_panel
 	return get_node("PanelBackground/MarginContainer/VBoxContainer/HeroPortraitPreviewPanel") as VBoxContainer
+
+
+func _workbench_button_node() -> Button:
+	if _workbench_button != null:
+		return _workbench_button
+	return get_node("PanelBackground/MarginContainer/VBoxContainer/ContentAlphaWorkbenchButton") as Button

@@ -9,6 +9,7 @@ func _initialize() -> void:
 	_run("debug panel exposes a dedicated selection text area", _test_debug_panel_selection_area)
 	_run("debug panel transparent root does not block map clicks", _test_debug_panel_root_ignores_mouse)
 	_run("debug panel exposes content alpha portrait preview area", _test_debug_panel_portrait_preview_area)
+	_run("debug panel exposes content alpha workbench button", _test_debug_panel_workbench_button)
 	_run("debug panel formats portrait preview rows", _test_debug_panel_formats_portrait_preview)
 	_run("debug panel exposes portrait texture preview node", _test_debug_panel_portrait_texture_node)
 	_run("debug panel can assign and clear portrait texture", _test_debug_panel_assigns_portrait_texture)
@@ -95,6 +96,26 @@ func _test_debug_panel_portrait_preview_area() -> Dictionary:
 	if preview_text.custom_minimum_size.y < 80.0:
 		panel.queue_free()
 		return {"ok": false, "message": "PortraitPreviewText height is too small"}
+	panel.queue_free()
+	return {"ok": true}
+
+
+func _test_debug_panel_workbench_button() -> Dictionary:
+	var scene := load("res://scenes/debug_panel.tscn")
+	if scene == null:
+		return {"ok": false, "message": "debug panel scene missing"}
+	var panel: Control = scene.instantiate()
+	get_root().add_child(panel)
+	var button := panel.get_node_or_null("PanelBackground/MarginContainer/VBoxContainer/ContentAlphaWorkbenchButton")
+	if button == null:
+		panel.queue_free()
+		return {"ok": false, "message": "ContentAlphaWorkbenchButton missing"}
+	if str(button.text) != "Content Alpha 工作台":
+		panel.queue_free()
+		return {"ok": false, "message": "ContentAlphaWorkbenchButton text mismatch"}
+	if button.custom_minimum_size.y < 32.0:
+		panel.queue_free()
+		return {"ok": false, "message": "ContentAlphaWorkbenchButton height too small"}
 	panel.queue_free()
 	return {"ok": true}
 
