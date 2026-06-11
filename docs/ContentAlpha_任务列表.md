@@ -111,6 +111,15 @@
     - `test_content_alpha_resource_manifest.gd` 通过，确认 `HeroPortraitPackLoader` 可从清单解析半身像查找表。
     - `test_hero_portrait_preview_panel.gd` 通过，确认 UI 组件继续能加载默认审计预览。
 
+- [x] Task 12：Content Alpha 聚合校验入口
+  - 状态：已完成。
+  - 范围：新增 `ContentAlphaValidationRunner`，串联资源清单、半身像资源包、索引查找表、默认预览行和第一张真实 PNG 解码，输出阶段性内容摘要。
+  - 根因：前面任务已经分别校验清单、索引和 UI 预览，但大版本验收需要一个统一入口确认真实链路可以贯通；否则单点测试通过仍可能遗漏清单到图片解码之间的断点。
+  - 边界：只做校验和摘要输出，不自动导入资源、不生成默认图、不修复缺失路径、不把测试武将绑定到历史英雄。
+  - 验收：默认内容链路必须能解析 `candidate_hero_portraits`、426 条候选英雄、3 条默认预览和 `1001 -> 刘备 -> UI_gj_gg_basemap_hero_1001` 的 `1300x1080` PNG；缺失清单或非法预览数量必须失败。
+  - 验证：
+    - `test_content_alpha_validation_runner.gd` 通过，确认默认内容链路贯通，缺失清单和非法预览数量明确失败。
+
 ## 当前缺口
 
 - 半身像资源来自项目负责人另一个自有项目；后续缺口是正式 UI 导入流程、资源命名映射和打包方式。
