@@ -2,6 +2,7 @@ extends SceneTree
 
 const ContentAlphaResourceManifestValidator = preload("res://scripts/data/content_alpha_resource_manifest_validator.gd")
 const ContentAlphaResourceManifestLoader = preload("res://scripts/data/content_alpha_resource_manifest_loader.gd")
+const HeroPortraitPackLoader = preload("res://scripts/data/hero_portrait_pack_loader.gd")
 
 const MANIFEST_PATH := "res://data/content_alpha/resource_manifest.json"
 
@@ -18,6 +19,7 @@ func _initialize() -> void:
 	_run("resource manifest rejects missing source path", _test_missing_source_path_fails)
 	_run("resource manifest loader indexes packs by id", _test_loader_indexes_packs)
 	_run("resource manifest loader fails for missing pack id", _test_loader_missing_pack_fails)
+	_run("hero portrait pack loader resolves lookup from manifest", _test_hero_portrait_pack_loader)
 	quit(_failed)
 
 
@@ -120,6 +122,19 @@ func _test_loader_missing_pack_fails() -> Dictionary:
 		if str(error).contains("content alpha resource pack missing missing_pack"):
 			return {"ok": true}
 	return {"ok": false, "message": "expected missing pack error, got %s" % [pack_result.errors]}
+
+
+func _test_hero_portrait_pack_loader() -> Dictionary:
+	var pack_result: Dictionary = HeroPortraitPackLoader.load_default_pack()
+	if not pack_result.ok:
+		return {"ok": false, "message": "expected hero portrait pack load success, got %s" % [pack_result.errors]}
+	if str(pack_result.pack.id) != "candidate_hero_portraits":
+		return {"ok": false, "message": "unexpected hero portrait pack id"}
+	if not pack_result.lookup.has("1001"):
+		return {"ok": false, "message": "hero portrait pack lookup missing hero 1001"}
+	if str(pack_result.lookup["1001"].half_body) != "UI_gj_gg_basemap_hero_1001":
+		return {"ok": false, "message": "hero portrait pack lookup did not preserve halfBody mapping"}
+	return {"ok": true}
 
 
 func _load_manifest() -> Dictionary:

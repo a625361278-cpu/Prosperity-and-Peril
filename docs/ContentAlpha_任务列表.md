@@ -101,6 +101,16 @@
   - 验证：
     - `test_content_alpha_resource_manifest.gd` 通过，确认清单可加载成资源包查找表，缺失资源包 ID 明确失败。
 
+- [x] Task 11：半身像资源包加载入口
+  - 状态：已完成。
+  - 范围：新增 `HeroPortraitPackLoader`，从 `resource_manifest.json` 解析 `candidate_hero_portraits` 资源包，再通过包内 `index_path` 加载半身像索引；`HeroPortraitPreviewPanel` 改为通过资源包加载，不再硬编码索引路径。
+  - 根因：UI 组件不应该直接依赖具体 JSON 文件路径；后续如果资源包迁移或加入更多资源包，应只改资源清单，而不是改 UI。
+  - 边界：只解析清单和索引，不导入图片、不替换资源包、不自动修复错误路径。
+  - 验收：资源包缺失、资源包类型错误、索引加载失败都必须失败；默认半身像预览必须继续能通过清单解析出 `1001 -> UI_gj_gg_basemap_hero_1001`。
+  - 验证：
+    - `test_content_alpha_resource_manifest.gd` 通过，确认 `HeroPortraitPackLoader` 可从清单解析半身像查找表。
+    - `test_hero_portrait_preview_panel.gd` 通过，确认 UI 组件继续能加载默认审计预览。
+
 ## 当前缺口
 
 - 半身像资源来自项目负责人另一个自有项目；后续缺口是正式 UI 导入流程、资源命名映射和打包方式。

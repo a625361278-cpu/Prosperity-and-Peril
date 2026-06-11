@@ -1,10 +1,9 @@
 extends VBoxContainer
 
-const HeroPortraitIndexLoader = preload("res://scripts/data/hero_portrait_index_loader.gd")
+const HeroPortraitPackLoader = preload("res://scripts/data/hero_portrait_pack_loader.gd")
 const HeroPortraitPreviewPresenter = preload("res://scripts/ui/hero_portrait_preview_presenter.gd")
 const HeroPortraitTextureLoader = preload("res://scripts/ui/hero_portrait_texture_loader.gd")
 
-const HERO_PORTRAIT_INDEX_PATH := "res://data/content_alpha/hero_portrait_index.json"
 const HERO_PORTRAIT_PREVIEW_LIMIT := 3
 
 @onready var _preview_label: Label = $PortraitPreviewText
@@ -12,7 +11,7 @@ const HERO_PORTRAIT_PREVIEW_LIMIT := 3
 
 
 func load_default_preview() -> Dictionary:
-	var load_result: Dictionary = HeroPortraitIndexLoader.load_and_build_lookup(HERO_PORTRAIT_INDEX_PATH)
+	var load_result: Dictionary = HeroPortraitPackLoader.load_default_pack()
 	if not load_result.ok:
 		_show_error(load_result.errors)
 		return {
