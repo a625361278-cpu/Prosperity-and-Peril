@@ -50,7 +50,7 @@ func _test_panel_loads_default_spec() -> Dictionary:
 	if root.get_item_count() != 8:
 		root.queue_free()
 		return {"ok": false, "message": "expected 8 ui spec items"}
-	if not root.get_summary_text().contains("总数=8 调试可用=1 Alpha可用=4 规划=3"):
+	if not root.get_summary_text().contains("总数=8 调试可用=1 Alpha可用=5 规划=2"):
 		root.queue_free()
 		return {"ok": false, "message": "summary missing ui spec counts"}
 	if not root.get_selected_detail_text().contains("战略大地图"):

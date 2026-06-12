@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/formal_hud.gd" id="1_formal_hud"]
 [ext_resource type="PackedScene" path="res://scenes/city_detail_panel.tscn" id="2_city_detail"]
 [ext_resource type="PackedScene" path="res://scenes/appointment_sortie_panel.tscn" id="3_appointment_sortie"]
 [ext_resource type="PackedScene" path="res://scenes/battle_report_panel.tscn" id="4_battle_report"]
+[ext_resource type="PackedScene" path="res://scenes/event_log_panel.tscn" id="5_event_log"]
 
 [node name="FormalHud" type="Control"]
 layout_mode = 3
@@ -125,5 +126,19 @@ offset_left = -230.0
 offset_top = -160.0
 offset_right = 230.0
 offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EventLogPanel" parent="." instance=ExtResource("5_event_log")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -180.0
+offset_right = 250.0
+offset_bottom = 180.0
 grow_horizontal = 2
 grow_vertical = 2

@@ -27,9 +27,9 @@ Content Alpha 已确认第一版正式 UI 风格方向。该方向用于后续�
 - 线框规格已进入 `data/content_alpha/ui_wireframe_spec.json`，后续正式 UI 实装必须先满足线框中的布局区域、组件、状态绑定和交互合同。
 - 主题 Token 已进入 `data/content_alpha/ui_theme_tokens.json`，后续正式 UI 控件必须优先使用其中的色板、字号、间距、圆角、控件状态和响应式规则。
 - 基础 Godot Theme 已进入 `themes/content_alpha_formal_theme.tres`，后续控件不得绕过 Token/Theme 链路散写正式样式。
-- 正式主界面 HUD 外壳已进入 `scenes/formal_hud.tscn`，城市详情面板已进入 `scenes/city_detail_panel.tscn`，任命与出阵面板已进入 `scenes/appointment_sortie_panel.tscn`，战报面板已进入 `scenes/battle_report_panel.tscn`；后续事件和存档界面应沿该外壳继续拆分，而不是继续堆叠调试文本。
+- 正式主界面 HUD 外壳已进入 `scenes/formal_hud.tscn`，城市详情面板已进入 `scenes/city_detail_panel.tscn`，任命与出阵面板已进入 `scenes/appointment_sortie_panel.tscn`，战报面板已进入 `scenes/battle_report_panel.tscn`，事件日志面板已进入 `scenes/event_log_panel.tscn`；后续存档界面应沿该外壳继续拆分，而不是继续堆叠调试文本。
 
 ## 仍未完成
 
 - 授权中文 UI 字体尚未实现。
-- 正式武将名册、事件和存档界面仍处于规格规划阶段；任命与出阵当前已接通真实系统，但仍缺正式武将选择器、路线预览、目标确认和结果反馈强化；战报当前已接通真实 battle_logs，但仍缺完整事件流分类和结果解释强化。
+- 正式武将名册和存档界面仍处于规格规划阶段；任命与出阵当前已接通真实系统，但仍缺正式武将选择器、路线预览、目标确认和结果反馈强化；战报和事件日志当前已接通真实运行时日志，但仍缺完整历史事件链和对象跳转协议。

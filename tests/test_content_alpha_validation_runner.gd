@@ -62,9 +62,9 @@ func _test_default_chain() -> Dictionary:
 		return {"ok": false, "message": "content alpha validation did not expose candidate roster boundary"}
 	if int(summary.ui_navigation_screens) != 8:
 		return {"ok": false, "message": "unexpected ui navigation screen count %s" % str(summary.ui_navigation_screens)}
-	if int(summary.ui_navigation_available_screens) != 5:
+	if int(summary.ui_navigation_available_screens) != 6:
 		return {"ok": false, "message": "unexpected available ui navigation screen count"}
-	if int(summary.ui_navigation_planned_screens) != 3:
+	if int(summary.ui_navigation_planned_screens) != 2:
 		return {"ok": false, "message": "unexpected planned ui navigation screen count"}
 	if not str(summary.ui_navigation_boundary_rule).contains("not a finished Beta UI"):
 		return {"ok": false, "message": "content alpha validation did not expose ui navigation boundary"}

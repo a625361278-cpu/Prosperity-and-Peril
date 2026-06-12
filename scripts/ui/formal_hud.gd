@@ -11,6 +11,7 @@ const FormalHudPresenter = preload("res://scripts/ui/formal_hud_presenter.gd")
 @onready var _command_bar: HBoxContainer = $BottomCommandBar/MarginContainer/CommandButtons
 @onready var _appointment_sortie_panel = $AppointmentSortiePanel
 @onready var _battle_report_panel = $BattleReportPanel
+@onready var _event_log_panel = $EventLogPanel
 
 var _state: Dictionary = {}
 var _selected_city_id := ""
@@ -113,6 +114,14 @@ func get_battle_report_panel_node():
 	return _battle_report_panel_node()
 
 
+func is_event_log_panel_visible() -> bool:
+	return bool(_event_log_panel_node().visible)
+
+
+func get_event_log_panel_node():
+	return _event_log_panel_node()
+
+
 func _apply_hud_state(hud: Dictionary) -> void:
 	_date_label_node().text = str(hud.date_text)
 	_force_label_node().text = str(hud.force_summary)
@@ -164,6 +173,9 @@ func _on_command_pressed(command_id: String) -> void:
 	if command_id == "battle_report":
 		_open_battle_report_panel()
 		return
+	if command_id == "event_log":
+		_open_event_log_panel()
+		return
 	push_error("formal hud unsupported command %s" % command_id)
 
 
@@ -198,6 +210,15 @@ func _open_battle_report_panel() -> void:
 	var result: Dictionary = _battle_report_panel_node().open_with_state(_state)
 	if not result.ok:
 		push_error("formal hud battle report open failed: %s" % [result.errors])
+
+
+func _open_event_log_panel() -> void:
+	if _state.is_empty():
+		push_error("formal hud cannot open event log without runtime state")
+		return
+	var result: Dictionary = _event_log_panel_node().open_with_state(_state)
+	if not result.ok:
+		push_error("formal hud event log open failed: %s" % [result.errors])
 
 
 func _on_battle_report_city_jump_requested(city_id: String) -> void:
@@ -262,3 +283,9 @@ func _battle_report_panel_node():
 	if _battle_report_panel != null:
 		return _battle_report_panel
 	return get_node("BattleReportPanel")
+
+
+func _event_log_panel_node():
+	if _event_log_panel != null:
+		return _event_log_panel
+	return get_node("EventLogPanel")

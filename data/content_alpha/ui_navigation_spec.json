@@ -156,24 +156,27 @@
       "id": "event_log_panel",
       "title_cn": "事件与日志",
       "category": "feedback",
-      "implementation_status": "planned",
+      "implementation_status": "content_alpha_available",
       "primary_data_sources": [
-        "runtime_state.change_logs",
         "runtime_state.battle_logs",
-        "future.event_chain"
+        "runtime_state.legitimacy_logs",
+        "runtime_state.local_governance_logs",
+        "runtime_state.loyalty_logs",
+        "runtime_state.diplomacy_logs",
+        "runtime_state.scheme_states"
       ],
       "entry_points": [
-        "主界面日志入口",
-        "战报入口"
+        "底部命令栏事件按钮"
       ],
       "allowed_actions": [
         "查看状态变化",
         "查看战斗日志",
-        "查看历史事件"
+        "按日志分类筛选"
       ],
       "blocked_until": [
         "完整历史事件链",
-        "统一日志分类"
+        "统一事件分类强化",
+        "日志对象跳转协议"
       ]
     },
     {

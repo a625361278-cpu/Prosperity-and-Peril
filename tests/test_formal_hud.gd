@@ -18,6 +18,7 @@ func _initialize() -> void:
 	_run("formal hud loads real runtime state", _test_formal_hud_loads_state)
 	_run("formal hud updates selected city", _test_formal_hud_city_selection)
 	_run("formal hud opens battle report command", _test_formal_hud_battle_report_command)
+	_run("formal hud opens event log command", _test_formal_hud_event_log_command)
 	_run("formal hud rejects missing state", _test_formal_hud_rejects_missing_state)
 	_run("city detail presenter exposes governor and rejects missing force", _test_city_detail_presenter)
 	quit(_failed)
@@ -46,6 +47,7 @@ func _test_formal_hud_nodes() -> Dictionary:
 		"BottomCommandBar/MarginContainer/CommandButtons",
 		"AppointmentSortiePanel",
 		"BattleReportPanel",
+		"EventLogPanel",
 	]:
 		if root.get_node_or_null(path) == null:
 			root.queue_free()
@@ -74,10 +76,10 @@ func _test_formal_hud_loads_state() -> Dictionary:
 		return {"ok": false, "message": "formal hud expected five command buttons"}
 	var command_bar: HBoxContainer = root.get_node("BottomCommandBar/MarginContainer/CommandButtons")
 	for button in command_bar.get_children():
-		if str(button.get_meta("command_id", "")) == "battle_report":
+		if str(button.get_meta("command_id", "")) == "battle_report" or str(button.get_meta("command_id", "")) == "event_log":
 			if button.disabled:
 				root.queue_free()
-				return {"ok": false, "message": "battle report command should be enabled"}
+				return {"ok": false, "message": "available formal command should be enabled"}
 			continue
 		if not button.disabled:
 			root.queue_free()
@@ -85,6 +87,9 @@ func _test_formal_hud_loads_state() -> Dictionary:
 	if not root.get_command_enabled("battle_report"):
 		root.queue_free()
 		return {"ok": false, "message": "battle report command getter mismatch"}
+	if not root.get_command_enabled("event_log"):
+		root.queue_free()
+		return {"ok": false, "message": "event log command getter mismatch"}
 	root.queue_free()
 	return {"ok": true}
 
@@ -163,6 +168,33 @@ func _test_formal_hud_battle_report_command() -> Dictionary:
 	if root.get_battle_report_panel_node().get_report_count() != 1:
 		root.queue_free()
 		return {"ok": false, "message": "battle report panel did not load battle log"}
+	root.queue_free()
+	return {"ok": true}
+
+
+func _test_formal_hud_event_log_command() -> Dictionary:
+	var state_result := _build_state()
+	if not state_result.ok:
+		return state_result
+	var hud := _instantiate_hud()
+	if not hud.ok:
+		return hud
+	var root = hud.node
+	var load_result: Dictionary = root.set_runtime_state(state_result.state)
+	if not load_result.ok:
+		root.queue_free()
+		return {"ok": false, "message": "expected formal hud load success"}
+	var command_bar: HBoxContainer = root.get_node("BottomCommandBar/MarginContainer/CommandButtons")
+	for button in command_bar.get_children():
+		if str(button.get_meta("command_id", "")) == "event_log":
+			button.emit_signal("pressed")
+			break
+	if not root.is_event_log_panel_visible():
+		root.queue_free()
+		return {"ok": false, "message": "event log panel did not open from command"}
+	if root.get_event_log_panel_node().get_event_count() != 0:
+		root.queue_free()
+		return {"ok": false, "message": "new runtime state should have no event rows"}
 	root.queue_free()
 	return {"ok": true}
 
