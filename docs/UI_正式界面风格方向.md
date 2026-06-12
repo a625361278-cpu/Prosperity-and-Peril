@@ -28,6 +28,7 @@ Content Alpha 已确认第一版正式 UI 风格方向。该方向用于后续�
 - 主题 Token 已进入 `data/content_alpha/ui_theme_tokens.json`，后续正式 UI 控件必须优先使用其中的色板、字号、间距、圆角、控件状态和响应式规则。
 - 基础 Godot Theme 已进入 `themes/content_alpha_formal_theme.tres`，后续控件不得绕过 Token/Theme 链路散写正式样式。
 - 正式主界面 HUD 外壳已进入 `scenes/formal_hud.tscn`，城市详情面板已进入 `scenes/city_detail_panel.tscn`，任命与出阵面板已进入 `scenes/appointment_sortie_panel.tscn`，战报面板已进入 `scenes/battle_report_panel.tscn`，事件日志面板已进入 `scenes/event_log_panel.tscn`，存档读档面板已进入 `scenes/save_load_panel.tscn`；后续正式界面应沿该外壳继续拆分，而不是继续堆叠调试文本。
+- Formal HUD 已按风格图重排为顶部信息带、左侧任务事件、右侧城市详情、左下武将卡和底部命令台；后续补功能应优先填充这些既定区域，而不是再新增漂浮调试框。
 
 ## 仍未完成
 

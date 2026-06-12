@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/formal_hud.gd" id="1_formal_hud"]
 [ext_resource type="PackedScene" path="res://scenes/city_detail_panel.tscn" id="2_city_detail"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/battle_report_panel.tscn" id="4_battle_report"]
 [ext_resource type="PackedScene" path="res://scenes/event_log_panel.tscn" id="5_event_log"]
 [ext_resource type="PackedScene" path="res://scenes/save_load_panel.tscn" id="6_save_load"]
+[ext_resource type="Texture2D" path="res://assets/content_alpha/hero_portraits/UI_gj_gg_basemap_hero_1001.png" id="7_lord_portrait"]
 
 [node name="FormalHud" type="Control"]
 layout_mode = 3
@@ -18,14 +19,14 @@ mouse_filter = 2
 script = ExtResource("1_formal_hud")
 
 [node name="TopBar" type="PanelContainer" parent="."]
-custom_minimum_size = Vector2(0, 52)
+custom_minimum_size = Vector2(0, 78)
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 16.0
-offset_top = 12.0
-offset_right = -16.0
-offset_bottom = 64.0
+offset_left = 14.0
+offset_top = 10.0
+offset_right = -14.0
+offset_bottom = 88.0
 grow_horizontal = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="TopBar"]
@@ -34,13 +35,18 @@ layout_mode = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="TopBar/MarginContainer"]
 layout_mode = 2
 
+[node name="TitleLabel" type="Label" parent="TopBar/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+text = "三国志：治世与乱世"
+
 [node name="DateLabel" type="Label" parent="TopBar/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(180, 0)
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "第 0 日 / 第 0 月"
 
 [node name="ForceSummaryLabel" type="Label" parent="TopBar/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(360, 0)
+custom_minimum_size = Vector2(420, 0)
 layout_mode = 2
 text = "等待运行时势力状态..."
 autowrap_mode = 3
@@ -51,17 +57,90 @@ size_flags_horizontal = 3
 text = "目标: 点击己方城市，任命太守或出阵。"
 autowrap_mode = 3
 
+[node name="LeftPanel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(260, 360)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 16.0
+offset_top = -252.0
+offset_right = 276.0
+offset_bottom = 108.0
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="LeftPanel"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LeftPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="SectionTitle" type="Label" parent="LeftPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(220, 30)
+layout_mode = 2
+text = "任务"
+
+[node name="ObjectiveValue" type="Label" parent="LeftPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(220, 84)
+layout_mode = 2
+text = "点击己方城市，任命太守或出阵。"
+autowrap_mode = 3
+
+[node name="EventTitle" type="Label" parent="LeftPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(220, 30)
+layout_mode = 2
+text = "事件"
+
+[node name="EventValue" type="Label" parent="LeftPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(220, 138)
+layout_mode = 2
+text = "暂无事件。推进时间或完成战斗后可在事件面板查看。"
+autowrap_mode = 3
+
+[node name="OfficerPanel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(430, 170)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -198.0
+offset_right = 446.0
+offset_bottom = -28.0
+grow_vertical = 0
+mouse_filter = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="OfficerPanel"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="OfficerPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="Portrait" type="TextureRect" parent="OfficerPanel/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(116, 136)
+layout_mode = 2
+texture = ExtResource("7_lord_portrait")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="OfficerText" type="Label" parent="OfficerPanel/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(250, 136)
+layout_mode = 2
+text = "主公  刘备\n声望 1800/3000\n威名 2300\n\n当前目标: 建立第一条作战链路"
+autowrap_mode = 3
+
 [node name="RightPanel" type="PanelContainer" parent="."]
-custom_minimum_size = Vector2(360, 0)
+custom_minimum_size = Vector2(340, 0)
 layout_mode = 1
 anchors_preset = 11
-anchor_left = 0.45
-anchor_right = 0.68
+anchor_left = 0.78
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 84.0
-offset_right = -10.0
-offset_bottom = -92.0
+offset_left = -8.0
+offset_top = 112.0
+offset_right = -16.0
+offset_bottom = -196.0
 grow_horizontal = 0
 grow_vertical = 2
 mouse_filter = 0
@@ -73,30 +152,36 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="SelectionTitle" type="Label" parent="RightPanel/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(320, 32)
+custom_minimum_size = Vector2(300, 32)
 layout_mode = 2
 text = "当前选择: 未选择"
 
 [node name="SelectionBody" type="Label" parent="RightPanel/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(320, 180)
+custom_minimum_size = Vector2(300, 108)
 layout_mode = 2
-size_flags_vertical = 3
 text = "点击地图城市或部队查看真实状态。"
 autowrap_mode = 3
 
 [node name="CityDetailPanel" parent="RightPanel/MarginContainer/VBoxContainer" instance=ExtResource("2_city_detail")]
 layout_mode = 2
 
+[node name="MiniMapHint" type="Label" parent="RightPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 54)
+layout_mode = 2
+text = "小地图与州郡边界后续接入；当前主地图已可选择城市与部队。"
+autowrap_mode = 3
+
 [node name="BottomCommandBar" type="PanelContainer" parent="."]
-custom_minimum_size = Vector2(560, 58)
+custom_minimum_size = Vector2(560, 94)
 layout_mode = 1
 anchors_preset = 12
+anchor_left = 0.34
 anchor_top = 1.0
-anchor_right = 1.0
+anchor_right = 0.74
 anchor_bottom = 1.0
-offset_left = 220.0
-offset_top = -74.0
-offset_right = -420.0
+offset_left = -18.0
+offset_top = -112.0
+offset_right = 18.0
 offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 0
@@ -107,6 +192,7 @@ layout_mode = 2
 
 [node name="CommandButtons" type="HBoxContainer" parent="BottomCommandBar/MarginContainer"]
 layout_mode = 2
+alignment = 1
 
 [node name="AppointmentSortiePanel" parent="." instance=ExtResource("3_appointment_sortie")]
 layout_mode = 1
@@ -115,10 +201,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -210.0
-offset_top = -150.0
-offset_right = 210.0
-offset_bottom = 150.0
+offset_left = -230.0
+offset_top = -160.0
+offset_right = 230.0
+offset_bottom = 160.0
 grow_horizontal = 2
 grow_vertical = 2
 

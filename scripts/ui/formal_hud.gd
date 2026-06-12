@@ -9,6 +9,8 @@ signal advance_day_requested
 @onready var _date_label: Label = $TopBar/MarginContainer/HBoxContainer/DateLabel
 @onready var _force_label: Label = $TopBar/MarginContainer/HBoxContainer/ForceSummaryLabel
 @onready var _playable_status_label: Label = $TopBar/MarginContainer/HBoxContainer/PlayableStatusLabel
+@onready var _objective_label: Label = $LeftPanel/MarginContainer/VBoxContainer/ObjectiveValue
+@onready var _event_hint_label: Label = $LeftPanel/MarginContainer/VBoxContainer/EventValue
 @onready var _selection_title: Label = $RightPanel/MarginContainer/VBoxContainer/SelectionTitle
 @onready var _selection_body: Label = $RightPanel/MarginContainer/VBoxContainer/SelectionBody
 @onready var _city_detail_panel = $RightPanel/MarginContainer/VBoxContainer/CityDetailPanel
@@ -92,6 +94,7 @@ func get_playable_status_text() -> String:
 
 func set_playable_message(message: String) -> void:
 	_playable_status_label_node().text = message
+	_objective_label_node().text = message
 
 
 func get_command_count() -> int:
@@ -158,6 +161,8 @@ func _apply_hud_state(hud: Dictionary) -> void:
 	_date_label_node().text = str(hud.date_text)
 	_force_label_node().text = str(hud.force_summary)
 	_playable_status_label_node().text = str(hud.playable_status)
+	_objective_label_node().text = str(hud.playable_status)
+	_event_hint_label_node().text = _event_hint_text()
 	_selection_title_node().text = str(hud.selection_title)
 	_selection_body_node().text = str(hud.selection_body)
 	_city_detail_panel_node().clear_city()
@@ -177,7 +182,7 @@ func _rebuild_commands(commands: Array) -> void:
 		button.text = str(command.label)
 		button.disabled = not bool(command.enabled)
 		button.tooltip_text = str(command.blocked_reason)
-		button.custom_minimum_size = Vector2(86, 34)
+		button.custom_minimum_size = Vector2(112, 56)
 		button.set_meta("command_id", command_id)
 		if not button.disabled:
 			button.pressed.connect(_on_command_pressed.bind(command_id))
@@ -251,6 +256,8 @@ func _on_appointment_sortie_state_changed() -> void:
 		_date_label_node().text = str(hud_result.hud.date_text)
 		_force_label_node().text = str(hud_result.hud.force_summary)
 		_playable_status_label_node().text = str(hud_result.hud.playable_status)
+		_objective_label_node().text = str(hud_result.hud.playable_status)
+		_event_hint_label_node().text = _event_hint_text()
 	runtime_state_replaced.emit(_state)
 
 
@@ -310,6 +317,16 @@ func _failure(errors: Array) -> Dictionary:
 	}
 
 
+func _event_hint_text() -> String:
+	if _state.is_empty():
+		return "等待运行时状态。"
+	if _state.has("battle_logs") and int(_state.battle_logs.size()) > 0:
+		return "已生成战报 %d 条。点击底部战报查看真实战斗结果。" % int(_state.battle_logs.size())
+	if _state.has("armies") and int(_state.armies.size()) > 0:
+		return "部队已出阵。点击推进一日观察行军、粮草和接敌。"
+	return "暂无事件。选择己方城市后可任命太守或出阵。"
+
+
 func _date_label_node() -> Label:
 	if _date_label != null:
 		return _date_label
@@ -326,6 +343,18 @@ func _playable_status_label_node() -> Label:
 	if _playable_status_label != null:
 		return _playable_status_label
 	return get_node("TopBar/MarginContainer/HBoxContainer/PlayableStatusLabel") as Label
+
+
+func _objective_label_node() -> Label:
+	if _objective_label != null:
+		return _objective_label
+	return get_node("LeftPanel/MarginContainer/VBoxContainer/ObjectiveValue") as Label
+
+
+func _event_hint_label_node() -> Label:
+	if _event_hint_label != null:
+		return _event_hint_label
+	return get_node("LeftPanel/MarginContainer/VBoxContainer/EventValue") as Label
 
 
 func _selection_title_node() -> Label:

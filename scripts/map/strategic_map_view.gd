@@ -7,8 +7,8 @@ const CoreDataLoader = preload("res://scripts/data/core_data_loader.gd")
 const CoreStateFactory = preload("res://scripts/simulation/core_state_factory.gd")
 
 const CITY_POSITIONS := {
-	"CITY_TEST_A": Vector3(-3.0, 0.2, 0.0),
-	"CITY_TEST_B": Vector3(3.0, 0.2, 0.0),
+	"CITY_TEST_A": Vector3(-3.6, 0.2, 0.0),
+	"CITY_TEST_B": Vector3(3.6, 0.2, 0.0),
 }
 const FORCE_COLORS := {
 	"FORCE_PLAYER": Color(0.16, 0.42, 0.95, 1.0),
@@ -169,11 +169,11 @@ func _clear_generated() -> void:
 
 func _add_ground() -> void:
 	var mesh := PlaneMesh.new()
-	mesh.size = Vector2(8.0, 4.5)
+	mesh.size = Vector2(11.0, 6.2)
 	var node := MeshInstance3D.new()
 	node.name = "Ground"
 	node.mesh = mesh
-	node.material_override = _material(Color(0.18, 0.27, 0.18, 1.0))
+	node.material_override = _material(Color(0.22, 0.27, 0.20, 1.0))
 	_generated_root.add_child(node)
 
 
@@ -185,8 +185,8 @@ func _add_city(city: Dictionary) -> void:
 	_generated_root.add_child(city_node)
 
 	var mesh := SphereMesh.new()
-	mesh.radius = 0.22
-	mesh.height = 0.44
+	mesh.radius = 0.32
+	mesh.height = 0.64
 	var marker := MeshInstance3D.new()
 	marker.name = "Marker"
 	marker.mesh = mesh
@@ -195,9 +195,9 @@ func _add_city(city: Dictionary) -> void:
 
 	var label := Label3D.new()
 	label.name = "Label"
-	label.text = "%s\n%s" % [str(city.name), str(city.force_id)]
-	label.position = Vector3(0.0, 0.45, 0.0)
-	label.font_size = 28
+	label.text = "%s\n%s" % [str(city.name), _force_short_name(str(city.force_id))]
+	label.position = Vector3(0.0, 0.62, 0.0)
+	label.font_size = 34
 	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	city_node.add_child(label)
 
@@ -238,7 +238,7 @@ func _add_army(state: Dictionary, army: Dictionary) -> void:
 	var army_position := from_pos.lerp(to_pos, progress) + Vector3(0.0, 0.45, 0.0)
 
 	var mesh := BoxMesh.new()
-	mesh.size = Vector3(0.32, 0.32, 0.32)
+	mesh.size = Vector3(0.42, 0.42, 0.42)
 	var node := MeshInstance3D.new()
 	node.name = "Army_%s" % str(army.id)
 	node.position = army_position
@@ -247,6 +247,13 @@ func _add_army(state: Dictionary, army: Dictionary) -> void:
 	_set_entity_metadata(node, "army", str(army.id))
 	_generated_root.add_child(node)
 	_add_hit_area(node, "army", str(army.id), 0.42)
+	var label := Label3D.new()
+	label.name = "Label"
+	label.text = "%s\n兵 %s" % [str(army.id), str(army.troop_count)]
+	label.position = Vector3(0.0, 0.46, 0.0)
+	label.font_size = 24
+	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	node.add_child(label)
 
 
 func _material(color: Color) -> StandardMaterial3D:
@@ -260,6 +267,14 @@ func _force_color(force_id: String) -> Color:
 	if not FORCE_COLORS.has(force_id):
 		return Color(0.55, 0.55, 0.55, 1.0)
 	return FORCE_COLORS[force_id]
+
+
+func _force_short_name(force_id: String) -> String:
+	if force_id == "FORCE_PLAYER":
+		return "刘"
+	if force_id == "FORCE_ENEMY":
+		return "曹"
+	return force_id
 
 
 func _route_color(route_type: String) -> Color:

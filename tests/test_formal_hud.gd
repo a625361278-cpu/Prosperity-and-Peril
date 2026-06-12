@@ -42,6 +42,10 @@ func _test_formal_hud_nodes() -> Dictionary:
 	for path in [
 		"TopBar/MarginContainer/HBoxContainer/DateLabel",
 		"TopBar/MarginContainer/HBoxContainer/ForceSummaryLabel",
+		"LeftPanel/MarginContainer/VBoxContainer/ObjectiveValue",
+		"LeftPanel/MarginContainer/VBoxContainer/EventValue",
+		"OfficerPanel/MarginContainer/HBoxContainer/Portrait",
+		"OfficerPanel/MarginContainer/HBoxContainer/OfficerText",
 		"RightPanel/MarginContainer/VBoxContainer/SelectionTitle",
 		"RightPanel/MarginContainer/VBoxContainer/SelectionBody",
 		"RightPanel/MarginContainer/VBoxContainer/CityDetailPanel",
