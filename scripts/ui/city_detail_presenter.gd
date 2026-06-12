@@ -40,8 +40,8 @@ static func build_detail(state: Dictionary, city_id: String) -> Dictionary:
 			"governor_text": governor.text,
 			"officer_rows": _same_force_officers(state.officers, force_id),
 			"actions": [
-				{"id": "appointment", "label": "任命", "enabled": false, "blocked_reason": "正式任命界面尚未实装"},
-				{"id": "sortie", "label": "出阵", "enabled": false, "blocked_reason": "正式出阵界面尚未实装"},
+				{"id": "appointment", "label": "任命", "enabled": true, "blocked_reason": "打开正式任命与出阵面板"},
+				{"id": "sortie", "label": "出阵", "enabled": true, "blocked_reason": "打开正式任命与出阵面板"},
 			],
 		},
 	}

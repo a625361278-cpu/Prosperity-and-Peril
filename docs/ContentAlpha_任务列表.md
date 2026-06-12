@@ -364,20 +364,32 @@
     - `test_main_content_alpha_workbench.gd` 通过，确认主场景地图选择会更新 Formal HUD。
     - `test_debug_panel_layout.gd` 通过，确认调试面板原有布局与点击穿透仍正常。
 
-- [x] Task 36：正式城市详情只读面板
+- [x] Task 36：正式城市详情面板
   - 状态：已完成。
   - 范围：新增 `scenes/city_detail_panel.tscn`、`scripts/ui/city_detail_panel.gd` 和 `scripts/ui/city_detail_presenter.gd`，在 Formal HUD 的右侧区域显示城市标题、归属势力、兵力粮草、民心治安、士族支持、整合状态、太守摘要和同势力武将列表；城市选择时自动展示该面板。
   - 根因：Formal HUD 只有文本选择摘要，无法满足城市详情线框中“资源与军事指标、治理状态、太守与属官区、城市动作区”的结构要求。
-  - 边界：该面板当前只读；任命和出阵按钮只展示入口位置，真实任命/出阵界面未完成前必须禁用并显示阻塞原因，不伪造业务操作。
-  - 验收：城市详情必须读取 `runtime_state.cities / forces / officers`；缺城市、缺势力或太守引用错误必须失败；城市选择必须显示真实城市名和势力名；任命/出阵按钮必须禁用；UI 信息架构中城市详情从 `planned` 更新为 `content_alpha_available`。
+  - 边界：该任务完成时面板只读；Task 37 后任命和出阵按钮已改为打开真实任命出阵面板，不伪造业务操作。
+  - 验收：城市详情必须读取 `runtime_state.cities / forces / officers`；缺城市、缺势力或太守引用错误必须失败；城市选择必须显示真实城市名和势力名；UI 信息架构中城市详情从 `planned` 更新为 `content_alpha_available`。
   - 验证：
-    - `test_formal_hud.gd` 通过，确认城市详情节点、真实城市显示、太守摘要、缺势力失败和动作禁用。
+    - `test_formal_hud.gd` 通过，确认城市详情节点、真实城市显示、太守摘要和缺势力失败。
     - `test_ui_navigation_spec.gd` 通过，确认城市详情状态为 `content_alpha_available`。
-    - `test_ui_navigation_spec_panel.gd` 通过，确认 UI 信息架构摘要更新为 Alpha 可用 2 个、规划 5 个。
+    - `test_ui_navigation_spec_panel.gd` 通过，确认 UI 信息架构摘要更新。
     - `py -3.14 tools\validate_content_alpha_package.py` 通过，确认包准备校验包含城市详情场景。
+
+- [x] Task 37：正式任命出阵面板
+  - 状态：已完成。
+  - 范围：新增 `scenes/appointment_sortie_panel.tscn`、`scripts/ui/appointment_sortie_panel.gd` 和 `scripts/ui/appointment_sortie_presenter.gd`，从城市详情动作打开任命与出阵面板，读取真实运行时城市、势力、武将、路线、部队序列，并通过 `AppointmentSystem` 与 `SortieSystem` 执行业务修改。
+  - 根因：城市详情已有任命/出阵入口，但按钮停留在占位会阻断正式 UI 主流程；必须接入已有真实系统，而不是在 UI 层伪造任命或部队结果。
+  - 边界：当前使用基础 `OptionButton` 和 `SpinBox` 作为第一层正式面板控件；不生成假武将、不伪造路线、不绕过兵粮校验；正式武将选择器、路线预览、目标确认和战报反馈仍留作后续专项。
+  - 验收：任命必须写入 `city.governor_officer_id` 和武将任命状态；出阵必须扣除城市兵粮、创建 `runtime_state.armies` 部队并递增 `next_army_seq`；缺状态键、缺城市、无同势力武将或无出城路线必须明确失败；UI 信息架构中任命出阵从 `planned` 更新为 `content_alpha_available`。
+  - 验证：
+    - `test_appointment_sortie_panel.gd` 通过，确认面板节点、真实表单、任命、出阵和非法状态暴露。
+    - `test_formal_hud.gd` 通过，确认城市详情动作可打开任命出阵面板，并能通过 HUD 改写真实运行时状态。
+    - `test_content_alpha_validation_runner.gd`、`test_content_alpha_workbench.gd` 和 `test_ui_navigation_spec_panel.gd` 通过，确认 UI 信息架构摘要更新为 Alpha 可用 3 个、规划 4 个。
+    - `py -3.14 tools\validate_content_alpha_package.py` 通过，确认包准备校验包含任命出阵场景。
 
 ## 当前缺口
 
 - 半身像资源来自项目负责人另一个自有三国项目；项目内导入流程、运行时 `res://` 加载、`.pck` 打包烟测、212 张可复用半身像池、头像绑定候选武将名册和包校验一致性检查已经完成。
 - 正式武将数据、技能、官职、势力剧本尚未进入 Content Alpha 内容包；本阶段不复用源项目技能、传记、君略或数值，候选名册也不代表正式武将库。
-- 授权中文 UI 字体、任命出阵/战报/事件/存档等屏幕级正式界面仍未落地；当前已准备 Content Alpha 资源工作台及主场景调试入口、可复用半身像池入口、候选武将名册、选择状态工具、独立浏览组件、UI 信息架构规格、UI 线框规格、UI 主题 Token、Godot Theme 基础资源、正式主界面 HUD 外壳、正式城市详情只读面板、工作台 UI 规格浏览入口、正式 UI 风格方向图与调试面板可见摘要。
+- 授权中文 UI 字体、正式武将选择器、战报/事件/存档等屏幕级正式界面仍未落地；当前已准备 Content Alpha 资源工作台及主场景调试入口、可复用半身像池入口、候选武将名册、选择状态工具、独立浏览组件、UI 信息架构规格、UI 线框规格、UI 主题 Token、Godot Theme 基础资源、正式主界面 HUD 外壳、正式城市详情面板、正式任命出阵面板、工作台 UI 规格浏览入口、正式 UI 风格方向图与调试面板可见摘要。

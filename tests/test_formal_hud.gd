@@ -40,6 +40,7 @@ func _test_formal_hud_nodes() -> Dictionary:
 		"RightPanel/MarginContainer/VBoxContainer/SelectionBody",
 		"RightPanel/MarginContainer/VBoxContainer/CityDetailPanel",
 		"BottomCommandBar/MarginContainer/CommandButtons",
+		"AppointmentSortiePanel",
 	]:
 		if root.get_node_or_null(path) == null:
 			root.queue_free()
@@ -102,9 +103,23 @@ func _test_formal_hud_city_selection() -> Dictionary:
 		return {"ok": false, "message": "formal hud city detail action count mismatch"}
 	var action_bar: HBoxContainer = root.get_node("RightPanel/MarginContainer/VBoxContainer/CityDetailPanel/ActionBar")
 	for button in action_bar.get_children():
-		if not button.disabled:
+		if button.disabled:
 			root.queue_free()
-			return {"ok": false, "message": "city detail actions must stay disabled before real screens exist"}
+			return {"ok": false, "message": "city detail actions must open appointment sortie panel"}
+	if not root.get_city_detail_action_enabled("appointment") or not root.get_city_detail_action_enabled("sortie"):
+		root.queue_free()
+		return {"ok": false, "message": "city detail action getter mismatch"}
+	action_bar.get_child(0).emit_signal("pressed")
+	if not root.is_appointment_sortie_panel_visible():
+		root.queue_free()
+		return {"ok": false, "message": "appointment sortie panel did not open from city detail"}
+	var appoint_result: Dictionary = root.get_appointment_sortie_panel_node().appoint_selected_governor()
+	if not appoint_result.ok:
+		root.queue_free()
+		return {"ok": false, "message": "hud appointment failed %s" % [appoint_result.errors]}
+	if str(state_result.state.cities.CITY_TEST_A.governor_officer_id) != "OFF_TEST_PLAYER":
+		root.queue_free()
+		return {"ok": false, "message": "hud appointment did not mutate runtime state"}
 	root.queue_free()
 	return {"ok": true}
 

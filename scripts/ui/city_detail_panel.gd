@@ -2,6 +2,8 @@ extends VBoxContainer
 
 const CityDetailPresenter = preload("res://scripts/ui/city_detail_presenter.gd")
 
+signal city_action_requested(action_id)
+
 @onready var _title: Label = $CityHeader
 @onready var _resources: Label = $ResourceStats
 @onready var _governance: Label = $GovernanceStats
@@ -29,6 +31,14 @@ func get_title_text() -> String:
 
 func get_action_count() -> int:
 	return _actions_node().get_child_count()
+
+
+func get_action_button_enabled(action_id: String) -> bool:
+	for child in _actions_node().get_children():
+		if child is Button and str(child.get_meta("action_id", "")) == action_id:
+			return not child.disabled
+	push_error("city detail missing action button %s" % action_id)
+	return false
 
 
 func _apply_detail(detail: Dictionary) -> void:
@@ -68,17 +78,24 @@ func _rebuild_officers(rows: Array) -> void:
 func _rebuild_actions(actions: Array) -> void:
 	var bar := _actions_node()
 	for child in bar.get_children():
-		child.queue_free()
+		child.free()
 	for action in actions:
 		if not action is Dictionary:
 			push_error("city detail action must be dictionary")
 			continue
 		var button := Button.new()
+		var action_id := str(action.id)
 		button.text = str(action.label)
 		button.disabled = not bool(action.enabled)
 		button.tooltip_text = str(action.blocked_reason)
 		button.custom_minimum_size = Vector2(96, 34)
+		button.set_meta("action_id", action_id)
+		button.pressed.connect(_on_action_pressed.bind(action_id))
 		bar.add_child(button)
+
+
+func _on_action_pressed(action_id: String) -> void:
+	city_action_requested.emit(action_id)
 
 
 func _failure(errors: Array) -> Dictionary:

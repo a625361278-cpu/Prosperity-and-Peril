@@ -47,12 +47,12 @@
       "allowed_actions": [
         "查看城市兵力粮草",
         "查看民心治安",
-        "查看士族支持与整合状态"
+        "查看士族支持与整合状态",
+        "打开任命与出阵面板"
       ],
       "blocked_until": [
         "正式城市库",
-        "正式任命与出阵界面",
-        "正式城市动作交互"
+        "正式城市动作交互扩展"
       ]
     },
     {
@@ -105,17 +105,17 @@
       "id": "appointment_sortie_panel",
       "title_cn": "任命与出阵",
       "category": "core_gameplay",
-      "implementation_status": "planned",
+      "implementation_status": "content_alpha_available",
       "primary_data_sources": [
         "runtime_state.cities",
+        "runtime_state.forces",
         "runtime_state.officers",
         "runtime_state.routes",
         "simulation.appointment_system",
         "simulation.sortie_system"
       ],
       "entry_points": [
-        "城市详情",
-        "武将详情"
+        "城市详情"
       ],
       "allowed_actions": [
         "任命太守",
@@ -123,9 +123,9 @@
         "校验兵粮"
       ],
       "blocked_until": [
-        "正式城市菜单",
         "正式武将选择器",
-        "路线选择 UI"
+        "路线选择 UI 强化",
+        "出阵目标预览与确认弹窗"
       ]
     },
     {
