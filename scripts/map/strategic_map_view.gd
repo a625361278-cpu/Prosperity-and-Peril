@@ -57,7 +57,7 @@ func render_state(state: Dictionary) -> Dictionary:
 	for route_id in _sorted_keys(state.routes):
 		_add_route(state.routes[route_id])
 	for city_id in _sorted_keys(state.cities):
-		_add_city(state.cities[city_id])
+		_add_city(state, state.cities[city_id])
 	for army_id in _sorted_keys(state.armies):
 		_add_army(state, state.armies[army_id])
 	return {"ok": true, "errors": []}
@@ -119,12 +119,17 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _validate_state(state: Dictionary) -> Array[String]:
 	var errors: Array[String] = []
-	for key in ["cities", "routes", "armies"]:
+	for key in ["forces", "cities", "routes", "armies", "officers"]:
 		if not state.has(key):
 			errors.append("strategic map state missing %s" % key)
 	if not errors.is_empty():
 		return errors
 
+	for force_id in state.forces.keys():
+		var force: Dictionary = state.forces[force_id]
+		for field in ["id", "name"]:
+			if not force.has(field):
+				errors.append("strategic map force missing %s %s" % [field, force_id])
 	for city_id in state.cities.keys():
 		var city: Dictionary = state.cities[city_id]
 		if not CITY_POSITIONS.has(city_id):
@@ -132,6 +137,13 @@ func _validate_state(state: Dictionary) -> Array[String]:
 		for field in ["id", "name", "force_id"]:
 			if not city.has(field):
 				errors.append("strategic map city missing %s %s" % [field, city_id])
+		if city.has("force_id") and not state.forces.has(str(city.force_id)):
+			errors.append("strategic map city force missing %s %s" % [str(city.force_id), city_id])
+	for officer_id in state.officers.keys():
+		var officer: Dictionary = state.officers[officer_id]
+		for field in ["id", "name"]:
+			if not officer.has(field):
+				errors.append("strategic map officer missing %s %s" % [field, officer_id])
 	for route_id in state.routes.keys():
 		var route: Dictionary = state.routes[route_id]
 		for field in ["id", "from_city_id", "to_city_id", "route_type"]:
@@ -145,11 +157,13 @@ func _validate_state(state: Dictionary) -> Array[String]:
 			errors.append("strategic map route target position missing %s" % str(route.to_city_id))
 	for army_id in state.armies.keys():
 		var army: Dictionary = state.armies[army_id]
-		for field in ["id", "origin_city_id", "route_id", "route_progress_days"]:
+		for field in ["id", "origin_city_id", "route_id", "commander_officer_id", "route_progress_days"]:
 			if not army.has(field):
 				errors.append("strategic map army missing %s %s" % [field, army_id])
 		if army.has("route_id") and not state.routes.has(str(army.route_id)):
 			errors.append("strategic map army route missing %s" % str(army.route_id))
+		if army.has("commander_officer_id") and not state.officers.has(str(army.commander_officer_id)):
+			errors.append("strategic map army commander missing %s %s" % [str(army.commander_officer_id), army_id])
 	return errors
 
 
@@ -177,7 +191,7 @@ func _add_ground() -> void:
 	_generated_root.add_child(node)
 
 
-func _add_city(city: Dictionary) -> void:
+func _add_city(state: Dictionary, city: Dictionary) -> void:
 	var city_node := Node3D.new()
 	city_node.name = "City_%s" % str(city.id)
 	city_node.position = CITY_POSITIONS[str(city.id)]
@@ -195,7 +209,7 @@ func _add_city(city: Dictionary) -> void:
 
 	var label := Label3D.new()
 	label.name = "Label"
-	label.text = "%s\n%s" % [str(city.name), _force_short_name(str(city.force_id))]
+	label.text = "%s\n%s" % [str(city.name), _force_label_for_city(state, city)]
 	label.position = Vector3(0.0, 0.62, 0.0)
 	label.font_size = 34
 	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
@@ -249,7 +263,7 @@ func _add_army(state: Dictionary, army: Dictionary) -> void:
 	_add_hit_area(node, "army", str(army.id), 0.42)
 	var label := Label3D.new()
 	label.name = "Label"
-	label.text = "%s\n兵 %s" % [str(army.id), str(army.troop_count)]
+	label.text = _army_label_text(state, army)
 	label.position = Vector3(0.0, 0.46, 0.0)
 	label.font_size = 24
 	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
@@ -269,12 +283,16 @@ func _force_color(force_id: String) -> Color:
 	return FORCE_COLORS[force_id]
 
 
-func _force_short_name(force_id: String) -> String:
-	if force_id == "FORCE_PLAYER":
-		return "刘"
-	if force_id == "FORCE_ENEMY":
-		return "曹"
-	return force_id
+func _force_label_for_city(state: Dictionary, city: Dictionary) -> String:
+	var force_id := str(city.force_id)
+	var force: Dictionary = state.forces[force_id]
+	return str(force.name)
+
+
+func _army_label_text(state: Dictionary, army: Dictionary) -> String:
+	var commander_id := str(army.commander_officer_id)
+	var officer: Dictionary = state.officers[commander_id]
+	return "%s\n兵 %s" % [str(officer.name), str(army.troop_count)]
 
 
 func _route_color(route_type: String) -> Color:

@@ -12,10 +12,12 @@ var _failed := 0
 
 func _initialize() -> void:
 	_run("strategic map renders cities routes and army markers", _test_renders_runtime_state)
+	_run("strategic map uses readable city and army labels", _test_readable_map_labels)
 	_run("strategic map exposes pass route and blocked passage markers", _test_pass_route_visual_state)
 	_run("strategic map exposes selectable city and army hit areas", _test_selectable_hit_areas)
 	_run("strategic map emits selection for rendered entities", _test_selection_signal)
 	_run("strategic map fails when city position is missing", _test_missing_city_position_fails)
+	_run("strategic map rejects broken force and commander labels", _test_broken_label_references_fail)
 	quit(_failed)
 
 
@@ -87,6 +89,38 @@ func _test_selectable_hit_areas() -> Dictionary:
 	return {"ok": true}
 
 
+func _test_readable_map_labels() -> Dictionary:
+	var state_result := _build_state_with_army()
+	if not state_result.ok:
+		return state_result
+	var view := StrategicMapView.new()
+	get_root().add_child(view)
+	var render_result: Dictionary = view.render_state(state_result.state)
+	if not render_result.ok:
+		view.queue_free()
+		return {"ok": false, "message": "render failed: %s" % [render_result.errors]}
+	var generated := view.get_node_or_null("GeneratedStrategicMap")
+	if generated == null:
+		view.queue_free()
+		return {"ok": false, "message": "generated map root missing"}
+	var city_label := generated.get_node_or_null("City_CITY_TEST_A/Label") as Label3D
+	var army_label := generated.get_node_or_null("Army_ARMY_1/Label") as Label3D
+	if city_label == null or army_label == null:
+		view.queue_free()
+		return {"ok": false, "message": "expected city and army labels"}
+	if not city_label.text.contains("玩家测试势力"):
+		view.queue_free()
+		return {"ok": false, "message": "city label should show readable force name: %s" % city_label.text}
+	if not army_label.text.contains("测试主将"):
+		view.queue_free()
+		return {"ok": false, "message": "army label should show commander name: %s" % army_label.text}
+	if city_label.text.contains("FORCE_PLAYER") or army_label.text.contains("ARMY_1") or army_label.text.contains("OFF_TEST_PLAYER"):
+		view.queue_free()
+		return {"ok": false, "message": "map labels still expose raw ids: %s / %s" % [city_label.text, army_label.text]}
+	view.queue_free()
+	return {"ok": true}
+
+
 func _test_selection_signal() -> Dictionary:
 	var state_result := _build_state_with_army()
 	if not state_result.ok:
@@ -151,6 +185,39 @@ func _test_pass_route_visual_state() -> Dictionary:
 		return {"ok": false, "message": "blocked pass route marker missing"}
 	view.queue_free()
 	return {"ok": true}
+
+
+func _test_broken_label_references_fail() -> Dictionary:
+	var state_result := _build_state_with_army()
+	if not state_result.ok:
+		return state_result
+	var broken_force_state: Dictionary = state_result.state.duplicate(true)
+	broken_force_state.forces.erase("FORCE_PLAYER")
+	var force_view := StrategicMapView.new()
+	get_root().add_child(force_view)
+	var force_result: Dictionary = force_view.render_state(broken_force_state)
+	force_view.queue_free()
+	if force_result.ok:
+		return {"ok": false, "message": "expected missing force to fail"}
+	var found_force_error := false
+	for error in force_result.errors:
+		if str(error).contains("strategic map city force missing FORCE_PLAYER CITY_TEST_A"):
+			found_force_error = true
+	if not found_force_error:
+		return {"ok": false, "message": "expected missing force error, got %s" % [force_result.errors]}
+
+	var broken_commander_state: Dictionary = state_result.state.duplicate(true)
+	broken_commander_state.officers.erase("OFF_TEST_PLAYER")
+	var commander_view := StrategicMapView.new()
+	get_root().add_child(commander_view)
+	var commander_result: Dictionary = commander_view.render_state(broken_commander_state)
+	commander_view.queue_free()
+	if commander_result.ok:
+		return {"ok": false, "message": "expected missing commander to fail"}
+	for error in commander_result.errors:
+		if str(error).contains("strategic map army commander missing OFF_TEST_PLAYER ARMY_1"):
+			return {"ok": true}
+	return {"ok": false, "message": "expected missing commander error, got %s" % [commander_result.errors]}
 
 
 func _test_missing_city_position_fails() -> Dictionary:
