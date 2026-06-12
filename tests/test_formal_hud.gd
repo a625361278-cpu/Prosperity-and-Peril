@@ -17,11 +17,13 @@ func _initialize() -> void:
 	_run("formal hud has expected layout nodes", _test_formal_hud_nodes)
 	_run("formal hud loads real runtime state", _test_formal_hud_loads_state)
 	_run("formal hud updates selected city", _test_formal_hud_city_selection)
+	_run("formal hud formats readable army selection", _test_formal_hud_army_selection)
 	_run("formal hud opens battle report command", _test_formal_hud_battle_report_command)
 	_run("formal hud opens event log command", _test_formal_hud_event_log_command)
 	_run("formal hud opens save load command", _test_formal_hud_save_load_command)
 	_run("formal hud rejects missing state", _test_formal_hud_rejects_missing_state)
 	_run("formal hud rejects missing ruler officer", _test_formal_hud_rejects_missing_ruler_officer)
+	_run("formal hud rejects broken army route", _test_formal_hud_rejects_broken_army_route)
 	_run("city detail presenter exposes governor and rejects missing force", _test_city_detail_presenter)
 	_run("city detail presenter rejects missing city fields", _test_city_detail_presenter_rejects_missing_city_field)
 	quit(_failed)
@@ -134,6 +136,13 @@ func _test_formal_hud_city_selection() -> Dictionary:
 	if not root.get_selection_title_text().contains("城市: 测试甲城"):
 		root.queue_free()
 		return {"ok": false, "message": "formal hud selection title mismatch"}
+	var selection_body: String = root.get_selection_body_text()
+	if not selection_body.contains("所属 玩家测试势力") or not selection_body.contains("民心 70 / 100"):
+		root.queue_free()
+		return {"ok": false, "message": "city selection body is not readable: %s" % selection_body}
+	if selection_body.contains("CITY_TEST_A") or selection_body.contains("FORCE_PLAYER") or selection_body.contains("ID="):
+		root.queue_free()
+		return {"ok": false, "message": "city selection body still contains raw debug ids: %s" % selection_body}
 	if not root.get_city_detail_title_text().contains("测试甲城 / 玩家测试势力"):
 		root.queue_free()
 		return {"ok": false, "message": "formal hud city detail title mismatch"}
@@ -159,6 +168,39 @@ func _test_formal_hud_city_selection() -> Dictionary:
 	if str(state_result.state.cities.CITY_TEST_A.governor_officer_id) != "OFF_TEST_PLAYER":
 		root.queue_free()
 		return {"ok": false, "message": "hud appointment did not mutate runtime state"}
+	root.queue_free()
+	return {"ok": true}
+
+
+func _test_formal_hud_army_selection() -> Dictionary:
+	var state_result := _build_state()
+	if not state_result.ok:
+		return state_result
+	var sortie: Dictionary = SortieSystem.create_sortie(state_result.state, "CITY_TEST_A", "OFF_TEST_PLAYER", "ROUTE_TEST_A_B", 8000, 16000)
+	if not sortie.ok:
+		return {"ok": false, "message": "sortie failed %s" % [sortie.errors]}
+	var march: Dictionary = MarchSystem.start_march(state_result.state, sortie.army_id, 12.0, 1000)
+	if not march.ok:
+		return {"ok": false, "message": "march failed %s" % [march.errors]}
+	var hud := _instantiate_hud()
+	if not hud.ok:
+		return hud
+	var root = hud.node
+	var load_result: Dictionary = root.set_runtime_state(state_result.state)
+	if not load_result.ok:
+		root.queue_free()
+		return {"ok": false, "message": "expected formal hud load success"}
+	var select_result: Dictionary = root.set_map_selection(state_result.state, {"type": "army", "id": sortie.army_id})
+	if not select_result.ok:
+		root.queue_free()
+		return {"ok": false, "message": "expected army selection success, got %s" % [select_result.errors]}
+	var body: String = root.get_selection_body_text()
+	if not body.contains("主将 测试主将") or not body.contains("测试甲城 -> 测试乙城") or not body.contains("进度 0 / 5 日"):
+		root.queue_free()
+		return {"ok": false, "message": "army selection body is not readable: %s" % body}
+	if body.contains("ROUTE_TEST_A_B") or body.contains("OFF_TEST_PLAYER") or body.contains("CITY_TEST_A"):
+		root.queue_free()
+		return {"ok": false, "message": "army selection body still contains raw ids: %s" % body}
 	root.queue_free()
 	return {"ok": true}
 
@@ -274,6 +316,23 @@ func _test_formal_hud_rejects_missing_ruler_officer() -> Dictionary:
 		if str(error).contains("formal hud ruler officer missing OFF_TEST_PLAYER"):
 			return {"ok": true}
 	return {"ok": false, "message": "expected missing ruler officer error, got %s" % [result.errors]}
+
+
+func _test_formal_hud_rejects_broken_army_route() -> Dictionary:
+	var state_result := _build_state()
+	if not state_result.ok:
+		return state_result
+	var sortie: Dictionary = SortieSystem.create_sortie(state_result.state, "CITY_TEST_A", "OFF_TEST_PLAYER", "ROUTE_TEST_A_B", 8000, 16000)
+	if not sortie.ok:
+		return {"ok": false, "message": "sortie failed %s" % [sortie.errors]}
+	state_result.state.routes.erase("ROUTE_TEST_A_B")
+	var result: Dictionary = FormalHudPresenter.build_selection_detail(state_result.state, {"type": "army", "id": sortie.army_id})
+	if result.ok:
+		return {"ok": false, "message": "expected broken army route to fail"}
+	for error in result.errors:
+		if str(error).contains("formal hud selected army route missing ROUTE_TEST_A_B"):
+			return {"ok": true}
+	return {"ok": false, "message": "expected missing army route error, got %s" % [result.errors]}
 
 
 func _test_city_detail_presenter() -> Dictionary:

@@ -6,6 +6,7 @@ const REQUIRED_STATE_KEYS := [
 	"forces",
 	"cities",
 	"officers",
+	"routes",
 	"armies",
 	"battle_logs",
 ]
@@ -51,21 +52,30 @@ static func _city_detail(state: Dictionary, city_id: String) -> Dictionary:
 	if not state.cities.has(city_id):
 		return _failure(["formal hud selected city missing %s" % city_id])
 	var city: Dictionary = state.cities[city_id]
+	var city_errors := _require_fields(city, "city %s" % city_id, ["name", "force_id", "troops", "food", "morale_public", "public_order", "gentry_support", "recovery_state"])
+	if not city_errors.is_empty():
+		return _failure(city_errors)
+	var force_id := str(city.force_id)
+	if not state.forces.has(force_id):
+		return _failure(["formal hud selected city force missing %s for city %s" % [force_id, city_id]])
+	var force: Dictionary = state.forces[force_id]
+	var force_errors := _require_fields(force, "force %s" % force_id, ["name"])
+	if not force_errors.is_empty():
+		return _failure(force_errors)
 	return {
 		"ok": true,
 		"errors": [],
 		"hud": {
 			"selection_title": "城市: %s" % str(city.name),
-			"selection_body": "ID=%s\n势力=%s\n兵=%s 粮=%s\n民心=%s 治安=%s 士族=%s\n状态=%s 整合=%s" % [
-				city_id,
-				str(city.force_id),
-				str(city.troops),
-				str(city.food),
-				str(city.morale_public),
-				str(city.public_order),
-				str(city.gentry_support),
-				str(city.recovery_state),
-				str(city.get("integration_progress", -1)),
+			"selection_body": "所属 %s\n兵力 %s  粮草 %s\n民心 %s / 100  治安 %s / 100\n士族 %s / 100\n状态 %s  整合 %s" % [
+				str(force.name),
+				_value_text(city.troops),
+				_value_text(city.food),
+				_value_text(city.morale_public),
+				_value_text(city.public_order),
+				_value_text(city.gentry_support),
+				_city_state_label(str(city.recovery_state)),
+				_integration_value(city),
 			],
 		},
 	}
@@ -75,20 +85,43 @@ static func _army_detail(state: Dictionary, army_id: String) -> Dictionary:
 	if not state.armies.has(army_id):
 		return _failure(["formal hud selected army missing %s" % army_id])
 	var army: Dictionary = state.armies[army_id]
+	var army_errors := _require_fields(army, "army %s" % army_id, ["state", "origin_city_id", "route_id", "commander_officer_id", "troop_count", "food_current", "route_progress_days"])
+	if not army_errors.is_empty():
+		return _failure(army_errors)
+	var route_id := str(army.route_id)
+	if not state.routes.has(route_id):
+		return _failure(["formal hud selected army route missing %s for army %s" % [route_id, army_id]])
+	var route: Dictionary = state.routes[route_id]
+	var route_errors := _require_fields(route, "route %s" % route_id, ["from_city_id", "to_city_id", "route_type"])
+	if not route_errors.is_empty():
+		return _failure(route_errors)
+	var from_city := _city_name_for_route(state, str(route.from_city_id), route_id)
+	if not from_city.ok:
+		return _failure(from_city.errors)
+	var to_city := _city_name_for_route(state, str(route.to_city_id), route_id)
+	if not to_city.ok:
+		return _failure(to_city.errors)
+	var commander_id := str(army.commander_officer_id)
+	if not state.officers.has(commander_id):
+		return _failure(["formal hud selected army commander missing %s for army %s" % [commander_id, army_id]])
+	var commander: Dictionary = state.officers[commander_id]
+	var commander_errors := _require_fields(commander, "officer %s" % commander_id, ["name"])
+	if not commander_errors.is_empty():
+		return _failure(commander_errors)
 	return {
 		"ok": true,
 		"errors": [],
 		"hud": {
 			"selection_title": "部队: %s" % army_id,
-			"selection_body": "状态=%s\n出阵=%s 路线=%s\n主将=%s\n兵=%s 粮=%s\n进度=%s 战果=%s" % [
-				str(army.state),
-				str(army.origin_city_id),
-				str(army.route_id),
-				str(army.commander_officer_id),
-				str(army.troop_count),
-				str(army.food_current),
-				str(army.route_progress_days),
-				str(army.get("last_battle_result", "")),
+			"selection_body": "状态 %s\n主将 %s\n路线 %s -> %s\n兵力 %s  粮草 %s\n进度 %s\n战果 %s" % [
+				_army_state_label(str(army.state)),
+				str(commander.name),
+				str(from_city.name),
+				str(to_city.name),
+				_value_text(army.troop_count),
+				_value_text(army.food_current),
+				_army_progress_text(army),
+				_battle_result_text(army),
 			],
 		},
 	}
@@ -151,6 +184,66 @@ static func _require_fields(values: Dictionary, context: String, fields: Array) 
 		if not values.has(field):
 			errors.append("formal hud %s missing %s" % [context, str(field)])
 	return errors
+
+
+static func _city_name_for_route(state: Dictionary, city_id: String, route_id: String) -> Dictionary:
+	if not state.cities.has(city_id):
+		return {"ok": false, "errors": ["formal hud route %s city missing %s" % [route_id, city_id]], "name": ""}
+	var city: Dictionary = state.cities[city_id]
+	var errors := _require_fields(city, "city %s" % city_id, ["name"])
+	if not errors.is_empty():
+		return {"ok": false, "errors": errors, "name": ""}
+	return {"ok": true, "errors": [], "name": str(city.name)}
+
+
+static func _integration_value(city: Dictionary) -> String:
+	if not city.has("integration_progress"):
+		return "未进入战后整合"
+	return "%s / 100" % _value_text(city.integration_progress)
+
+
+static func _city_state_label(state: String) -> String:
+	if state == "normal":
+		return "正常"
+	if state == "occupied":
+		return "占领整合中"
+	if state == "unrest":
+		return "动荡"
+	if state == "recovering":
+		return "恢复中"
+	return state
+
+
+static func _army_state_label(state: String) -> String:
+	if state == "marching":
+		return "行军中"
+	if state == "engaged":
+		return "接敌"
+	if state == "victorious":
+		return "胜利"
+	if state == "defeated":
+		return "战败"
+	if state == "out_of_supply":
+		return "断粮"
+	return state
+
+
+static func _army_progress_text(army: Dictionary) -> String:
+	if army.has("days_required") and int(army.days_required) > 0:
+		return "%s / %s 日" % [_value_text(army.route_progress_days), _value_text(army.days_required)]
+	return "%s 日" % _value_text(army.route_progress_days)
+
+
+static func _battle_result_text(army: Dictionary) -> String:
+	if not army.has("last_battle_result") or str(army.last_battle_result).is_empty():
+		return "未结算"
+	return str(army.last_battle_result)
+
+
+static func _value_text(value) -> String:
+	if typeof(value) == TYPE_FLOAT and is_equal_approx(float(value), float(int(value))):
+		return str(int(value))
+	return str(value)
 
 
 static func _playable_status(state: Dictionary) -> String:

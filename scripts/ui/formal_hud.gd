@@ -89,6 +89,10 @@ func get_selection_title_text() -> String:
 	return _selection_title_node().text
 
 
+func get_selection_body_text() -> String:
+	return _selection_body_node().text
+
+
 func get_playable_status_text() -> String:
 	return _playable_status_label_node().text
 
