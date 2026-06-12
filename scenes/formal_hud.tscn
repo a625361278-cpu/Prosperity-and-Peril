@@ -1,0 +1,95 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/formal_hud.gd" id="1_formal_hud"]
+
+[node name="FormalHud" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_formal_hud")
+
+[node name="TopBar" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 16.0
+offset_top = 12.0
+offset_right = -16.0
+offset_bottom = 64.0
+grow_horizontal = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TopBar"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TopBar/MarginContainer"]
+layout_mode = 2
+
+[node name="DateLabel" type="Label" parent="TopBar/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "第 0 日 / 第 0 月"
+
+[node name="ForceSummaryLabel" type="Label" parent="TopBar/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "等待运行时势力状态..."
+autowrap_mode = 3
+
+[node name="RightPanel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 0.45
+anchor_right = 0.68
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 84.0
+offset_right = -10.0
+offset_bottom = -92.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="RightPanel"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="SelectionTitle" type="Label" parent="RightPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(320, 32)
+layout_mode = 2
+text = "当前选择: 未选择"
+
+[node name="SelectionBody" type="Label" parent="RightPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(320, 180)
+layout_mode = 2
+size_flags_vertical = 3
+text = "点击地图城市或部队查看真实状态。"
+autowrap_mode = 3
+
+[node name="BottomCommandBar" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(560, 58)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 220.0
+offset_top = -74.0
+offset_right = -420.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="BottomCommandBar"]
+layout_mode = 2
+
+[node name="CommandButtons" type="HBoxContainer" parent="BottomCommandBar/MarginContainer"]
+layout_mode = 2

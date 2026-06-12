@@ -17,20 +17,20 @@ func _ready() -> void:
 func set_runtime_state(state: Dictionary) -> void:
 	var result: Dictionary = DebugStatePresenter.build_snapshot(state)
 	if not result.ok:
-		_label.text = "调试面板状态异常:\n%s" % "\n".join(result.errors)
+		_debug_label_node().text = "调试面板状态异常:\n%s" % "\n".join(result.errors)
 		return
-	_label.text = _format_snapshot(result.snapshot)
-	if _selection_label.text.is_empty() or _selection_label.text == "等待选择...":
-		_selection_label.text = "当前选择: 未选择"
+	_debug_label_node().text = _format_snapshot(result.snapshot)
+	if _selection_label_node().text.is_empty() or _selection_label_node().text == "等待选择...":
+		_selection_label_node().text = "当前选择: 未选择"
 	load_content_alpha_portrait_preview()
 
 
 func set_map_selection(state: Dictionary, selection: Dictionary) -> void:
 	var result: Dictionary = DebugStatePresenter.build_selection_detail(state, selection)
 	if not result.ok:
-		_selection_label.text = "当前选择异常:\n%s" % "\n".join(result.errors)
+		_selection_label_node().text = "当前选择异常:\n%s" % "\n".join(result.errors)
 		return
-	_selection_label.text = "%s\n%s" % [
+	_selection_label_node().text = "%s\n%s" % [
 		str(result.detail.title),
 		str(result.detail.body),
 	]
@@ -128,3 +128,15 @@ func _workbench_button_node() -> Button:
 	if _workbench_button != null:
 		return _workbench_button
 	return get_node("PanelBackground/MarginContainer/VBoxContainer/ContentAlphaWorkbenchButton") as Button
+
+
+func _selection_label_node() -> Label:
+	if _selection_label != null:
+		return _selection_label
+	return get_node("PanelBackground/MarginContainer/VBoxContainer/SelectionText") as Label
+
+
+func _debug_label_node() -> Label:
+	if _label != null:
+		return _label
+	return get_node("PanelBackground/MarginContainer/VBoxContainer/ScrollContainer/DebugText") as Label

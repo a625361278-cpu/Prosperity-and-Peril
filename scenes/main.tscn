@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/map/strategic_map_view.gd" id="2_map"]
 [ext_resource type="PackedScene" path="res://scenes/debug_panel.tscn" id="3_debug"]
 [ext_resource type="PackedScene" path="res://scenes/content_alpha_workbench.tscn" id="4_workbench"]
+[ext_resource type="PackedScene" path="res://scenes/formal_hud.tscn" id="5_formal_hud"]
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_main")
@@ -20,6 +21,8 @@ light_energy = 2.0
 script = ExtResource("2_map")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="FormalHud" parent="CanvasLayer" instance=ExtResource("5_formal_hud")]
 
 [node name="ContentAlphaWorkbench" parent="CanvasLayer" instance=ExtResource("4_workbench")]
 visible = false

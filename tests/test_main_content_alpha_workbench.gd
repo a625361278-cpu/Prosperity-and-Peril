@@ -7,6 +7,7 @@ var _failed := 0
 func _initialize() -> void:
 	_run("main scene embeds hidden content alpha workbench", _test_main_embeds_hidden_workbench)
 	_run("main scene toggles content alpha workbench from debug signal", _test_main_toggles_workbench)
+	_run("main scene updates formal hud from map selection", _test_main_updates_formal_hud_selection)
 	quit(_failed)
 
 
@@ -52,6 +53,32 @@ func _test_main_toggles_workbench() -> Dictionary:
 	if workbench.visible:
 		root.queue_free()
 		return {"ok": false, "message": "content alpha workbench did not close"}
+	root.queue_free()
+	return {"ok": true}
+
+
+func _test_main_updates_formal_hud_selection() -> Dictionary:
+	var main := _instantiate_main()
+	if not main.ok:
+		return main
+	var root = main.node
+	var formal_hud = root.get_node_or_null("CanvasLayer/FormalHud")
+	if formal_hud == null:
+		root.queue_free()
+		return {"ok": false, "message": "main formal hud missing"}
+	var state_result: Dictionary = root._build_visual_slice_state()
+	if not state_result.ok:
+		root.queue_free()
+		return {"ok": false, "message": "main could not build visual slice state"}
+	root._runtime_state = state_result.state
+	var hud_result: Dictionary = formal_hud.set_runtime_state(state_result.state)
+	if not hud_result.ok:
+		root.queue_free()
+		return {"ok": false, "message": "formal hud did not accept runtime state"}
+	root._on_map_entity_selected({"type": "city", "id": "CITY_TEST_A"})
+	if not formal_hud.get_selection_title_text().contains("城市: 测试甲城"):
+		root.queue_free()
+		return {"ok": false, "message": "formal hud did not update selected city"}
 	root.queue_free()
 	return {"ok": true}
 
