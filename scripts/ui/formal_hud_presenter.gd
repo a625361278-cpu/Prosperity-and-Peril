@@ -103,7 +103,7 @@ static func _command_rows() -> Array[Dictionary]:
 	return [
 		{"id": "appointment", "label": "任命", "enabled": false, "blocked_reason": "正式任命界面尚未实装"},
 		{"id": "sortie", "label": "出阵", "enabled": false, "blocked_reason": "正式出阵界面尚未实装"},
-		{"id": "battle_report", "label": "战报", "enabled": false, "blocked_reason": "正式战报界面尚未实装"},
+		{"id": "battle_report", "label": "战报", "enabled": true, "blocked_reason": "打开正式战报面板"},
 		{"id": "event_log", "label": "事件", "enabled": false, "blocked_reason": "正式事件界面尚未实装"},
 		{"id": "save_load", "label": "存档", "enabled": false, "blocked_reason": "正式存档界面尚未实装"},
 	]

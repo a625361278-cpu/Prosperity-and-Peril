@@ -132,15 +132,14 @@
       "id": "battle_report_panel",
       "title_cn": "战报",
       "category": "feedback",
-      "implementation_status": "planned",
+      "implementation_status": "content_alpha_available",
       "primary_data_sources": [
         "runtime_state.battle_logs",
         "runtime_state.armies",
         "runtime_state.cities"
       ],
       "entry_points": [
-        "大地图战斗结果提示",
-        "日志入口"
+        "底部命令栏战报按钮"
       ],
       "allowed_actions": [
         "查看战斗结果",
@@ -149,7 +148,8 @@
       ],
       "blocked_until": [
         "正式战报信息层级",
-        "战斗结果事件流"
+        "战斗结果事件流强化",
+        "战报跳转反馈强化"
       ]
     },
     {

@@ -388,8 +388,20 @@
     - `test_content_alpha_validation_runner.gd`、`test_content_alpha_workbench.gd` 和 `test_ui_navigation_spec_panel.gd` 通过，确认 UI 信息架构摘要更新为 Alpha 可用 3 个、规划 4 个。
     - `py -3.14 tools\validate_content_alpha_package.py` 通过，确认包准备校验包含任命出阵场景。
 
+- [x] Task 38：正式战报面板
+  - 状态：已完成。
+  - 范围：新增 `scenes/battle_report_panel.tscn`、`scripts/ui/battle_report_panel.gd` 和 `scripts/ui/battle_report_presenter.gd`，底部命令栏战报按钮可打开正式战报面板，读取真实 `runtime_state.battle_logs / armies / cities`，展示战斗结果、攻守损失、城市归属和跳转目标城市入口。
+  - 根因：战斗系统已写入 `battle_logs`，但正式 HUD 缺少战报读取界面；继续只靠调试文本会让战斗结果反馈无法进入正式 UI 主流程。
+  - 边界：当前只做第一层只读战报面板；没有生成战斗时显示真实空状态；缺 `battle_logs` 或战报引用的部队/城市断裂必须失败，不创建空假战报；完整战报事件结构、事件流分类和更细的结果解释留作后续专项。
+  - 验收：战报必须来自真实 `BattleSystem` 输出；必须显示目标城市、胜者、攻守损失、部队剩余和城市归属；战报按钮必须由 Formal HUD 打开；UI 信息架构中战报从 `planned` 更新为 `content_alpha_available`。
+  - 验证：
+    - `test_battle_report_panel.gd` 通过，确认真实战报详情、空状态和断裂引用失败。
+    - `test_formal_hud.gd` 通过，确认底部战报命令可打开战报面板并读取真实战斗日志。
+    - `test_content_alpha_validation_runner.gd`、`test_content_alpha_workbench.gd` 和 `test_ui_navigation_spec_panel.gd` 通过，确认 UI 信息架构摘要更新为 Alpha 可用 4 个、规划 3 个。
+    - `py -3.14 tools\validate_content_alpha_package.py` 通过，确认包准备校验包含战报场景。
+
 ## 当前缺口
 
 - 半身像资源来自项目负责人另一个自有三国项目；项目内导入流程、运行时 `res://` 加载、`.pck` 打包烟测、212 张可复用半身像池、头像绑定候选武将名册和包校验一致性检查已经完成。
 - 正式武将数据、技能、官职、势力剧本尚未进入 Content Alpha 内容包；本阶段不复用源项目技能、传记、君略或数值，候选名册也不代表正式武将库。
-- 授权中文 UI 字体、正式武将选择器、战报/事件/存档等屏幕级正式界面仍未落地；当前已准备 Content Alpha 资源工作台及主场景调试入口、可复用半身像池入口、候选武将名册、选择状态工具、独立浏览组件、UI 信息架构规格、UI 线框规格、UI 主题 Token、Godot Theme 基础资源、正式主界面 HUD 外壳、正式城市详情面板、正式任命出阵面板、工作台 UI 规格浏览入口、正式 UI 风格方向图与调试面板可见摘要。
+- 授权中文 UI 字体、正式武将选择器、事件/存档等屏幕级正式界面仍未落地；当前已准备 Content Alpha 资源工作台及主场景调试入口、可复用半身像池入口、候选武将名册、选择状态工具、独立浏览组件、UI 信息架构规格、UI 线框规格、UI 主题 Token、Godot Theme 基础资源、正式主界面 HUD 外壳、正式城市详情面板、正式任命出阵面板、正式战报面板、工作台 UI 规格浏览入口、正式 UI 风格方向图与调试面板可见摘要。

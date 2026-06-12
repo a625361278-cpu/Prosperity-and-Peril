@@ -3,6 +3,9 @@ extends SceneTree
 const CoreDataLoader = preload("res://scripts/data/core_data_loader.gd")
 const CoreStateFactory = preload("res://scripts/simulation/core_state_factory.gd")
 const AppointmentSystem = preload("res://scripts/simulation/appointment_system.gd")
+const SortieSystem = preload("res://scripts/simulation/sortie_system.gd")
+const MarchSystem = preload("res://scripts/simulation/march_system.gd")
+const BattleSystem = preload("res://scripts/simulation/battle_system.gd")
 const CityDetailPresenter = preload("res://scripts/ui/city_detail_presenter.gd")
 const FormalHudPresenter = preload("res://scripts/ui/formal_hud_presenter.gd")
 
@@ -14,6 +17,7 @@ func _initialize() -> void:
 	_run("formal hud has expected layout nodes", _test_formal_hud_nodes)
 	_run("formal hud loads real runtime state", _test_formal_hud_loads_state)
 	_run("formal hud updates selected city", _test_formal_hud_city_selection)
+	_run("formal hud opens battle report command", _test_formal_hud_battle_report_command)
 	_run("formal hud rejects missing state", _test_formal_hud_rejects_missing_state)
 	_run("city detail presenter exposes governor and rejects missing force", _test_city_detail_presenter)
 	quit(_failed)
@@ -41,6 +45,7 @@ func _test_formal_hud_nodes() -> Dictionary:
 		"RightPanel/MarginContainer/VBoxContainer/CityDetailPanel",
 		"BottomCommandBar/MarginContainer/CommandButtons",
 		"AppointmentSortiePanel",
+		"BattleReportPanel",
 	]:
 		if root.get_node_or_null(path) == null:
 			root.queue_free()
@@ -69,9 +74,17 @@ func _test_formal_hud_loads_state() -> Dictionary:
 		return {"ok": false, "message": "formal hud expected five command buttons"}
 	var command_bar: HBoxContainer = root.get_node("BottomCommandBar/MarginContainer/CommandButtons")
 	for button in command_bar.get_children():
+		if str(button.get_meta("command_id", "")) == "battle_report":
+			if button.disabled:
+				root.queue_free()
+				return {"ok": false, "message": "battle report command should be enabled"}
+			continue
 		if not button.disabled:
 			root.queue_free()
-			return {"ok": false, "message": "formal hud command must stay disabled before real screen implementation"}
+			return {"ok": false, "message": "unfinished formal hud command must stay disabled"}
+	if not root.get_command_enabled("battle_report"):
+		root.queue_free()
+		return {"ok": false, "message": "battle report command getter mismatch"}
 	root.queue_free()
 	return {"ok": true}
 
@@ -120,6 +133,36 @@ func _test_formal_hud_city_selection() -> Dictionary:
 	if str(state_result.state.cities.CITY_TEST_A.governor_officer_id) != "OFF_TEST_PLAYER":
 		root.queue_free()
 		return {"ok": false, "message": "hud appointment did not mutate runtime state"}
+	root.queue_free()
+	return {"ok": true}
+
+
+func _test_formal_hud_battle_report_command() -> Dictionary:
+	var state_result := _build_state()
+	if not state_result.ok:
+		return state_result
+	var battle_result := _create_battle_log(state_result.state)
+	if not battle_result.ok:
+		return battle_result
+	var hud := _instantiate_hud()
+	if not hud.ok:
+		return hud
+	var root = hud.node
+	var load_result: Dictionary = root.set_runtime_state(state_result.state)
+	if not load_result.ok:
+		root.queue_free()
+		return {"ok": false, "message": "expected formal hud load success"}
+	var command_bar: HBoxContainer = root.get_node("BottomCommandBar/MarginContainer/CommandButtons")
+	for button in command_bar.get_children():
+		if str(button.get_meta("command_id", "")) == "battle_report":
+			button.emit_signal("pressed")
+			break
+	if not root.is_battle_report_panel_visible():
+		root.queue_free()
+		return {"ok": false, "message": "battle report panel did not open from command"}
+	if root.get_battle_report_panel_node().get_report_count() != 1:
+		root.queue_free()
+		return {"ok": false, "message": "battle report panel did not load battle log"}
 	root.queue_free()
 	return {"ok": true}
 
@@ -174,3 +217,20 @@ func _build_state() -> Dictionary:
 	if not state_result.ok:
 		return {"ok": false, "message": "state build failed %s" % [state_result.errors]}
 	return {"ok": true, "state": state_result.state}
+
+
+func _create_battle_log(state: Dictionary) -> Dictionary:
+	var sortie: Dictionary = SortieSystem.create_sortie(state, "CITY_TEST_A", "OFF_TEST_PLAYER", "ROUTE_TEST_A_B", 8000, 16000)
+	if not sortie.ok:
+		return {"ok": false, "message": "sortie failed: %s" % [sortie.errors]}
+	var march_result: Dictionary = MarchSystem.start_march(state, sortie.army_id, 12.0, 1000)
+	if not march_result.ok:
+		return {"ok": false, "message": "march start failed: %s" % [march_result.errors]}
+	for _i in 5:
+		var advance: Dictionary = MarchSystem.advance_army_one_day(state, sortie.army_id)
+		if not advance.ok:
+			return {"ok": false, "message": "march advance failed: %s" % [advance.errors]}
+	var battle: Dictionary = BattleSystem.resolve_city_battle(state, sortie.army_id, "CITY_TEST_B")
+	if not battle.ok:
+		return {"ok": false, "message": "battle failed: %s" % [battle.errors]}
+	return {"ok": true}

@@ -1,0 +1,63 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/battle_report_panel.gd" id="1_battle_report"]
+
+[node name="BattleReportPanel" type="PanelContainer"]
+visible = false
+custom_minimum_size = Vector2(460, 300)
+layout_mode = 3
+script = ExtResource("1_battle_report")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="ReportOption" type="OptionButton" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(420, 34)
+layout_mode = 2
+
+[node name="ReportTitle" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(420, 34)
+layout_mode = 2
+text = "战报"
+autowrap_mode = 3
+
+[node name="Summary" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(420, 52)
+layout_mode = 2
+text = "等待战报数据"
+autowrap_mode = 3
+
+[node name="Casualties" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(420, 44)
+layout_mode = 2
+text = "损失对比"
+autowrap_mode = 3
+
+[node name="Ownership" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(420, 44)
+layout_mode = 2
+text = "城市归属变化"
+autowrap_mode = 3
+
+[node name="ValidationMessages" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(420, 58)
+layout_mode = 2
+text = "战报来自真实 battle_logs。"
+autowrap_mode = 3
+
+[node name="ActionRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(420, 38)
+layout_mode = 2
+
+[node name="JumpButton" type="Button" parent="MarginContainer/VBoxContainer/ActionRow"]
+custom_minimum_size = Vector2(120, 34)
+layout_mode = 2
+text = "跳转城市"
+
+[node name="CloseButton" type="Button" parent="MarginContainer/VBoxContainer/ActionRow"]
+custom_minimum_size = Vector2(96, 34)
+layout_mode = 2
+text = "关闭"

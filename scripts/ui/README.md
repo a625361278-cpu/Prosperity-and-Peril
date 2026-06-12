@@ -12,3 +12,4 @@ Beta 前目标：
 - `FormalHud` 是第一层正式主界面外壳，读取真实运行时状态显示日期、势力摘要和地图选择详情；底部命令在对应正式界面完成前必须保持禁用并显示阻塞原因。
 - `CityDetailPanel` 是第一层正式城市详情面板，读取 `runtime_state.cities / forces / officers`；任命和出阵按钮会打开 `AppointmentSortiePanel`。
 - `AppointmentSortiePanel` 是第一层正式任命与出阵面板，读取 `runtime_state.cities / forces / officers / routes / armies / next_army_seq`，并只通过 `AppointmentSystem` 与 `SortieSystem` 修改真实运行时状态。
+- `BattleReportPanel` 是第一层正式战报面板，读取 `runtime_state.battle_logs / armies / cities`；战报引用断裂必须失败，不允许显示空假战报。
