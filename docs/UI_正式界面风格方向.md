@@ -26,8 +26,9 @@ Content Alpha 已确认第一版正式 UI 风格方向。该方向用于后续�
 - 所有规划中的界面仍必须标记为 `planned`，不得因为有风格图就当作已实现玩法。
 - 线框规格已进入 `data/content_alpha/ui_wireframe_spec.json`，后续正式 UI 实装必须先满足线框中的布局区域、组件、状态绑定和交互合同。
 - 主题 Token 已进入 `data/content_alpha/ui_theme_tokens.json`，后续正式 UI 控件必须优先使用其中的色板、字号、间距、圆角、控件状态和响应式规则。
+- 基础 Godot Theme 已进入 `themes/content_alpha_formal_theme.tres`，后续控件不得绕过 Token/Theme 链路散写正式样式。
 
 ## 仍未完成
 
-- 正式 Godot Theme 资源、授权中文 UI 字体和屏幕级控件尚未实现。
+- 授权中文 UI 字体和屏幕级控件尚未实现。
 - 城市详情、正式武将名册、任命出阵、战报、事件和存档界面仍处于规格规划阶段。

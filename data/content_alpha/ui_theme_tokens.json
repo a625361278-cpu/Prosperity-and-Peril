@@ -84,7 +84,7 @@
   ],
   "blocked_until": [
     "licensed Chinese UI font selection",
-    "formal Godot Theme resource",
+    "screen-specific Theme adoption",
     "screen-specific control implementation"
   ]
 }

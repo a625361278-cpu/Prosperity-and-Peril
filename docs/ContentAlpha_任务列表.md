@@ -341,8 +341,20 @@
     - `test_content_alpha_workbench.gd` 通过，确认工作台第五个 Tab 和 6 组主题 Token。
     - `py -3.14 tools\validate_content_alpha_package.py` 通过，确认包准备校验包含 UI 主题 Token。
 
+- [x] Task 34：正式 UI Godot Theme 资源
+  - 状态：已完成。
+  - 范围：新增 `themes/content_alpha_formal_theme.tres`，由 `data/content_alpha/ui_theme_tokens.json` 生成基础 Godot Theme；新增 Theme Builder、Loader 和生成脚本，校验 Label、Button、PanelContainer 的字号、颜色、圆角和样式与 Token 一致，并在 Content Alpha 工作台加载成功后应用该 Theme。
+  - 根因：主题 Token 只定义视觉约束，Godot 运行时仍缺少可加载、可漂移检测的 Theme 资源；如果直接在场景里散写样式，后续正式控件会失去统一来源。
+  - 边界：Theme 资源只覆盖基础面板、按钮、字号、间距和焦点样式，不选择授权中文字体，不实现屏幕级正式控件，不把规划界面标记为已完成。
+  - 验收：Theme 资源必须真实存在并能由 Godot 加载；资源必须与 Token 对齐，字体大小或样式漂移要失败；工作台必须在校验成功后应用 Theme；包校验必须检查 Theme 资源关键标记。
+  - 验证：
+    - `test_content_alpha_theme_resource.gd` 通过，确认 Theme 资源可加载、Builder 生成结果符合 Token、漂移会失败。
+    - `test_content_alpha_validation_runner.gd` 通过，确认聚合校验包含 Theme 资源路径和 3 个基础控件类型。
+    - `test_content_alpha_workbench.gd` 通过，确认工作台应用正式 Theme 并显示主题控件数量。
+    - `py -3.14 tools\validate_content_alpha_package.py` 通过，确认包准备校验包含 Theme 资源关键标记。
+
 ## 当前缺口
 
 - 半身像资源来自项目负责人另一个自有三国项目；项目内导入流程、运行时 `res://` 加载、`.pck` 打包烟测、212 张可复用半身像池、头像绑定候选武将名册和包校验一致性检查已经完成。
 - 正式武将数据、技能、官职、势力剧本尚未进入 Content Alpha 内容包；本阶段不复用源项目技能、传记、君略或数值，候选名册也不代表正式武将库。
-- Godot Theme 资源、授权中文 UI 字体和屏幕级正式控件仍未落地；当前已准备 Content Alpha 资源工作台及主场景调试入口、可复用半身像池入口、候选武将名册、选择状态工具、独立浏览组件、UI 信息架构规格、UI 线框规格、UI 主题 Token、工作台 UI 规格浏览入口、正式 UI 风格方向图与调试面板可见摘要。
+- 授权中文 UI 字体和屏幕级正式控件仍未落地；当前已准备 Content Alpha 资源工作台及主场景调试入口、可复用半身像池入口、候选武将名册、选择状态工具、独立浏览组件、UI 信息架构规格、UI 线框规格、UI 主题 Token、Godot Theme 基础资源、工作台 UI 规格浏览入口、正式 UI 风格方向图与调试面板可见摘要。

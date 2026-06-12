@@ -1,6 +1,7 @@
 extends Control
 
 const ContentAlphaValidationRunner = preload("res://scripts/data/content_alpha_validation_runner.gd")
+const ContentAlphaThemeLoader = preload("res://scripts/ui/content_alpha_theme_loader.gd")
 
 @onready var _summary: Label = $Root/ValidationSummary
 @onready var _tabs: TabContainer = $Root/WorkbenchTabs
@@ -17,6 +18,12 @@ func _ready() -> void:
 
 func load_default_workbench() -> Dictionary:
 	var errors: Array = []
+	var theme_result: Dictionary = ContentAlphaThemeLoader.load_default_theme()
+	if not theme_result.ok:
+		errors.append_array(theme_result.errors)
+	else:
+		theme = theme_result.theme
+
 	var validation_result: Dictionary = ContentAlphaValidationRunner.validate_default_content()
 	if not validation_result.ok:
 		errors.append_array(validation_result.errors)
@@ -56,7 +63,7 @@ func load_default_workbench() -> Dictionary:
 
 
 func set_validation_summary(summary: Dictionary) -> void:
-	_summary_label().text = "Content Alpha 工作台: 图池=%s 候选=%s 源绑定=%s UI规格=%s 规划=%s 线框=%s 主题色=%s 首图=%s %s" % [
+	_summary_label().text = "Content Alpha 工作台: 图池=%s 候选=%s 源绑定=%s UI规格=%s 规划=%s 线框=%s 主题色=%s 主题控件=%s 首图=%s %s" % [
 		str(summary.reusable_portraits),
 		str(summary.candidate_officers),
 		str(summary.indexed_heroes),
@@ -64,6 +71,7 @@ func set_validation_summary(summary: Dictionary) -> void:
 		str(summary.ui_navigation_planned_screens),
 		str(summary.ui_wireframes),
 		str(summary.ui_theme_palette_colors),
+		str(summary.ui_theme_resource_control_types),
 		str(summary.first_candidate_officer_id),
 		str(summary.first_candidate_display_name_cn),
 	]
@@ -95,6 +103,10 @@ func get_ui_wireframe_item_count() -> int:
 
 func get_ui_theme_token_item_count() -> int:
 	return _ui_theme_token_panel_node().get_item_count()
+
+
+func has_formal_theme() -> bool:
+	return theme is Theme
 
 
 func _show_error(errors: Array) -> void:

@@ -15,6 +15,7 @@ CANDIDATE_ROSTER = Path("data/content_alpha/candidate_officer_roster.json")
 UI_NAVIGATION_SPEC = Path("data/content_alpha/ui_navigation_spec.json")
 UI_WIREFRAME_SPEC = Path("data/content_alpha/ui_wireframe_spec.json")
 UI_THEME_TOKENS = Path("data/content_alpha/ui_theme_tokens.json")
+UI_THEME_RESOURCE = Path("themes/content_alpha_formal_theme.tres")
 DISALLOWED_POOL_FIELDS = {"source_power", "source_up_point", "skill_ids", "secret_ids", "biography_cn"}
 DISALLOWED_ROSTER_FIELDS = DISALLOWED_POOL_FIELDS | {
     "force_id",
@@ -368,6 +369,27 @@ def validate_ui_theme_tokens(tokens_path: Path) -> dict:
     }
 
 
+def validate_ui_theme_resource(theme_path: Path) -> dict:
+    if not theme_path.exists():
+        raise FileNotFoundError(f"ui theme resource not found: {theme_path}")
+    text = theme_path.read_text(encoding="utf-8")
+    required_markers = [
+        'resource_name = "ContentAlphaFormalTheme"',
+        "Button/styles/normal",
+        "Button/styles/hover",
+        "Button/styles/pressed",
+        "PanelContainer/styles/panel",
+        "Label/font_sizes/font_size = 15",
+    ]
+    for marker in required_markers:
+        if marker not in text:
+            raise ValueError(f"ui theme resource missing marker: {marker}")
+    return {
+        "ui_theme_resource": str(theme_path),
+        "ui_theme_resource_markers": len(required_markers),
+    }
+
+
 def validate_pck(pck_path: Path) -> dict:
     if not pck_path.exists():
         raise FileNotFoundError(f"exported pck not found: {pck_path}")
@@ -387,6 +409,7 @@ def main() -> int:
     parser.add_argument("--ui-navigation-spec", type=Path, default=UI_NAVIGATION_SPEC)
     parser.add_argument("--ui-wireframe-spec", type=Path, default=UI_WIREFRAME_SPEC)
     parser.add_argument("--ui-theme-tokens", type=Path, default=UI_THEME_TOKENS)
+    parser.add_argument("--ui-theme-resource", type=Path, default=UI_THEME_RESOURCE)
     parser.add_argument("--pck", type=Path)
     args = parser.parse_args()
 
@@ -396,6 +419,7 @@ def main() -> int:
     ui_summary = validate_ui_navigation_spec(args.ui_navigation_spec)
     wireframe_summary = validate_ui_wireframe_spec(args.ui_wireframe_spec)
     theme_summary = validate_ui_theme_tokens(args.ui_theme_tokens)
+    theme_resource_summary = validate_ui_theme_resource(args.ui_theme_resource)
     print("imported_assets:", import_summary["asset_count"])
     print("hero_bindings:", import_summary["hero_binding_count"])
     print("reusable_portraits:", pool_summary["reusable_portrait_count"])
@@ -409,6 +433,8 @@ def main() -> int:
     print("ui_theme_palette_colors:", theme_summary["ui_theme_palette_colors"])
     print("ui_theme_controls:", theme_summary["ui_theme_controls"])
     print("ui_theme_corner_radius:", theme_summary["ui_theme_corner_radius"])
+    print("ui_theme_resource:", theme_resource_summary["ui_theme_resource"])
+    print("ui_theme_resource_markers:", theme_resource_summary["ui_theme_resource_markers"])
     if args.pck is not None:
         pck_summary = validate_pck(args.pck)
         print("pck_path:", pck_summary["pck_path"])

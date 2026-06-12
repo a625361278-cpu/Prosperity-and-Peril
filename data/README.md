@@ -20,4 +20,4 @@
 - `content_alpha/candidate_officer_roster.json`：由 `tools/export_candidate_officer_roster.py` 从可复用半身像池导出的 212 条头像绑定候选武将名册；只记录候选 ID、显示名、选择状态、头像路径和来源参考，不代表正式武将库。
 - `content_alpha/ui_navigation_spec.json`：Content Alpha UI 信息架构规格，记录主界面、大地图、城市、武将、任命出阵、战报、事件日志和存档界面的数据源、入口、可用状态与阻塞项；它不是 Beta 正式 UI 成品。
 - `content_alpha/ui_wireframe_spec.json`：Content Alpha 正式 UI 线框规格，记录核心界面的布局区域、组件、状态绑定和交互合同；它只约束后续实装方向，不代表正式控件已经完成。
-- `content_alpha/ui_theme_tokens.json`：Content Alpha 正式 UI 主题 Token，记录已确认风格方向下的色板、字号、间距、圆角、控件状态和响应式规则；它不是 Godot Theme 成品。
+- `content_alpha/ui_theme_tokens.json`：Content Alpha 正式 UI 主题 Token，记录已确认风格方向下的色板、字号、间距、圆角、控件状态和响应式规则；`themes/content_alpha_formal_theme.tres` 必须由这些 Token 生成并通过漂移校验。

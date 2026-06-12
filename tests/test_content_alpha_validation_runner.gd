@@ -92,6 +92,10 @@ func _test_default_chain() -> Dictionary:
 		return {"ok": false, "message": "content alpha validation did not expose ui theme boundary"}
 	if not FileAccess.file_exists(str(summary.ui_theme_style_reference)):
 		return {"ok": false, "message": "ui theme style reference missing"}
+	if str(summary.ui_theme_resource_path) != "res://themes/content_alpha_formal_theme.tres":
+		return {"ok": false, "message": "content alpha theme resource path mismatch"}
+	if int(summary.ui_theme_resource_control_types) != 3:
+		return {"ok": false, "message": "content alpha theme control type count mismatch"}
 	return {"ok": true}
 
 

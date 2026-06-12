@@ -6,6 +6,7 @@ const CandidateOfficerRosterLoader = preload("res://scripts/data/candidate_offic
 const UiNavigationSpecLoader = preload("res://scripts/data/ui_navigation_spec_loader.gd")
 const UiWireframeSpecLoader = preload("res://scripts/data/ui_wireframe_spec_loader.gd")
 const UiThemeTokenLoader = preload("res://scripts/data/ui_theme_token_loader.gd")
+const ContentAlphaThemeLoader = preload("res://scripts/ui/content_alpha_theme_loader.gd")
 const HeroPortraitPreviewPresenter = preload("res://scripts/ui/hero_portrait_preview_presenter.gd")
 const HeroPortraitTextureLoader = preload("res://scripts/ui/hero_portrait_texture_loader.gd")
 
@@ -82,6 +83,9 @@ static func validate_hero_portrait_pack(manifest_path: String, pack_id: String, 
 	var theme_token_result: Dictionary = UiThemeTokenLoader.load_default_tokens()
 	if not theme_token_result.ok:
 		return _failure(theme_token_result.errors)
+	var theme_result: Dictionary = ContentAlphaThemeLoader.load_default_theme()
+	if not theme_result.ok:
+		return _failure(theme_result.errors)
 
 	return {
 		"ok": true,
@@ -121,6 +125,8 @@ static func validate_hero_portrait_pack(manifest_path: String, pack_id: String, 
 			"ui_theme_accent_gold": str(theme_token_result.tokens.palette.accent_gold),
 			"ui_theme_boundary_rule": str(theme_token_result.source.boundary_rule),
 			"ui_theme_style_reference": str(theme_token_result.source.style_reference),
+			"ui_theme_resource_path": str(theme_result.theme_path),
+			"ui_theme_resource_control_types": int(theme_result.control_types),
 		},
 	}
 
