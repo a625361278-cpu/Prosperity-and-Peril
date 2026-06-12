@@ -11,7 +11,7 @@ Beta 前目标：
 - Content Alpha 工作台可以浏览候选武将、可复用半身像、UI 信息架构规格、UI 线框规格和 UI 主题 Token，并在校验成功后应用 `themes/content_alpha_formal_theme.tres`；这些入口仍是内部工具，不代表 Beta 正式 UI。
 - `FormalHud` 是第一层正式主界面外壳，读取真实运行时状态显示日期、势力摘要和地图选择详情；底部命令在对应正式界面完成前必须保持禁用并显示阻塞原因。
 - Playable Slice 阶段优先让正式 HUD 承载主流程：目标提示、推进一日、战报、事件和存档优先可用；正式武将名册等低优先级系统可以先保留禁用入口。
-- `CityDetailPanel` 是第一层正式城市详情面板，读取 `runtime_state.cities / forces / officers`；任命和出阵按钮会打开 `AppointmentSortiePanel`。
+- `CityDetailPanel` 是第一层正式城市详情面板，读取 `runtime_state.cities / forces / officers`，并按兵粮民生、治理状态、太守、属官和动作区展示；任命和出阵按钮会打开 `AppointmentSortiePanel`。不存在真实上限字段时不得伪造成“当前 / 上限”。
 - `AppointmentSortiePanel` 是第一层正式任命与出阵面板，读取 `runtime_state.cities / forces / officers / routes / armies / next_army_seq`，并只通过 `AppointmentSystem` 与 `SortieSystem` 修改真实运行时状态。
 - `BattleReportPanel` 是第一层正式战报面板，读取 `runtime_state.battle_logs / armies / cities`；战报引用断裂必须失败，不允许显示空假战报。
 - `EventLogPanel` 是第一层正式事件日志面板，聚合现有运行时日志字典；它不代表完整历史事件链已经完成。

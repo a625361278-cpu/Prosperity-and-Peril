@@ -1,6 +1,8 @@
 extends RefCounted
 
 const REQUIRED_STATE_KEYS := ["cities", "forces", "officers"]
+const REQUIRED_CITY_KEYS := ["name", "force_id", "troops", "food", "public_order", "morale_public", "gentry_support", "recovery_state"]
+const REQUIRED_FORCE_KEYS := ["name"]
 
 
 static func build_detail(state: Dictionary, city_id: String) -> Dictionary:
@@ -12,10 +14,16 @@ static func build_detail(state: Dictionary, city_id: String) -> Dictionary:
 	if not state.cities.has(city_id):
 		return _failure(["city detail missing city %s" % city_id])
 	var city: Dictionary = state.cities[city_id]
+	errors.append_array(_require_fields(city, "city %s" % city_id, REQUIRED_CITY_KEYS))
+	if not errors.is_empty():
+		return _failure(errors)
 	var force_id := str(city.force_id)
 	if not state.forces.has(force_id):
 		return _failure(["city detail missing force %s for city %s" % [force_id, city_id]])
 	var force: Dictionary = state.forces[force_id]
+	errors.append_array(_require_fields(force, "force %s" % force_id, REQUIRED_FORCE_KEYS))
+	if not errors.is_empty():
+		return _failure(errors)
 	var governor := _governor_summary(state, city)
 	if not governor.ok:
 		return _failure(governor.errors)
@@ -27,15 +35,15 @@ static func build_detail(state: Dictionary, city_id: String) -> Dictionary:
 			"city_id": city_id,
 			"title": "%s / %s" % [str(city.name), str(force.name)],
 			"resource_rows": [
-				_stat("兵力", city, "troops"),
-				_stat("粮草", city, "food"),
-				_stat("民心", city, "morale_public"),
-				_stat("治安", city, "public_order"),
+				{"label": "兵力", "value": "%s" % str(city.troops)},
+				{"label": "粮草", "value": "%s" % str(city.food)},
+				{"label": "民心", "value": "%s / 100" % str(city.morale_public)},
+				{"label": "治安", "value": "%s / 100" % str(city.public_order)},
 			],
 			"governance_rows": [
-				_stat("士族", city, "gentry_support"),
+				{"label": "士族", "value": "%s / 100" % str(city.gentry_support)},
 				{"label": "状态", "value": str(city.recovery_state)},
-				{"label": "整合", "value": str(city.get("integration_progress", -1))},
+				{"label": "整合", "value": _integration_value(city)},
 			],
 			"governor_text": governor.text,
 			"officer_rows": _same_force_officers(state.officers, force_id),
@@ -55,10 +63,18 @@ static func _validate_state(state: Dictionary) -> Array[String]:
 	return errors
 
 
-static func _stat(label: String, values: Dictionary, key: String) -> Dictionary:
-	if not values.has(key):
-		return {"label": label, "value": "缺字段:%s" % key}
-	return {"label": label, "value": str(values[key])}
+static func _require_fields(values: Dictionary, context: String, fields: Array) -> Array[String]:
+	var errors: Array[String] = []
+	for field in fields:
+		if not values.has(field):
+			errors.append("city detail %s missing %s" % [context, str(field)])
+	return errors
+
+
+static func _integration_value(city: Dictionary) -> String:
+	if not city.has("integration_progress"):
+		return "未进入战后整合"
+	return "%s / 100" % str(city.integration_progress)
 
 
 static func _governor_summary(state: Dictionary, city: Dictionary) -> Dictionary:

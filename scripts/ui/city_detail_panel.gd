@@ -43,21 +43,21 @@ func get_action_button_enabled(action_id: String) -> bool:
 
 func _apply_detail(detail: Dictionary) -> void:
 	_title_node().text = str(detail.title)
-	_resources_node().text = _format_pairs(detail.resource_rows)
-	_governance_node().text = _format_pairs(detail.governance_rows)
+	_resources_node().text = "兵粮与民生\n%s" % _format_stat_lines(detail.resource_rows)
+	_governance_node().text = "治理状态\n%s" % _format_stat_lines(detail.governance_rows)
 	_governor_node().text = str(detail.governor_text)
 	_rebuild_officers(detail.officer_rows)
 	_rebuild_actions(detail.actions)
 
 
-func _format_pairs(rows: Array) -> String:
+func _format_stat_lines(rows: Array) -> String:
 	var parts: Array[String] = []
 	for row in rows:
 		if not row is Dictionary:
 			push_error("city detail row must be dictionary")
 			continue
-		parts.append("%s=%s" % [str(row.label), str(row.value)])
-	return "  ".join(parts)
+		parts.append("%-4s  %s" % [str(row.label), str(row.value)])
+	return "\n".join(parts)
 
 
 func _rebuild_officers(rows: Array) -> void:
@@ -88,7 +88,7 @@ func _rebuild_actions(actions: Array) -> void:
 		button.text = str(action.label)
 		button.disabled = not bool(action.enabled)
 		button.tooltip_text = str(action.blocked_reason)
-		button.custom_minimum_size = Vector2(96, 34)
+		button.custom_minimum_size = Vector2(132, 44)
 		button.set_meta("action_id", action_id)
 		button.pressed.connect(_on_action_pressed.bind(action_id))
 		bar.add_child(button)

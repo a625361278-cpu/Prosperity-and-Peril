@@ -22,6 +22,7 @@ func _initialize() -> void:
 	_run("formal hud opens save load command", _test_formal_hud_save_load_command)
 	_run("formal hud rejects missing state", _test_formal_hud_rejects_missing_state)
 	_run("city detail presenter exposes governor and rejects missing force", _test_city_detail_presenter)
+	_run("city detail presenter rejects missing city fields", _test_city_detail_presenter_rejects_missing_city_field)
 	quit(_failed)
 
 
@@ -273,6 +274,21 @@ func _test_city_detail_presenter() -> Dictionary:
 		if str(error).contains("city detail missing force FORCE_PLAYER"):
 			return {"ok": true}
 	return {"ok": false, "message": "expected missing force error, got %s" % [missing_force.errors]}
+
+
+func _test_city_detail_presenter_rejects_missing_city_field() -> Dictionary:
+	var state_result := _build_state()
+	if not state_result.ok:
+		return state_result
+	var copied: Dictionary = state_result.state.duplicate(true)
+	copied.cities.CITY_TEST_A.erase("troops")
+	var result: Dictionary = CityDetailPresenter.build_detail(copied, "CITY_TEST_A")
+	if result.ok:
+		return {"ok": false, "message": "expected city detail to reject missing troops"}
+	for error in result.errors:
+		if str(error).contains("city detail city CITY_TEST_A missing troops"):
+			return {"ok": true}
+	return {"ok": false, "message": "expected missing troops error, got %s" % [result.errors]}
 
 
 func _instantiate_hud() -> Dictionary:
