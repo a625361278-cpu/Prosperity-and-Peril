@@ -127,7 +127,7 @@ stretch_mode = 5
 [node name="OfficerText" type="Label" parent="OfficerPanel/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(250, 136)
 layout_mode = 2
-text = "主公  刘备\n声望 1800/3000\n威名 2300\n\n当前目标: 建立第一条作战链路"
+text = "等待运行时领袖状态。\n半身像: 候选资源示例，未绑定正式武将"
 autowrap_mode = 3
 
 [node name="RightPanel" type="PanelContainer" parent="."]

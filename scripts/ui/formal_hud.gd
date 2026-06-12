@@ -11,6 +11,7 @@ signal advance_day_requested
 @onready var _playable_status_label: Label = $TopBar/MarginContainer/HBoxContainer/PlayableStatusLabel
 @onready var _objective_label: Label = $LeftPanel/MarginContainer/VBoxContainer/ObjectiveValue
 @onready var _event_hint_label: Label = $LeftPanel/MarginContainer/VBoxContainer/EventValue
+@onready var _officer_text_label: Label = $OfficerPanel/MarginContainer/HBoxContainer/OfficerText
 @onready var _selection_title: Label = $RightPanel/MarginContainer/VBoxContainer/SelectionTitle
 @onready var _selection_body: Label = $RightPanel/MarginContainer/VBoxContainer/SelectionBody
 @onready var _city_detail_panel = $RightPanel/MarginContainer/VBoxContainer/CityDetailPanel
@@ -92,6 +93,10 @@ func get_playable_status_text() -> String:
 	return _playable_status_label_node().text
 
 
+func get_officer_card_text() -> String:
+	return _officer_text_node().text
+
+
 func set_playable_message(message: String) -> void:
 	_playable_status_label_node().text = message
 	_objective_label_node().text = message
@@ -163,6 +168,7 @@ func _apply_hud_state(hud: Dictionary) -> void:
 	_playable_status_label_node().text = str(hud.playable_status)
 	_objective_label_node().text = str(hud.playable_status)
 	_event_hint_label_node().text = _event_hint_text()
+	_officer_text_node().text = str(hud.leader_card_text)
 	_selection_title_node().text = str(hud.selection_title)
 	_selection_body_node().text = str(hud.selection_body)
 	_city_detail_panel_node().clear_city()
@@ -258,6 +264,7 @@ func _on_appointment_sortie_state_changed() -> void:
 		_playable_status_label_node().text = str(hud_result.hud.playable_status)
 		_objective_label_node().text = str(hud_result.hud.playable_status)
 		_event_hint_label_node().text = _event_hint_text()
+		_officer_text_node().text = str(hud_result.hud.leader_card_text)
 	runtime_state_replaced.emit(_state)
 
 
@@ -355,6 +362,12 @@ func _event_hint_label_node() -> Label:
 	if _event_hint_label != null:
 		return _event_hint_label
 	return get_node("LeftPanel/MarginContainer/VBoxContainer/EventValue") as Label
+
+
+func _officer_text_node() -> Label:
+	if _officer_text_label != null:
+		return _officer_text_label
+	return get_node("OfficerPanel/MarginContainer/HBoxContainer/OfficerText") as Label
 
 
 func _selection_title_node() -> Label:

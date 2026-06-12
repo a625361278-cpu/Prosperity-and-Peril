@@ -21,6 +21,7 @@ func _initialize() -> void:
 	_run("formal hud opens event log command", _test_formal_hud_event_log_command)
 	_run("formal hud opens save load command", _test_formal_hud_save_load_command)
 	_run("formal hud rejects missing state", _test_formal_hud_rejects_missing_state)
+	_run("formal hud rejects missing ruler officer", _test_formal_hud_rejects_missing_ruler_officer)
 	_run("city detail presenter exposes governor and rejects missing force", _test_city_detail_presenter)
 	_run("city detail presenter rejects missing city fields", _test_city_detail_presenter_rejects_missing_city_field)
 	quit(_failed)
@@ -103,6 +104,13 @@ func _test_formal_hud_loads_state() -> Dictionary:
 	if not root.get_playable_status_text().contains("目标:"):
 		root.queue_free()
 		return {"ok": false, "message": "playable status missing"}
+	var officer_card_text: String = root.get_officer_card_text()
+	if not officer_card_text.contains("测试主将") or not officer_card_text.contains("正统 62") or not officer_card_text.contains("名望 48"):
+		root.queue_free()
+		return {"ok": false, "message": "leader card did not use real runtime state: %s" % officer_card_text}
+	if officer_card_text.contains("刘备") or officer_card_text.contains("1800/3000"):
+		root.queue_free()
+		return {"ok": false, "message": "leader card still contains static placeholder data"}
 	root.queue_free()
 	return {"ok": true}
 
@@ -251,6 +259,21 @@ func _test_formal_hud_rejects_missing_state() -> Dictionary:
 		if str(error).contains("formal hud missing state key cities"):
 			return {"ok": true}
 	return {"ok": false, "message": "expected missing cities error, got %s" % [result.errors]}
+
+
+func _test_formal_hud_rejects_missing_ruler_officer() -> Dictionary:
+	var state_result := _build_state()
+	if not state_result.ok:
+		return state_result
+	var copied: Dictionary = state_result.state.duplicate(true)
+	copied.officers.erase("OFF_TEST_PLAYER")
+	var result: Dictionary = FormalHudPresenter.build_hud_state(copied)
+	if result.ok:
+		return {"ok": false, "message": "expected missing ruler officer to fail"}
+	for error in result.errors:
+		if str(error).contains("formal hud ruler officer missing OFF_TEST_PLAYER"):
+			return {"ok": true}
+	return {"ok": false, "message": "expected missing ruler officer error, got %s" % [result.errors]}
 
 
 func _test_city_detail_presenter() -> Dictionary:

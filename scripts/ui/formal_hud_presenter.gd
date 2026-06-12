@@ -5,6 +5,7 @@ const REQUIRED_STATE_KEYS := [
 	"current_month",
 	"forces",
 	"cities",
+	"officers",
 	"armies",
 	"battle_logs",
 ]
@@ -14,6 +15,9 @@ static func build_hud_state(state: Dictionary) -> Dictionary:
 	var errors := _validate_state(state)
 	if not errors.is_empty():
 		return _failure(errors)
+	var leader_card := _leader_card_text(state)
+	if not leader_card.ok:
+		return _failure(leader_card.errors)
 	return {
 		"ok": true,
 		"errors": [],
@@ -21,6 +25,7 @@ static func build_hud_state(state: Dictionary) -> Dictionary:
 			"date_text": "第 %d 日 / 第 %d 月" % [int(state.current_day), int(state.current_month)],
 			"force_summary": _force_summary(state.forces),
 			"playable_status": _playable_status(state),
+			"leader_card_text": leader_card.text,
 			"selection_title": "当前选择: 未选择",
 			"selection_body": "点击地图城市或部队查看真实状态。",
 			"commands": _command_rows(),
@@ -99,6 +104,53 @@ static func _force_summary(forces: Dictionary) -> String:
 			str(force.prestige),
 		])
 	return "  |  ".join(lines)
+
+
+static func _leader_card_text(state: Dictionary) -> Dictionary:
+	var force_id := _primary_force_id(state.forces)
+	if force_id.is_empty():
+		return {"ok": false, "errors": ["formal hud has no force for leader card"], "text": ""}
+	var force: Dictionary = state.forces[force_id]
+	var force_errors := _require_fields(force, "force %s" % force_id, ["name", "ruler_officer_id", "legitimacy", "prestige"])
+	if not force_errors.is_empty():
+		return {"ok": false, "errors": force_errors, "text": ""}
+	var ruler_id := str(force.ruler_officer_id)
+	if not state.officers.has(ruler_id):
+		return {"ok": false, "errors": ["formal hud ruler officer missing %s for force %s" % [ruler_id, force_id]], "text": ""}
+	var officer: Dictionary = state.officers[ruler_id]
+	var officer_errors := _require_fields(officer, "officer %s" % ruler_id, ["name", "leadership", "politics", "loyalty"])
+	if not officer_errors.is_empty():
+		return {"ok": false, "errors": officer_errors, "text": ""}
+	return {
+		"ok": true,
+		"errors": [],
+		"text": "势力领袖  %s\n所属  %s\n正统 %s  名望 %s\n忠诚 %s  统率 %s  政治 %s\n半身像: 候选资源示例，未绑定正式武将" % [
+			str(officer.name),
+			str(force.name),
+			str(force.legitimacy),
+			str(force.prestige),
+			str(officer.loyalty),
+			str(officer.leadership),
+			str(officer.politics),
+		],
+	}
+
+
+static func _primary_force_id(forces: Dictionary) -> String:
+	if forces.has("FORCE_PLAYER"):
+		return "FORCE_PLAYER"
+	var keys := _sorted_keys(forces)
+	if keys.is_empty():
+		return ""
+	return str(keys[0])
+
+
+static func _require_fields(values: Dictionary, context: String, fields: Array) -> Array[String]:
+	var errors: Array[String] = []
+	for field in fields:
+		if not values.has(field):
+			errors.append("formal hud %s missing %s" % [context, str(field)])
+	return errors
 
 
 static func _playable_status(state: Dictionary) -> String:
