@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/content_alpha_workbench.gd" id="1_workbench"]
 [ext_resource type="PackedScene" path="res://scenes/candidate_officer_roster_browser_panel.tscn" id="2_candidate"]
 [ext_resource type="PackedScene" path="res://scenes/reusable_hero_portrait_browser_panel.tscn" id="3_portrait"]
 [ext_resource type="PackedScene" path="res://scenes/ui_navigation_spec_panel.tscn" id="4_ui_spec"]
+[ext_resource type="PackedScene" path="res://scenes/ui_wireframe_spec_panel.tscn" id="5_wireframe_spec"]
+[ext_resource type="PackedScene" path="res://scenes/ui_theme_token_panel.tscn" id="6_theme_tokens"]
 
 [node name="ContentAlphaWorkbench" type="Control"]
 layout_mode = 3
@@ -62,4 +64,20 @@ layout_mode = 2
 metadata/_tab_index = 2
 
 [node name="UiNavigationSpecPanel" parent="Root/WorkbenchTabs/UiNavigation" instance=ExtResource("4_ui_spec")]
+layout_mode = 2
+
+[node name="UiWireframes" type="MarginContainer" parent="Root/WorkbenchTabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="UiWireframeSpecPanel" parent="Root/WorkbenchTabs/UiWireframes" instance=ExtResource("5_wireframe_spec")]
+layout_mode = 2
+
+[node name="UiThemeTokens" type="MarginContainer" parent="Root/WorkbenchTabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 4
+
+[node name="UiThemeTokenPanel" parent="Root/WorkbenchTabs/UiThemeTokens" instance=ExtResource("6_theme_tokens")]
 layout_mode = 2

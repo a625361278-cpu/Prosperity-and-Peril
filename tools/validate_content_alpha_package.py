@@ -13,6 +13,8 @@ IMPORT_MANIFEST = Path("data/content_alpha/hero_portrait_import_manifest.json")
 PORTRAIT_POOL = Path("data/content_alpha/reusable_hero_portrait_pool.json")
 CANDIDATE_ROSTER = Path("data/content_alpha/candidate_officer_roster.json")
 UI_NAVIGATION_SPEC = Path("data/content_alpha/ui_navigation_spec.json")
+UI_WIREFRAME_SPEC = Path("data/content_alpha/ui_wireframe_spec.json")
+UI_THEME_TOKENS = Path("data/content_alpha/ui_theme_tokens.json")
 DISALLOWED_POOL_FIELDS = {"source_power", "source_up_point", "skill_ids", "secret_ids", "biography_cn"}
 DISALLOWED_ROSTER_FIELDS = DISALLOWED_POOL_FIELDS | {
     "force_id",
@@ -36,6 +38,35 @@ REQUIRED_UI_SCREEN_IDS = {
     "save_load_panel",
 }
 ALLOWED_UI_STATUSES = {"debug_available", "content_alpha_available", "planned"}
+REQUIRED_UI_WIREFRAME_IDS = {
+    "strategic_map",
+    "city_detail_panel",
+    "formal_officer_roster",
+    "appointment_sortie_panel",
+    "battle_report_panel",
+    "event_log_panel",
+    "save_load_panel",
+    "candidate_officer_workbench",
+}
+ALLOWED_UI_WIREFRAME_STATUSES = {"wireframe_specified", "content_alpha_tool"}
+REQUIRED_UI_THEME_PALETTE_KEYS = {
+    "lacquer_dark",
+    "lacquer_panel",
+    "aged_paper",
+    "paper_muted",
+    "ink_text",
+    "muted_text",
+    "accent_gold",
+    "accent_red",
+    "warning",
+    "danger",
+    "success",
+    "route_line",
+    "player_force",
+    "enemy_force",
+    "neutral_force",
+}
+REQUIRED_UI_THEME_CONTROLS = {"panel", "button", "warning_badge", "danger_badge", "success_badge"}
 
 
 def _load_manifest(path: Path) -> dict:
@@ -214,6 +245,129 @@ def validate_ui_navigation_spec(spec_path: Path) -> dict:
     }
 
 
+def validate_ui_wireframe_spec(spec_path: Path) -> dict:
+    if not spec_path.exists():
+        raise FileNotFoundError(f"ui wireframe spec not found: {spec_path}")
+    payload = json.loads(spec_path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError(f"ui wireframe spec root must be object: {spec_path}")
+    source = payload.get("source")
+    if not isinstance(source, dict):
+        raise ValueError("ui wireframe spec source must be object")
+    boundary_rule = str(source.get("boundary_rule", ""))
+    if "not a finished Beta UI" not in boundary_rule:
+        raise ValueError("ui wireframe spec boundary must state it is not a finished Beta UI")
+    style_reference = str(source.get("style_reference", ""))
+    if not style_reference.startswith("res://"):
+        raise ValueError(f"ui wireframe style reference must use res://: {style_reference}")
+    if not Path(style_reference.removeprefix("res://")).exists():
+        raise FileNotFoundError(f"ui wireframe style reference missing: {style_reference}")
+    wireframes = payload.get("wireframes")
+    if not isinstance(wireframes, list) or not wireframes:
+        raise ValueError("ui wireframe spec wireframes must be a non-empty array")
+
+    wireframe_ids: set[str] = set()
+    specified_count = 0
+    tool_count = 0
+    for index, wireframe in enumerate(wireframes):
+        if not isinstance(wireframe, dict):
+            raise ValueError(f"ui wireframe spec wireframes[{index}] must be object")
+        wireframe_id = str(wireframe.get("id", ""))
+        if not wireframe_id:
+            raise ValueError(f"ui wireframe spec wireframes[{index}] missing id")
+        if wireframe_id in wireframe_ids:
+            raise ValueError(f"duplicate ui wireframe id: {wireframe_id}")
+        wireframe_ids.add(wireframe_id)
+        status = str(wireframe.get("implementation_status", ""))
+        if status not in ALLOWED_UI_WIREFRAME_STATUSES:
+            raise ValueError(f"ui wireframe spec wireframes[{index}] invalid status: {status}")
+        if status == "wireframe_specified":
+            specified_count += 1
+        if status == "content_alpha_tool":
+            tool_count += 1
+        for field_name in ("layout_regions", "primary_components", "state_bindings", "interactions", "blocked_until"):
+            values = wireframe.get(field_name)
+            if not isinstance(values, list) or not values:
+                raise ValueError(f"ui wireframe spec {wireframe_id} missing {field_name}")
+        if len(wireframe["layout_regions"]) < 3:
+            raise ValueError(f"ui wireframe spec {wireframe_id} must declare at least three layout regions")
+        if len(wireframe["interactions"]) < 2:
+            raise ValueError(f"ui wireframe spec {wireframe_id} must declare at least two interactions")
+        for binding in wireframe["state_bindings"]:
+            binding_text = str(binding)
+            if binding_text.startswith("res://") and not Path(binding_text.removeprefix("res://")).exists():
+                raise FileNotFoundError(f"ui wireframe spec binding missing: {binding_text}")
+    missing = sorted(REQUIRED_UI_WIREFRAME_IDS.difference(wireframe_ids))
+    if missing:
+        raise ValueError(f"ui wireframe spec missing wireframes: {missing}")
+    return {
+        "ui_wireframes": len(wireframes),
+        "ui_wireframe_specified": specified_count,
+        "ui_wireframe_tools": tool_count,
+    }
+
+
+def validate_ui_theme_tokens(tokens_path: Path) -> dict:
+    if not tokens_path.exists():
+        raise FileNotFoundError(f"ui theme tokens not found: {tokens_path}")
+    payload = json.loads(tokens_path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError(f"ui theme tokens root must be object: {tokens_path}")
+    source = payload.get("source")
+    if not isinstance(source, dict):
+        raise ValueError("ui theme tokens source must be object")
+    boundary_rule = str(source.get("boundary_rule", ""))
+    if "not a finished Beta UI" not in boundary_rule:
+        raise ValueError("ui theme tokens boundary must state it is not a finished Beta UI")
+    style_reference = str(source.get("style_reference", ""))
+    if not style_reference.startswith("res://"):
+        raise ValueError(f"ui theme style reference must use res://: {style_reference}")
+    if not Path(style_reference.removeprefix("res://")).exists():
+        raise FileNotFoundError(f"ui theme style reference missing: {style_reference}")
+
+    palette = payload.get("palette")
+    if not isinstance(palette, dict):
+        raise ValueError("ui theme tokens palette must be object")
+    missing_palette = sorted(REQUIRED_UI_THEME_PALETTE_KEYS.difference(palette.keys()))
+    if missing_palette:
+        raise ValueError(f"ui theme tokens missing palette colors: {missing_palette}")
+    for key, value in palette.items():
+        text = str(value)
+        if len(text) != 7 or not text.startswith("#"):
+            raise ValueError(f"ui theme tokens palette.{key} must be #RRGGBB")
+
+    typography = payload.get("typography")
+    if not isinstance(typography, dict) or not isinstance(typography.get("sizes"), dict):
+        raise ValueError("ui theme tokens typography.sizes must be object")
+    for key in ("title", "section", "body", "caption", "number"):
+        if int(typography["sizes"].get(key, 0)) <= 0:
+            raise ValueError(f"ui theme tokens typography.sizes.{key} must be positive")
+
+    shape = payload.get("shape")
+    if not isinstance(shape, dict) or int(shape.get("corner_radius", 0)) <= 0:
+        raise ValueError("ui theme tokens shape.corner_radius must be positive")
+    controls = payload.get("controls")
+    if not isinstance(controls, dict):
+        raise ValueError("ui theme tokens controls must be object")
+    missing_controls = sorted(REQUIRED_UI_THEME_CONTROLS.difference(controls.keys()))
+    if missing_controls:
+        raise ValueError(f"ui theme tokens missing controls: {missing_controls}")
+    for control_name, control in controls.items():
+        if not isinstance(control, dict):
+            raise ValueError(f"ui theme tokens controls.{control_name} must be object")
+        for color_name in control.values():
+            if str(color_name) not in palette:
+                raise ValueError(f"ui theme tokens controls.{control_name} references missing color: {color_name}")
+    responsive_rules = payload.get("responsive_rules")
+    if not isinstance(responsive_rules, list) or len(responsive_rules) < 3:
+        raise ValueError("ui theme tokens responsive_rules must contain at least three rules")
+    return {
+        "ui_theme_palette_colors": len(palette),
+        "ui_theme_controls": len(controls),
+        "ui_theme_corner_radius": int(shape["corner_radius"]),
+    }
+
+
 def validate_pck(pck_path: Path) -> dict:
     if not pck_path.exists():
         raise FileNotFoundError(f"exported pck not found: {pck_path}")
@@ -231,6 +385,8 @@ def main() -> int:
     parser.add_argument("--portrait-pool", type=Path, default=PORTRAIT_POOL)
     parser.add_argument("--candidate-roster", type=Path, default=CANDIDATE_ROSTER)
     parser.add_argument("--ui-navigation-spec", type=Path, default=UI_NAVIGATION_SPEC)
+    parser.add_argument("--ui-wireframe-spec", type=Path, default=UI_WIREFRAME_SPEC)
+    parser.add_argument("--ui-theme-tokens", type=Path, default=UI_THEME_TOKENS)
     parser.add_argument("--pck", type=Path)
     args = parser.parse_args()
 
@@ -238,6 +394,8 @@ def main() -> int:
     pool_summary = validate_reusable_portrait_pool(args.portrait_pool, import_summary["target_paths"])
     roster_summary = validate_candidate_officer_roster(args.candidate_roster, import_summary["target_paths"])
     ui_summary = validate_ui_navigation_spec(args.ui_navigation_spec)
+    wireframe_summary = validate_ui_wireframe_spec(args.ui_wireframe_spec)
+    theme_summary = validate_ui_theme_tokens(args.ui_theme_tokens)
     print("imported_assets:", import_summary["asset_count"])
     print("hero_bindings:", import_summary["hero_binding_count"])
     print("reusable_portraits:", pool_summary["reusable_portrait_count"])
@@ -245,6 +403,12 @@ def main() -> int:
     print("ui_navigation_screens:", ui_summary["ui_navigation_screens"])
     print("ui_navigation_available:", ui_summary["ui_navigation_available"])
     print("ui_navigation_planned:", ui_summary["ui_navigation_planned"])
+    print("ui_wireframes:", wireframe_summary["ui_wireframes"])
+    print("ui_wireframe_specified:", wireframe_summary["ui_wireframe_specified"])
+    print("ui_wireframe_tools:", wireframe_summary["ui_wireframe_tools"])
+    print("ui_theme_palette_colors:", theme_summary["ui_theme_palette_colors"])
+    print("ui_theme_controls:", theme_summary["ui_theme_controls"])
+    print("ui_theme_corner_radius:", theme_summary["ui_theme_corner_radius"])
     if args.pck is not None:
         pck_summary = validate_pck(args.pck)
         print("pck_path:", pck_summary["pck_path"])

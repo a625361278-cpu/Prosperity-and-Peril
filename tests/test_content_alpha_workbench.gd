@@ -36,9 +36,15 @@ func _test_workbench_nodes() -> Dictionary:
 	if root.get_node_or_null("Root/WorkbenchTabs/UiNavigation/UiNavigationSpecPanel") == null:
 		root.queue_free()
 		return {"ok": false, "message": "workbench ui navigation spec panel missing"}
-	if root.get_tab_count() != 3:
+	if root.get_node_or_null("Root/WorkbenchTabs/UiWireframes/UiWireframeSpecPanel") == null:
 		root.queue_free()
-		return {"ok": false, "message": "workbench expected three tabs"}
+		return {"ok": false, "message": "workbench ui wireframe spec panel missing"}
+	if root.get_node_or_null("Root/WorkbenchTabs/UiThemeTokens/UiThemeTokenPanel") == null:
+		root.queue_free()
+		return {"ok": false, "message": "workbench ui theme token panel missing"}
+	if root.get_tab_count() != 5:
+		root.queue_free()
+		return {"ok": false, "message": "workbench expected five tabs"}
 	root.queue_free()
 	return {"ok": true}
 
@@ -61,8 +67,14 @@ func _test_workbench_loads_default_content() -> Dictionary:
 	if root.get_ui_navigation_item_count() != 8:
 		root.queue_free()
 		return {"ok": false, "message": "expected 8 ui navigation items"}
+	if root.get_ui_wireframe_item_count() != 8:
+		root.queue_free()
+		return {"ok": false, "message": "expected 8 ui wireframe items"}
+	if root.get_ui_theme_token_item_count() != 6:
+		root.queue_free()
+		return {"ok": false, "message": "expected 6 ui theme token groups"}
 	var summary: String = root.get_validation_summary_text()
-	if not summary.contains("图池=212 候选=212 源绑定=426 UI规格=8 规划=6"):
+	if not summary.contains("图池=212 候选=212 源绑定=426 UI规格=8 规划=6 线框=8 主题色=15"):
 		root.queue_free()
 		return {"ok": false, "message": "workbench summary missing content alpha counts"}
 	if not summary.contains("CANDIDATE_UI_GJ_GG_BASEMAP_HERO_1001 刘备"):

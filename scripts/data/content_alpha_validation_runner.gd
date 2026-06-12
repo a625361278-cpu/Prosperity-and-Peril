@@ -4,6 +4,8 @@ const HeroPortraitPackLoader = preload("res://scripts/data/hero_portrait_pack_lo
 const ReusableHeroPortraitPoolLoader = preload("res://scripts/data/reusable_hero_portrait_pool_loader.gd")
 const CandidateOfficerRosterLoader = preload("res://scripts/data/candidate_officer_roster_loader.gd")
 const UiNavigationSpecLoader = preload("res://scripts/data/ui_navigation_spec_loader.gd")
+const UiWireframeSpecLoader = preload("res://scripts/data/ui_wireframe_spec_loader.gd")
+const UiThemeTokenLoader = preload("res://scripts/data/ui_theme_token_loader.gd")
 const HeroPortraitPreviewPresenter = preload("res://scripts/ui/hero_portrait_preview_presenter.gd")
 const HeroPortraitTextureLoader = preload("res://scripts/ui/hero_portrait_texture_loader.gd")
 
@@ -66,6 +68,21 @@ static func validate_hero_portrait_pack(manifest_path: String, pack_id: String, 
 		return _failure(candidate_workbench_result.errors)
 	var ui_status_counts: Dictionary = _count_ui_statuses(ui_spec_result.screens)
 
+	var wireframe_result: Dictionary = UiWireframeSpecLoader.load_default_spec()
+	if not wireframe_result.ok:
+		return _failure(wireframe_result.errors)
+	var sortie_wireframe_result: Dictionary = UiWireframeSpecLoader.resolve_wireframe(
+		wireframe_result.lookup,
+		"appointment_sortie_panel"
+	)
+	if not sortie_wireframe_result.ok:
+		return _failure(sortie_wireframe_result.errors)
+	var wireframe_status_counts: Dictionary = _count_wireframe_statuses(wireframe_result.wireframes)
+
+	var theme_token_result: Dictionary = UiThemeTokenLoader.load_default_tokens()
+	if not theme_token_result.ok:
+		return _failure(theme_token_result.errors)
+
 	return {
 		"ok": true,
 		"errors": [],
@@ -93,6 +110,17 @@ static func validate_hero_portrait_pack(manifest_path: String, pack_id: String, 
 			"ui_navigation_planned_screens": int(ui_status_counts.planned),
 			"ui_navigation_boundary_rule": str(ui_spec_result.source.boundary_rule),
 			"ui_navigation_candidate_workbench_status": str(candidate_workbench_result.screen.implementation_status),
+			"ui_wireframes": wireframe_result.wireframes.size(),
+			"ui_wireframe_specified": int(wireframe_status_counts.wireframe_specified),
+			"ui_wireframe_content_alpha_tools": int(wireframe_status_counts.content_alpha_tool),
+			"ui_wireframe_boundary_rule": str(wireframe_result.source.boundary_rule),
+			"ui_wireframe_style_reference": str(wireframe_result.source.style_reference),
+			"ui_wireframe_sortie_components": sortie_wireframe_result.wireframe.primary_components.size(),
+			"ui_theme_palette_colors": theme_token_result.tokens.palette.size(),
+			"ui_theme_corner_radius": int(theme_token_result.tokens.shape.corner_radius),
+			"ui_theme_accent_gold": str(theme_token_result.tokens.palette.accent_gold),
+			"ui_theme_boundary_rule": str(theme_token_result.source.boundary_rule),
+			"ui_theme_style_reference": str(theme_token_result.source.style_reference),
 		},
 	}
 
@@ -105,6 +133,19 @@ static func _count_ui_statuses(screens: Array) -> Dictionary:
 	}
 	for screen in screens:
 		var status := str(screen.implementation_status)
+		if not counts.has(status):
+			continue
+		counts[status] = int(counts[status]) + 1
+	return counts
+
+
+static func _count_wireframe_statuses(wireframes: Array) -> Dictionary:
+	var counts := {
+		"wireframe_specified": 0,
+		"content_alpha_tool": 0,
+	}
+	for wireframe in wireframes:
+		var status := str(wireframe.implementation_status)
 		if not counts.has(status):
 			continue
 		counts[status] = int(counts[status]) + 1

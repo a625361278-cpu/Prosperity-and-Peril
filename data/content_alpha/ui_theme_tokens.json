@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "source": {
+    "stage": "Content Alpha formal UI theme tokens",
+    "boundary_rule": "theme tokens define visual constraints only; this is not a finished Beta UI",
+    "style_reference": "res://docs/资源/ui_style_concepts/content_alpha_formal_ui_style_v1.png",
+    "requirements_source": "docs/UI_正式界面风格方向.md"
+  },
+  "palette": {
+    "lacquer_dark": "#14100C",
+    "lacquer_panel": "#211913",
+    "aged_paper": "#D8C59B",
+    "paper_muted": "#BDAA7A",
+    "ink_text": "#F1E5C8",
+    "muted_text": "#B8A98B",
+    "accent_gold": "#C69A3E",
+    "accent_red": "#8D2E24",
+    "warning": "#D08B34",
+    "danger": "#B83C30",
+    "success": "#5B8A56",
+    "route_line": "#C79A48",
+    "player_force": "#4F7DBF",
+    "enemy_force": "#B84638",
+    "neutral_force": "#81776A"
+  },
+  "typography": {
+    "font_policy": "use project default font until licensed Chinese UI font is selected",
+    "sizes": {
+      "title": 22,
+      "section": 18,
+      "body": 15,
+      "caption": 13,
+      "number": 16
+    },
+    "rules": [
+      "letter spacing must remain 0",
+      "do not scale font size from viewport width",
+      "compact panels must not use hero-scale text"
+    ]
+  },
+  "spacing": {
+    "panel_padding": 16,
+    "section_gap": 12,
+    "row_gap": 8,
+    "control_gap": 8,
+    "toolbar_gap": 10
+  },
+  "shape": {
+    "corner_radius": 6,
+    "panel_border_width": 1,
+    "focus_border_width": 2
+  },
+  "controls": {
+    "panel": {
+      "background": "lacquer_panel",
+      "border": "accent_gold",
+      "text": "ink_text"
+    },
+    "button": {
+      "normal": "lacquer_panel",
+      "hover": "accent_gold",
+      "pressed": "accent_red",
+      "disabled": "neutral_force",
+      "text": "ink_text"
+    },
+    "warning_badge": {
+      "background": "warning",
+      "text": "lacquer_dark"
+    },
+    "danger_badge": {
+      "background": "danger",
+      "text": "ink_text"
+    },
+    "success_badge": {
+      "background": "success",
+      "text": "ink_text"
+    }
+  },
+  "responsive_rules": [
+    "right detail panel width must be clamped between 320 and 440 px on desktop",
+    "bottom command bar must wrap commands instead of shrinking text below caption size",
+    "fixed-format item lists must keep stable row height during hover and selection",
+    "portrait previews must preserve aspect ratio and never cover action buttons"
+  ],
+  "blocked_until": [
+    "licensed Chinese UI font selection",
+    "formal Godot Theme resource",
+    "screen-specific control implementation"
+  ]
+}

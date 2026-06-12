@@ -1,0 +1,287 @@
+{
+  "schema_version": 1,
+  "source": {
+    "stage": "Content Alpha formal UI wireframes",
+    "boundary_rule": "wireframes define layout and interaction contracts only; this is not a finished Beta UI",
+    "style_reference": "res://docs/资源/ui_style_concepts/content_alpha_formal_ui_style_v1.png",
+    "requirements_source": "三国志_治世与乱世_理论企划案_V1.0.docx.txt chapter 25 and 31, docs/UI_正式界面风格方向.md"
+  },
+  "wireframes": [
+    {
+      "id": "strategic_map",
+      "title_cn": "战略大地图",
+      "implementation_status": "wireframe_specified",
+      "layout_regions": [
+        "全屏 3D 战略地图",
+        "顶部势力与日期状态条",
+        "右侧当前选择详情面板",
+        "底部主命令栏",
+        "左下事件提示区"
+      ],
+      "primary_components": [
+        "CityMarkerLayer",
+        "RouteLayer",
+        "ArmyMarkerLayer",
+        "SelectionDetailPanel",
+        "CommandBar",
+        "EventTicker"
+      ],
+      "state_bindings": [
+        "runtime_state.cities",
+        "runtime_state.routes",
+        "runtime_state.armies",
+        "runtime_state.forces",
+        "runtime_state.change_logs"
+      ],
+      "interactions": [
+        "选择城市后右侧显示城市详情摘要",
+        "选择部队后右侧显示行军和粮草状态",
+        "底部命令栏进入任命、出阵、战报、事件和存档入口"
+      ],
+      "blocked_until": [
+        "正式三国地图坐标",
+        "正式 UI 主题资源",
+        "城市详情和出阵面板实装"
+      ]
+    },
+    {
+      "id": "city_detail_panel",
+      "title_cn": "城市详情",
+      "implementation_status": "wireframe_specified",
+      "layout_regions": [
+        "城市标题与归属栏",
+        "资源与军事指标区",
+        "治理状态区",
+        "太守与属官区",
+        "城市动作区"
+      ],
+      "primary_components": [
+        "CityHeader",
+        "ResourceStatGrid",
+        "GovernanceRiskList",
+        "OfficerAssignmentSummary",
+        "CityActionButtons"
+      ],
+      "state_bindings": [
+        "runtime_state.cities",
+        "runtime_state.forces",
+        "runtime_state.officers",
+        "runtime_state.appointments"
+      ],
+      "interactions": [
+        "点击任命打开任命界面并携带 city_id",
+        "点击出阵打开出阵确认并携带 origin_city_id",
+        "点击武将条目打开武将详情"
+      ],
+      "blocked_until": [
+        "正式城市主数据",
+        "正式武将状态",
+        "任命和出阵正式 UI 控件"
+      ]
+    },
+    {
+      "id": "formal_officer_roster",
+      "title_cn": "正式武将名册",
+      "implementation_status": "wireframe_specified",
+      "layout_regions": [
+        "筛选与排序工具栏",
+        "武将列表表格",
+        "右侧武将详情卡",
+        "半身像预览区",
+        "任命与出阵快捷动作区"
+      ],
+      "primary_components": [
+        "OfficerFilterBar",
+        "OfficerTable",
+        "OfficerDetailCard",
+        "PortraitPreview",
+        "OfficerActionBar"
+      ],
+      "state_bindings": [
+        "res://data/content_alpha/candidate_officer_roster.json",
+        "future.formal_officer_master",
+        "runtime_state.officers",
+        "runtime_state.appointments"
+      ],
+      "interactions": [
+        "按能力、忠诚、状态和头像绑定筛选",
+        "选择武将后显示详情和半身像",
+        "正式属性缺失时不得生成可出阵或任命的假数据"
+      ],
+      "blocked_until": [
+        "正式武将主表",
+        "正式能力字段和忠诚状态",
+        "候选头像筛选结果确认"
+      ]
+    },
+    {
+      "id": "appointment_sortie_panel",
+      "title_cn": "任命与出阵",
+      "implementation_status": "wireframe_specified",
+      "layout_regions": [
+        "目标城市摘要",
+        "候选武将选择区",
+        "兵力粮草输入区",
+        "路线和风险预览区",
+        "确认与错误提示区"
+      ],
+      "primary_components": [
+        "OriginCitySummary",
+        "CommanderSelector",
+        "TroopFoodStepper",
+        "RouteRiskPreview",
+        "ValidationMessageStack"
+      ],
+      "state_bindings": [
+        "runtime_state.cities",
+        "runtime_state.officers",
+        "runtime_state.routes",
+        "simulation.appointment_system",
+        "simulation.sortie_system"
+      ],
+      "interactions": [
+        "选择主将后实时显示任命或出阵资格",
+        "调整兵力粮草后实时显示城市剩余与行军风险",
+        "确认前必须显示时间、粮草和不可达原因"
+      ],
+      "blocked_until": [
+        "正式路线选择 UI",
+        "正式武将选择器",
+        "出阵错误文案规范"
+      ]
+    },
+    {
+      "id": "battle_report_panel",
+      "title_cn": "战报",
+      "implementation_status": "wireframe_specified",
+      "layout_regions": [
+        "战斗结果标题",
+        "攻守双方损失对比",
+        "城市归属变化区",
+        "声势和风险反馈区",
+        "跳转动作区"
+      ],
+      "primary_components": [
+        "BattleResultHeader",
+        "CasualtyCompareTable",
+        "CityOwnershipChange",
+        "MomentumRiskList",
+        "ReportActionBar"
+      ],
+      "state_bindings": [
+        "runtime_state.battle_logs",
+        "runtime_state.armies",
+        "runtime_state.cities",
+        "runtime_state.change_logs"
+      ],
+      "interactions": [
+        "打开战报后可跳转目标城市",
+        "战斗结果必须解释兵力、士气和归属变化",
+        "缺战报数据时必须显示真实错误而非空战报"
+      ],
+      "blocked_until": [
+        "正式战报事件结构",
+        "完整攻城和野战结果日志",
+        "战报 UI 控件"
+      ]
+    },
+    {
+      "id": "event_log_panel",
+      "title_cn": "事件与日志",
+      "implementation_status": "wireframe_specified",
+      "layout_regions": [
+        "日志分类标签",
+        "事件时间线",
+        "事件详情",
+        "关联对象跳转区"
+      ],
+      "primary_components": [
+        "EventCategoryTabs",
+        "EventTimeline",
+        "EventDetailPanel",
+        "EntityJumpLinks"
+      ],
+      "state_bindings": [
+        "runtime_state.change_logs",
+        "runtime_state.battle_logs",
+        "future.event_chain"
+      ],
+      "interactions": [
+        "按内政、军事、外交、事件筛选日志",
+        "选择日志显示影响对象和数值变化",
+        "跳转城市、武将或部队详情"
+      ],
+      "blocked_until": [
+        "统一事件分类",
+        "正式历史事件链",
+        "日志对象跳转协议"
+      ]
+    },
+    {
+      "id": "save_load_panel",
+      "title_cn": "存档读档",
+      "implementation_status": "wireframe_specified",
+      "layout_regions": [
+        "存档槽列表",
+        "存档摘要卡",
+        "schema 版本提示",
+        "保存读取动作区"
+      ],
+      "primary_components": [
+        "SaveSlotList",
+        "SaveSummaryCard",
+        "SchemaVersionBadge",
+        "SaveLoadActionBar"
+      ],
+      "state_bindings": [
+        "res://scripts/save/save_system.gd",
+        "runtime_state",
+        "save_file.schema_version"
+      ],
+      "interactions": [
+        "保存前显示当前日期、势力和关键状态摘要",
+        "读取前显示 schema 版本和不兼容原因",
+        "缺失存档必须报错，不创建假存档"
+      ],
+      "blocked_until": [
+        "正式存档槽 UI",
+        "正式存档摘要字段",
+        "旧版本存档兼容策略"
+      ]
+    },
+    {
+      "id": "candidate_officer_workbench",
+      "title_cn": "候选武将工作台",
+      "implementation_status": "content_alpha_tool",
+      "layout_regions": [
+        "候选武将 Tab",
+        "可复用半身像 Tab",
+        "UI 信息架构 Tab",
+        "UI 线框规格 Tab",
+        "聚合校验摘要"
+      ],
+      "primary_components": [
+        "CandidateOfficerRosterBrowserPanel",
+        "ReusableHeroPortraitBrowserPanel",
+        "UiNavigationSpecPanel",
+        "UiWireframeSpecPanel",
+        "ValidationSummary"
+      ],
+      "state_bindings": [
+        "res://data/content_alpha/candidate_officer_roster.json",
+        "res://data/content_alpha/reusable_hero_portrait_pool.json",
+        "res://data/content_alpha/ui_navigation_spec.json",
+        "res://data/content_alpha/ui_wireframe_spec.json"
+      ],
+      "interactions": [
+        "浏览候选武将和半身像池",
+        "浏览 UI 信息架构和线框规格",
+        "不写正式武将库、不改变模拟状态"
+      ],
+      "blocked_until": [
+        "正式武将库字段设计",
+        "正式 UI 实装任务开始"
+      ]
+    }
+  ]
+}

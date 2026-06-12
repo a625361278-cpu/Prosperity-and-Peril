@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/ui_theme_token_panel.gd" id="1_theme_panel"]
+
+[node name="UiThemeTokenPanel" type="VBoxContainer"]
+custom_minimum_size = Vector2(580, 560)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+script = ExtResource("1_theme_panel")
+
+[node name="ThemeSummary" type="Label" parent="."]
+custom_minimum_size = Vector2(560, 36)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "UI 主题 Token: 待加载"
+autowrap_mode = 3
+
+[node name="TokenList" type="ItemList" parent="."]
+custom_minimum_size = Vector2(560, 220)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+allow_reselect = true
+
+[node name="TokenDetail" type="Label" parent="."]
+custom_minimum_size = Vector2(560, 260)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "UI 主题 Token: 待选择"
+autowrap_mode = 3

@@ -70,6 +70,28 @@ func _test_default_chain() -> Dictionary:
 		return {"ok": false, "message": "content alpha validation did not expose ui navigation boundary"}
 	if str(summary.ui_navigation_candidate_workbench_status) != "content_alpha_available":
 		return {"ok": false, "message": "candidate workbench ui navigation status mismatch"}
+	if int(summary.ui_wireframes) != 8:
+		return {"ok": false, "message": "unexpected ui wireframe count %s" % str(summary.ui_wireframes)}
+	if int(summary.ui_wireframe_specified) != 7:
+		return {"ok": false, "message": "unexpected formal ui wireframe count"}
+	if int(summary.ui_wireframe_content_alpha_tools) != 1:
+		return {"ok": false, "message": "unexpected content alpha tool wireframe count"}
+	if not str(summary.ui_wireframe_boundary_rule).contains("not a finished Beta UI"):
+		return {"ok": false, "message": "content alpha validation did not expose ui wireframe boundary"}
+	if not FileAccess.file_exists(str(summary.ui_wireframe_style_reference)):
+		return {"ok": false, "message": "ui wireframe style reference missing"}
+	if int(summary.ui_wireframe_sortie_components) < 5:
+		return {"ok": false, "message": "sortie wireframe did not expose expected components"}
+	if int(summary.ui_theme_palette_colors) < 12:
+		return {"ok": false, "message": "unexpected ui theme palette color count"}
+	if int(summary.ui_theme_corner_radius) != 6:
+		return {"ok": false, "message": "ui theme corner radius mismatch"}
+	if str(summary.ui_theme_accent_gold) != "#C69A3E":
+		return {"ok": false, "message": "ui theme accent gold mismatch"}
+	if not str(summary.ui_theme_boundary_rule).contains("not a finished Beta UI"):
+		return {"ok": false, "message": "content alpha validation did not expose ui theme boundary"}
+	if not FileAccess.file_exists(str(summary.ui_theme_style_reference)):
+		return {"ok": false, "message": "ui theme style reference missing"}
 	return {"ok": true}
 
 
