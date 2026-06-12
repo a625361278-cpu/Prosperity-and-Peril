@@ -412,8 +412,20 @@
     - `test_content_alpha_validation_runner.gd`、`test_content_alpha_workbench.gd` 和 `test_ui_navigation_spec_panel.gd` 通过，确认 UI 信息架构摘要更新为 Alpha 可用 5 个、规划 2 个。
     - `py -3.14 tools\validate_content_alpha_package.py` 通过，确认包准备校验包含事件日志场景。
 
+- [x] Task 40：正式存档读档面板
+  - 状态：已完成。
+  - 范围：新增 `scenes/save_load_panel.tscn`、`scripts/ui/save_load_panel.gd` 和 `scripts/ui/save_load_presenter.gd`，底部命令栏存档按钮可打开正式存档读档面板，显示当前运行时摘要、存档路径、存档 schema 和已有存档摘要，并直接调用 `SaveSystem.save_state / load_state`。
+  - 根因：V0.1 已有真实存档系统，但正式 HUD 缺少游戏内入口；如果继续只靠测试或调试脚本保存读取，核心闭环无法从正式 UI 主流程验证。
+  - 边界：当前只实现单一 `user://content_alpha_quick_save.json` 快速存档槽；不做多槽管理、不做旧版本迁移、不伪造 base dataset；读档必须依赖主场景传入的真实核心数据集重建静态数据。
+  - 验收：保存必须写入真实动态状态；读取必须通过 `SaveSystem` 重建运行时状态并同步主场景、HUD、地图和调试面板；缺状态键、空 base dataset、无存档或损坏存档必须明确失败；UI 信息架构中存档读档从 `planned` 更新为 `content_alpha_available`。
+  - 验证：
+    - `test_save_load_panel.gd` 通过，确认面板节点、真实保存读取、缺 base dataset 和缺状态键失败。
+    - `test_formal_hud.gd` 通过，确认底部存档命令可打开存档读档面板。
+    - `test_content_alpha_validation_runner.gd`、`test_content_alpha_workbench.gd` 和 `test_ui_navigation_spec_panel.gd` 通过，确认 UI 信息架构摘要更新为 Alpha 可用 6 个、规划 1 个。
+    - `py -3.14 tools\validate_content_alpha_package.py` 通过，确认包准备校验包含存档读档场景。
+
 ## 当前缺口
 
 - 半身像资源来自项目负责人另一个自有三国项目；项目内导入流程、运行时 `res://` 加载、`.pck` 打包烟测、212 张可复用半身像池、头像绑定候选武将名册和包校验一致性检查已经完成。
 - 正式武将数据、技能、官职、势力剧本尚未进入 Content Alpha 内容包；本阶段不复用源项目技能、传记、君略或数值，候选名册也不代表正式武将库。
-- 授权中文 UI 字体、正式武将选择器、存档读档等屏幕级正式界面仍未落地；当前已准备 Content Alpha 资源工作台及主场景调试入口、可复用半身像池入口、候选武将名册、选择状态工具、独立浏览组件、UI 信息架构规格、UI 线框规格、UI 主题 Token、Godot Theme 基础资源、正式主界面 HUD 外壳、正式城市详情面板、正式任命出阵面板、正式战报面板、正式事件日志面板、工作台 UI 规格浏览入口、正式 UI 风格方向图与调试面板可见摘要。
+- 授权中文 UI 字体、正式武将选择器等屏幕级正式界面仍未落地；当前已准备 Content Alpha 资源工作台及主场景调试入口、可复用半身像池入口、候选武将名册、选择状态工具、独立浏览组件、UI 信息架构规格、UI 线框规格、UI 主题 Token、Godot Theme 基础资源、正式主界面 HUD 外壳、正式城市详情面板、正式任命出阵面板、正式战报面板、正式事件日志面板、正式存档读档面板、工作台 UI 规格浏览入口、正式 UI 风格方向图与调试面板可见摘要。

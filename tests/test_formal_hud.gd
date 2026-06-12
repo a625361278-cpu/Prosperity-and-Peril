@@ -19,6 +19,7 @@ func _initialize() -> void:
 	_run("formal hud updates selected city", _test_formal_hud_city_selection)
 	_run("formal hud opens battle report command", _test_formal_hud_battle_report_command)
 	_run("formal hud opens event log command", _test_formal_hud_event_log_command)
+	_run("formal hud opens save load command", _test_formal_hud_save_load_command)
 	_run("formal hud rejects missing state", _test_formal_hud_rejects_missing_state)
 	_run("city detail presenter exposes governor and rejects missing force", _test_city_detail_presenter)
 	quit(_failed)
@@ -48,6 +49,7 @@ func _test_formal_hud_nodes() -> Dictionary:
 		"AppointmentSortiePanel",
 		"BattleReportPanel",
 		"EventLogPanel",
+		"SaveLoadPanel",
 	]:
 		if root.get_node_or_null(path) == null:
 			root.queue_free()
@@ -76,7 +78,7 @@ func _test_formal_hud_loads_state() -> Dictionary:
 		return {"ok": false, "message": "formal hud expected five command buttons"}
 	var command_bar: HBoxContainer = root.get_node("BottomCommandBar/MarginContainer/CommandButtons")
 	for button in command_bar.get_children():
-		if str(button.get_meta("command_id", "")) == "battle_report" or str(button.get_meta("command_id", "")) == "event_log":
+		if str(button.get_meta("command_id", "")) in ["battle_report", "event_log", "save_load"]:
 			if button.disabled:
 				root.queue_free()
 				return {"ok": false, "message": "available formal command should be enabled"}
@@ -90,6 +92,9 @@ func _test_formal_hud_loads_state() -> Dictionary:
 	if not root.get_command_enabled("event_log"):
 		root.queue_free()
 		return {"ok": false, "message": "event log command getter mismatch"}
+	if not root.get_command_enabled("save_load"):
+		root.queue_free()
+		return {"ok": false, "message": "save load command getter mismatch"}
 	root.queue_free()
 	return {"ok": true}
 
@@ -199,6 +204,37 @@ func _test_formal_hud_event_log_command() -> Dictionary:
 	return {"ok": true}
 
 
+func _test_formal_hud_save_load_command() -> Dictionary:
+	var state_result := _build_state()
+	if not state_result.ok:
+		return state_result
+	var hud := _instantiate_hud()
+	if not hud.ok:
+		return hud
+	var root = hud.node
+	var base_result: Dictionary = root.set_base_dataset(state_result.dataset)
+	if not base_result.ok:
+		root.queue_free()
+		return {"ok": false, "message": "expected base dataset success, got %s" % [base_result.errors]}
+	var load_result: Dictionary = root.set_runtime_state(state_result.state)
+	if not load_result.ok:
+		root.queue_free()
+		return {"ok": false, "message": "expected formal hud load success"}
+	var command_bar: HBoxContainer = root.get_node("BottomCommandBar/MarginContainer/CommandButtons")
+	for button in command_bar.get_children():
+		if str(button.get_meta("command_id", "")) == "save_load":
+			button.emit_signal("pressed")
+			break
+	if not root.is_save_load_panel_visible():
+		root.queue_free()
+		return {"ok": false, "message": "save load panel did not open from command"}
+	if not root.get_save_load_panel_node().get_summary_text().contains("当前: 第 0 日 / 第 1 月"):
+		root.queue_free()
+		return {"ok": false, "message": "save load panel did not load runtime summary"}
+	root.queue_free()
+	return {"ok": true}
+
+
 func _test_formal_hud_rejects_missing_state() -> Dictionary:
 	var result: Dictionary = FormalHudPresenter.build_hud_state({"current_day": 1})
 	if result.ok:
@@ -248,7 +284,7 @@ func _build_state() -> Dictionary:
 	var state_result: Dictionary = CoreStateFactory.build_from_dataset(loaded.dataset)
 	if not state_result.ok:
 		return {"ok": false, "message": "state build failed %s" % [state_result.errors]}
-	return {"ok": true, "state": state_result.state}
+	return {"ok": true, "state": state_result.state, "dataset": loaded.dataset}
 
 
 func _create_battle_log(state: Dictionary) -> Dictionary:

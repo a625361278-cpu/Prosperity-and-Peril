@@ -21,6 +21,7 @@ CITY_DETAIL_SCENE = Path("scenes/city_detail_panel.tscn")
 APPOINTMENT_SORTIE_SCENE = Path("scenes/appointment_sortie_panel.tscn")
 BATTLE_REPORT_SCENE = Path("scenes/battle_report_panel.tscn")
 EVENT_LOG_SCENE = Path("scenes/event_log_panel.tscn")
+SAVE_LOAD_SCENE = Path("scenes/save_load_panel.tscn")
 DISALLOWED_POOL_FIELDS = {"source_power", "source_up_point", "skill_ids", "secret_ids", "biography_cn"}
 DISALLOWED_ROSTER_FIELDS = DISALLOWED_POOL_FIELDS | {
     "force_id",
@@ -505,6 +506,29 @@ def validate_event_log_scene(scene_path: Path) -> dict:
     }
 
 
+def validate_save_load_scene(scene_path: Path) -> dict:
+    if not scene_path.exists():
+        raise FileNotFoundError(f"save load scene not found: {scene_path}")
+    text = scene_path.read_text(encoding="utf-8")
+    required_markers = [
+        "SaveLoadPanel",
+        "RuntimeSummary",
+        "SaveFileSummary",
+        "SavePath",
+        "SaveButton",
+        "LoadButton",
+        "CloseButton",
+        'script = ExtResource("1_save_load")',
+    ]
+    for marker in required_markers:
+        if marker not in text:
+            raise ValueError(f"save load scene missing marker: {marker}")
+    return {
+        "save_load_scene": str(scene_path),
+        "save_load_markers": len(required_markers),
+    }
+
+
 def validate_pck(pck_path: Path) -> dict:
     if not pck_path.exists():
         raise FileNotFoundError(f"exported pck not found: {pck_path}")
@@ -530,6 +554,7 @@ def main() -> int:
     parser.add_argument("--appointment-sortie-scene", type=Path, default=APPOINTMENT_SORTIE_SCENE)
     parser.add_argument("--battle-report-scene", type=Path, default=BATTLE_REPORT_SCENE)
     parser.add_argument("--event-log-scene", type=Path, default=EVENT_LOG_SCENE)
+    parser.add_argument("--save-load-scene", type=Path, default=SAVE_LOAD_SCENE)
     parser.add_argument("--pck", type=Path)
     args = parser.parse_args()
 
@@ -545,6 +570,7 @@ def main() -> int:
     appointment_sortie_summary = validate_appointment_sortie_scene(args.appointment_sortie_scene)
     battle_report_summary = validate_battle_report_scene(args.battle_report_scene)
     event_log_summary = validate_event_log_scene(args.event_log_scene)
+    save_load_summary = validate_save_load_scene(args.save_load_scene)
     print("imported_assets:", import_summary["asset_count"])
     print("hero_bindings:", import_summary["hero_binding_count"])
     print("reusable_portraits:", pool_summary["reusable_portrait_count"])
@@ -570,6 +596,8 @@ def main() -> int:
     print("battle_report_markers:", battle_report_summary["battle_report_markers"])
     print("event_log_scene:", event_log_summary["event_log_scene"])
     print("event_log_markers:", event_log_summary["event_log_markers"])
+    print("save_load_scene:", save_load_summary["save_load_scene"])
+    print("save_load_markers:", save_load_summary["save_load_markers"])
     if args.pck is not None:
         pck_summary = validate_pck(args.pck)
         print("pck_path:", pck_summary["pck_path"])

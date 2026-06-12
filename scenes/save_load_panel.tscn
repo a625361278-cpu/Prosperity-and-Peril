@@ -1,0 +1,64 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/save_load_panel.gd" id="1_save_load"]
+
+[node name="SaveLoadPanel" type="PanelContainer"]
+visible = false
+custom_minimum_size = Vector2(520, 300)
+layout_mode = 3
+script = ExtResource("1_save_load")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(480, 34)
+layout_mode = 2
+text = "存档读档"
+autowrap_mode = 3
+
+[node name="RuntimeSummary" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(480, 58)
+layout_mode = 2
+text = "等待运行时状态"
+autowrap_mode = 3
+
+[node name="SaveFileSummary" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(480, 58)
+layout_mode = 2
+text = "等待存档文件"
+autowrap_mode = 3
+
+[node name="SavePath" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(480, 34)
+layout_mode = 2
+text = "路径: user://content_alpha_quick_save.json"
+autowrap_mode = 3
+
+[node name="ValidationMessages" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(480, 58)
+layout_mode = 2
+text = "存档读档使用真实 SaveSystem。"
+autowrap_mode = 3
+
+[node name="ActionRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(480, 38)
+layout_mode = 2
+
+[node name="SaveButton" type="Button" parent="MarginContainer/VBoxContainer/ActionRow"]
+custom_minimum_size = Vector2(108, 34)
+layout_mode = 2
+text = "保存"
+
+[node name="LoadButton" type="Button" parent="MarginContainer/VBoxContainer/ActionRow"]
+custom_minimum_size = Vector2(108, 34)
+layout_mode = 2
+text = "读取"
+
+[node name="CloseButton" type="Button" parent="MarginContainer/VBoxContainer/ActionRow"]
+custom_minimum_size = Vector2(96, 34)
+layout_mode = 2
+text = "关闭"

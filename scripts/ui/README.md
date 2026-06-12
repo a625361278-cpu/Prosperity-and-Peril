@@ -14,3 +14,4 @@ Beta 前目标：
 - `AppointmentSortiePanel` 是第一层正式任命与出阵面板，读取 `runtime_state.cities / forces / officers / routes / armies / next_army_seq`，并只通过 `AppointmentSystem` 与 `SortieSystem` 修改真实运行时状态。
 - `BattleReportPanel` 是第一层正式战报面板，读取 `runtime_state.battle_logs / armies / cities`；战报引用断裂必须失败，不允许显示空假战报。
 - `EventLogPanel` 是第一层正式事件日志面板，聚合现有运行时日志字典；它不代表完整历史事件链已经完成。
+- `SaveLoadPanel` 是第一层正式存档读档面板，调用 `SaveSystem` 保存和读取真实动态状态；读档必须有真实 base dataset 重建静态数据，不允许用空数据伪造成功。

@@ -183,14 +183,13 @@
       "id": "save_load_panel",
       "title_cn": "存档读档",
       "category": "system",
-      "implementation_status": "planned",
+      "implementation_status": "content_alpha_available",
       "primary_data_sources": [
         "res://scripts/save/save_system.gd",
         "runtime_state"
       ],
       "entry_points": [
-        "主菜单",
-        "游戏内系统菜单"
+        "正式 HUD 底部命令栏存档按钮"
       ],
       "allowed_actions": [
         "保存局内动态状态",
@@ -198,8 +197,9 @@
         "显示 schema 版本"
       ],
       "blocked_until": [
-        "正式系统菜单",
-        "存档槽 UI"
+        "正式多存档槽 UI",
+        "版本迁移策略",
+        "主菜单入口"
       ]
     }
   ]

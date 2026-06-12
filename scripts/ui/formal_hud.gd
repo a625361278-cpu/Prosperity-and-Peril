@@ -3,6 +3,8 @@ extends Control
 const ContentAlphaThemeLoader = preload("res://scripts/ui/content_alpha_theme_loader.gd")
 const FormalHudPresenter = preload("res://scripts/ui/formal_hud_presenter.gd")
 
+signal runtime_state_replaced(state)
+
 @onready var _date_label: Label = $TopBar/MarginContainer/HBoxContainer/DateLabel
 @onready var _force_label: Label = $TopBar/MarginContainer/HBoxContainer/ForceSummaryLabel
 @onready var _selection_title: Label = $RightPanel/MarginContainer/VBoxContainer/SelectionTitle
@@ -12,8 +14,10 @@ const FormalHudPresenter = preload("res://scripts/ui/formal_hud_presenter.gd")
 @onready var _appointment_sortie_panel = $AppointmentSortiePanel
 @onready var _battle_report_panel = $BattleReportPanel
 @onready var _event_log_panel = $EventLogPanel
+@onready var _save_load_panel = $SaveLoadPanel
 
 var _state: Dictionary = {}
+var _base_dataset: Dictionary = {}
 var _selected_city_id := ""
 
 
@@ -21,6 +25,7 @@ func _ready() -> void:
 	_wire_city_detail_panel()
 	_wire_appointment_sortie_panel()
 	_wire_battle_report_panel()
+	_wire_save_load_panel()
 	var theme_result := ContentAlphaThemeLoader.load_default_theme()
 	if not theme_result.ok:
 		push_error("Formal HUD theme failed: %s" % [theme_result.errors])
@@ -32,6 +37,7 @@ func set_runtime_state(state: Dictionary) -> Dictionary:
 	_wire_city_detail_panel()
 	_wire_appointment_sortie_panel()
 	_wire_battle_report_panel()
+	_wire_save_load_panel()
 	_state = state
 	_selected_city_id = ""
 	var theme_result := ContentAlphaThemeLoader.load_default_theme()
@@ -45,10 +51,18 @@ func set_runtime_state(state: Dictionary) -> Dictionary:
 	return {"ok": true, "errors": []}
 
 
+func set_base_dataset(base_dataset: Dictionary) -> Dictionary:
+	if base_dataset.is_empty():
+		return _failure(["formal hud base dataset is empty"])
+	_base_dataset = base_dataset
+	return {"ok": true, "errors": []}
+
+
 func set_map_selection(state: Dictionary, selection: Dictionary) -> Dictionary:
 	_wire_city_detail_panel()
 	_wire_appointment_sortie_panel()
 	_wire_battle_report_panel()
+	_wire_save_load_panel()
 	_state = state
 	var result: Dictionary = FormalHudPresenter.build_selection_detail(state, selection)
 	if not result.ok:
@@ -122,6 +136,14 @@ func get_event_log_panel_node():
 	return _event_log_panel_node()
 
 
+func is_save_load_panel_visible() -> bool:
+	return bool(_save_load_panel_node().visible)
+
+
+func get_save_load_panel_node():
+	return _save_load_panel_node()
+
+
 func _apply_hud_state(hud: Dictionary) -> void:
 	_date_label_node().text = str(hud.date_text)
 	_force_label_node().text = str(hud.force_summary)
@@ -169,12 +191,21 @@ func _wire_battle_report_panel() -> void:
 		panel.city_jump_requested.connect(_on_battle_report_city_jump_requested)
 
 
+func _wire_save_load_panel() -> void:
+	var panel = _save_load_panel_node()
+	if not panel.state_loaded.is_connected(_on_save_load_state_loaded):
+		panel.state_loaded.connect(_on_save_load_state_loaded)
+
+
 func _on_command_pressed(command_id: String) -> void:
 	if command_id == "battle_report":
 		_open_battle_report_panel()
 		return
 	if command_id == "event_log":
 		_open_event_log_panel()
+		return
+	if command_id == "save_load":
+		_open_save_load_panel()
 		return
 	push_error("formal hud unsupported command %s" % command_id)
 
@@ -219,6 +250,28 @@ func _open_event_log_panel() -> void:
 	var result: Dictionary = _event_log_panel_node().open_with_state(_state)
 	if not result.ok:
 		push_error("formal hud event log open failed: %s" % [result.errors])
+
+
+func _open_save_load_panel() -> void:
+	if _state.is_empty():
+		push_error("formal hud cannot open save load without runtime state")
+		return
+	var result: Dictionary = _save_load_panel_node().open_with_state(_state, _base_dataset)
+	if not result.ok:
+		push_error("formal hud save load open failed: %s" % [result.errors])
+
+
+func _on_save_load_state_loaded(state: Dictionary) -> void:
+	var selected_city_id := _selected_city_id
+	var result: Dictionary = set_runtime_state(state)
+	if not result.ok:
+		push_error("formal hud save load state refresh failed: %s" % [result.errors])
+		return
+	runtime_state_replaced.emit(_state)
+	if not selected_city_id.is_empty():
+		var select_result: Dictionary = set_map_selection(_state, {"type": "city", "id": selected_city_id})
+		if not select_result.ok:
+			push_error("formal hud save load selection refresh failed: %s" % [select_result.errors])
 
 
 func _on_battle_report_city_jump_requested(city_id: String) -> void:
@@ -289,3 +342,9 @@ func _event_log_panel_node():
 	if _event_log_panel != null:
 		return _event_log_panel
 	return get_node("EventLogPanel")
+
+
+func _save_load_panel_node():
+	if _save_load_panel != null:
+		return _save_load_panel
+	return get_node("SaveLoadPanel")
