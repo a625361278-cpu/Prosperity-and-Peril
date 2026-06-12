@@ -35,10 +35,11 @@
       "id": "city_detail_panel",
       "title_cn": "城市详情",
       "category": "core_gameplay",
-      "implementation_status": "planned",
+      "implementation_status": "content_alpha_available",
       "primary_data_sources": [
         "runtime_state.cities",
-        "runtime_state.forces"
+        "runtime_state.forces",
+        "runtime_state.officers"
       ],
       "entry_points": [
         "战略大地图选择城市"
@@ -50,7 +51,8 @@
       ],
       "blocked_until": [
         "正式城市库",
-        "正式城市面板交互稿"
+        "正式任命与出阵界面",
+        "正式城市动作交互"
       ]
     },
     {

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/formal_hud.gd" id="1_formal_hud"]
+[ext_resource type="PackedScene" path="res://scenes/city_detail_panel.tscn" id="2_city_detail"]
 
 [node name="FormalHud" type="Control"]
 layout_mode = 3
@@ -72,6 +73,9 @@ layout_mode = 2
 size_flags_vertical = 3
 text = "点击地图城市或部队查看真实状态。"
 autowrap_mode = 3
+
+[node name="CityDetailPanel" parent="RightPanel/MarginContainer/VBoxContainer" instance=ExtResource("2_city_detail")]
+layout_mode = 2
 
 [node name="BottomCommandBar" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(560, 58)

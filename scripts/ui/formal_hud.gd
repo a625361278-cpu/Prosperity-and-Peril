@@ -7,6 +7,7 @@ const FormalHudPresenter = preload("res://scripts/ui/formal_hud_presenter.gd")
 @onready var _force_label: Label = $TopBar/MarginContainer/HBoxContainer/ForceSummaryLabel
 @onready var _selection_title: Label = $RightPanel/MarginContainer/VBoxContainer/SelectionTitle
 @onready var _selection_body: Label = $RightPanel/MarginContainer/VBoxContainer/SelectionBody
+@onready var _city_detail_panel = $RightPanel/MarginContainer/VBoxContainer/CityDetailPanel
 @onready var _command_bar: HBoxContainer = $BottomCommandBar/MarginContainer/CommandButtons
 
 
@@ -36,6 +37,12 @@ func set_map_selection(state: Dictionary, selection: Dictionary) -> Dictionary:
 		return _failure(result.errors)
 	_selection_title_node().text = str(result.hud.selection_title)
 	_selection_body_node().text = str(result.hud.selection_body)
+	if str(selection.type) == "city":
+		var city_result: Dictionary = _city_detail_panel_node().show_city(state, str(selection.id))
+		if not city_result.ok:
+			return _failure(city_result.errors)
+	else:
+		_city_detail_panel_node().clear_city()
 	return {"ok": true, "errors": []}
 
 
@@ -47,11 +54,20 @@ func get_command_count() -> int:
 	return _command_bar_node().get_child_count()
 
 
+func get_city_detail_title_text() -> String:
+	return _city_detail_panel_node().get_title_text()
+
+
+func get_city_detail_action_count() -> int:
+	return _city_detail_panel_node().get_action_count()
+
+
 func _apply_hud_state(hud: Dictionary) -> void:
 	_date_label_node().text = str(hud.date_text)
 	_force_label_node().text = str(hud.force_summary)
 	_selection_title_node().text = str(hud.selection_title)
 	_selection_body_node().text = str(hud.selection_body)
+	_city_detail_panel_node().clear_city()
 	_rebuild_commands(hud.commands)
 
 
@@ -100,6 +116,12 @@ func _selection_body_node() -> Label:
 	if _selection_body != null:
 		return _selection_body
 	return get_node("RightPanel/MarginContainer/VBoxContainer/SelectionBody") as Label
+
+
+func _city_detail_panel_node():
+	if _city_detail_panel != null:
+		return _city_detail_panel
+	return get_node("RightPanel/MarginContainer/VBoxContainer/CityDetailPanel")
 
 
 func _command_bar_node() -> HBoxContainer:

@@ -364,8 +364,20 @@
     - `test_main_content_alpha_workbench.gd` 通过，确认主场景地图选择会更新 Formal HUD。
     - `test_debug_panel_layout.gd` 通过，确认调试面板原有布局与点击穿透仍正常。
 
+- [x] Task 36：正式城市详情只读面板
+  - 状态：已完成。
+  - 范围：新增 `scenes/city_detail_panel.tscn`、`scripts/ui/city_detail_panel.gd` 和 `scripts/ui/city_detail_presenter.gd`，在 Formal HUD 的右侧区域显示城市标题、归属势力、兵力粮草、民心治安、士族支持、整合状态、太守摘要和同势力武将列表；城市选择时自动展示该面板。
+  - 根因：Formal HUD 只有文本选择摘要，无法满足城市详情线框中“资源与军事指标、治理状态、太守与属官区、城市动作区”的结构要求。
+  - 边界：该面板当前只读；任命和出阵按钮只展示入口位置，真实任命/出阵界面未完成前必须禁用并显示阻塞原因，不伪造业务操作。
+  - 验收：城市详情必须读取 `runtime_state.cities / forces / officers`；缺城市、缺势力或太守引用错误必须失败；城市选择必须显示真实城市名和势力名；任命/出阵按钮必须禁用；UI 信息架构中城市详情从 `planned` 更新为 `content_alpha_available`。
+  - 验证：
+    - `test_formal_hud.gd` 通过，确认城市详情节点、真实城市显示、太守摘要、缺势力失败和动作禁用。
+    - `test_ui_navigation_spec.gd` 通过，确认城市详情状态为 `content_alpha_available`。
+    - `test_ui_navigation_spec_panel.gd` 通过，确认 UI 信息架构摘要更新为 Alpha 可用 2 个、规划 5 个。
+    - `py -3.14 tools\validate_content_alpha_package.py` 通过，确认包准备校验包含城市详情场景。
+
 ## 当前缺口
 
 - 半身像资源来自项目负责人另一个自有三国项目；项目内导入流程、运行时 `res://` 加载、`.pck` 打包烟测、212 张可复用半身像池、头像绑定候选武将名册和包校验一致性检查已经完成。
 - 正式武将数据、技能、官职、势力剧本尚未进入 Content Alpha 内容包；本阶段不复用源项目技能、传记、君略或数值，候选名册也不代表正式武将库。
-- 授权中文 UI 字体、城市详情/任命出阵/战报/事件/存档等屏幕级正式界面仍未落地；当前已准备 Content Alpha 资源工作台及主场景调试入口、可复用半身像池入口、候选武将名册、选择状态工具、独立浏览组件、UI 信息架构规格、UI 线框规格、UI 主题 Token、Godot Theme 基础资源、正式主界面 HUD 外壳、工作台 UI 规格浏览入口、正式 UI 风格方向图与调试面板可见摘要。
+- 授权中文 UI 字体、任命出阵/战报/事件/存档等屏幕级正式界面仍未落地；当前已准备 Content Alpha 资源工作台及主场景调试入口、可复用半身像池入口、候选武将名册、选择状态工具、独立浏览组件、UI 信息架构规格、UI 线框规格、UI 主题 Token、Godot Theme 基础资源、正式主界面 HUD 外壳、正式城市详情只读面板、工作台 UI 规格浏览入口、正式 UI 风格方向图与调试面板可见摘要。

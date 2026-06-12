@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/city_detail_panel.gd" id="1_city_detail"]
+
+[node name="CityDetailPanel" type="VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(320, 330)
+theme_override_constants/separation = 8
+script = ExtResource("1_city_detail")
+
+[node name="CityHeader" type="Label" parent="."]
+custom_minimum_size = Vector2(320, 32)
+text = "城市详情"
+autowrap_mode = 3
+
+[node name="ResourceStats" type="Label" parent="."]
+custom_minimum_size = Vector2(320, 44)
+text = "资源状态等待选择"
+autowrap_mode = 3
+
+[node name="GovernanceStats" type="Label" parent="."]
+custom_minimum_size = Vector2(320, 44)
+text = "治理状态等待选择"
+autowrap_mode = 3
+
+[node name="GovernorSummary" type="Label" parent="."]
+custom_minimum_size = Vector2(320, 30)
+text = "太守: 未选择"
+autowrap_mode = 3
+
+[node name="OfficerList" type="ItemList" parent="."]
+custom_minimum_size = Vector2(320, 120)
+
+[node name="ActionBar" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(320, 38)

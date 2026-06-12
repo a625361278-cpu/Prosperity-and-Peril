@@ -77,7 +77,7 @@ func _test_workbench_loads_default_content() -> Dictionary:
 		root.queue_free()
 		return {"ok": false, "message": "workbench did not apply formal theme"}
 	var summary: String = root.get_validation_summary_text()
-	if not summary.contains("图池=212 候选=212 源绑定=426 UI规格=8 规划=6 线框=8 主题色=15 主题控件=3"):
+	if not summary.contains("图池=212 候选=212 源绑定=426 UI规格=8 规划=5 线框=8 主题色=15 主题控件=3"):
 		root.queue_free()
 		return {"ok": false, "message": "workbench summary missing content alpha counts"}
 	if not summary.contains("CANDIDATE_UI_GJ_GG_BASEMAP_HERO_1001 刘备"):

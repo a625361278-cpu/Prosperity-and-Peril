@@ -48,6 +48,11 @@ func _test_loader_resolves_core_screens() -> Dictionary:
 		return {"ok": false, "message": "expected strategic_map screen"}
 	if str(strategic_result.screen.implementation_status) != "debug_available":
 		return {"ok": false, "message": "strategic_map status mismatch"}
+	var city_result: Dictionary = UiNavigationSpecLoader.resolve_screen(load_result.lookup, "city_detail_panel")
+	if not city_result.ok:
+		return {"ok": false, "message": "expected city_detail_panel screen"}
+	if str(city_result.screen.implementation_status) != "content_alpha_available":
+		return {"ok": false, "message": "city_detail_panel status mismatch"}
 	var roster_result: Dictionary = UiNavigationSpecLoader.resolve_screen(load_result.lookup, "formal_officer_roster")
 	if not roster_result.ok:
 		return {"ok": false, "message": "expected formal_officer_roster screen"}

@@ -17,6 +17,7 @@ UI_WIREFRAME_SPEC = Path("data/content_alpha/ui_wireframe_spec.json")
 UI_THEME_TOKENS = Path("data/content_alpha/ui_theme_tokens.json")
 UI_THEME_RESOURCE = Path("themes/content_alpha_formal_theme.tres")
 FORMAL_HUD_SCENE = Path("scenes/formal_hud.tscn")
+CITY_DETAIL_SCENE = Path("scenes/city_detail_panel.tscn")
 DISALLOWED_POOL_FIELDS = {"source_power", "source_up_point", "skill_ids", "secret_ids", "biography_cn"}
 DISALLOWED_ROSTER_FIELDS = DISALLOWED_POOL_FIELDS | {
     "force_id",
@@ -411,6 +412,28 @@ def validate_formal_hud_scene(scene_path: Path) -> dict:
     }
 
 
+def validate_city_detail_scene(scene_path: Path) -> dict:
+    if not scene_path.exists():
+        raise FileNotFoundError(f"city detail scene not found: {scene_path}")
+    text = scene_path.read_text(encoding="utf-8")
+    required_markers = [
+        "CityHeader",
+        "ResourceStats",
+        "GovernanceStats",
+        "GovernorSummary",
+        "OfficerList",
+        "ActionBar",
+        'script = ExtResource("1_city_detail")',
+    ]
+    for marker in required_markers:
+        if marker not in text:
+            raise ValueError(f"city detail scene missing marker: {marker}")
+    return {
+        "city_detail_scene": str(scene_path),
+        "city_detail_markers": len(required_markers),
+    }
+
+
 def validate_pck(pck_path: Path) -> dict:
     if not pck_path.exists():
         raise FileNotFoundError(f"exported pck not found: {pck_path}")
@@ -432,6 +455,7 @@ def main() -> int:
     parser.add_argument("--ui-theme-tokens", type=Path, default=UI_THEME_TOKENS)
     parser.add_argument("--ui-theme-resource", type=Path, default=UI_THEME_RESOURCE)
     parser.add_argument("--formal-hud-scene", type=Path, default=FORMAL_HUD_SCENE)
+    parser.add_argument("--city-detail-scene", type=Path, default=CITY_DETAIL_SCENE)
     parser.add_argument("--pck", type=Path)
     args = parser.parse_args()
 
@@ -443,6 +467,7 @@ def main() -> int:
     theme_summary = validate_ui_theme_tokens(args.ui_theme_tokens)
     theme_resource_summary = validate_ui_theme_resource(args.ui_theme_resource)
     formal_hud_summary = validate_formal_hud_scene(args.formal_hud_scene)
+    city_detail_summary = validate_city_detail_scene(args.city_detail_scene)
     print("imported_assets:", import_summary["asset_count"])
     print("hero_bindings:", import_summary["hero_binding_count"])
     print("reusable_portraits:", pool_summary["reusable_portrait_count"])
@@ -460,6 +485,8 @@ def main() -> int:
     print("ui_theme_resource_markers:", theme_resource_summary["ui_theme_resource_markers"])
     print("formal_hud_scene:", formal_hud_summary["formal_hud_scene"])
     print("formal_hud_markers:", formal_hud_summary["formal_hud_markers"])
+    print("city_detail_scene:", city_detail_summary["city_detail_scene"])
+    print("city_detail_markers:", city_detail_summary["city_detail_markers"])
     if args.pck is not None:
         pck_summary = validate_pck(args.pck)
         print("pck_path:", pck_summary["pck_path"])
