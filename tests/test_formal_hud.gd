@@ -78,7 +78,7 @@ func _test_formal_hud_loads_state() -> Dictionary:
 		return {"ok": false, "message": "formal hud expected five command buttons"}
 	var command_bar: HBoxContainer = root.get_node("BottomCommandBar/MarginContainer/CommandButtons")
 	for button in command_bar.get_children():
-		if str(button.get_meta("command_id", "")) in ["battle_report", "event_log", "save_load"]:
+		if str(button.get_meta("command_id", "")) in ["advance_day", "battle_report", "event_log", "save_load"]:
 			if button.disabled:
 				root.queue_free()
 				return {"ok": false, "message": "available formal command should be enabled"}
@@ -95,6 +95,9 @@ func _test_formal_hud_loads_state() -> Dictionary:
 	if not root.get_command_enabled("save_load"):
 		root.queue_free()
 		return {"ok": false, "message": "save load command getter mismatch"}
+	if not root.get_playable_status_text().contains("目标:"):
+		root.queue_free()
+		return {"ok": false, "message": "playable status missing"}
 	root.queue_free()
 	return {"ok": true}
 

@@ -4,9 +4,11 @@ const ContentAlphaThemeLoader = preload("res://scripts/ui/content_alpha_theme_lo
 const FormalHudPresenter = preload("res://scripts/ui/formal_hud_presenter.gd")
 
 signal runtime_state_replaced(state)
+signal advance_day_requested
 
 @onready var _date_label: Label = $TopBar/MarginContainer/HBoxContainer/DateLabel
 @onready var _force_label: Label = $TopBar/MarginContainer/HBoxContainer/ForceSummaryLabel
+@onready var _playable_status_label: Label = $TopBar/MarginContainer/HBoxContainer/PlayableStatusLabel
 @onready var _selection_title: Label = $RightPanel/MarginContainer/VBoxContainer/SelectionTitle
 @onready var _selection_body: Label = $RightPanel/MarginContainer/VBoxContainer/SelectionBody
 @onready var _city_detail_panel = $RightPanel/MarginContainer/VBoxContainer/CityDetailPanel
@@ -84,6 +86,14 @@ func get_selection_title_text() -> String:
 	return _selection_title_node().text
 
 
+func get_playable_status_text() -> String:
+	return _playable_status_label_node().text
+
+
+func set_playable_message(message: String) -> void:
+	_playable_status_label_node().text = message
+
+
 func get_command_count() -> int:
 	return _command_bar_node().get_child_count()
 
@@ -147,6 +157,7 @@ func get_save_load_panel_node():
 func _apply_hud_state(hud: Dictionary) -> void:
 	_date_label_node().text = str(hud.date_text)
 	_force_label_node().text = str(hud.force_summary)
+	_playable_status_label_node().text = str(hud.playable_status)
 	_selection_title_node().text = str(hud.selection_title)
 	_selection_body_node().text = str(hud.selection_body)
 	_city_detail_panel_node().clear_city()
@@ -201,6 +212,9 @@ func _on_command_pressed(command_id: String) -> void:
 	if command_id == "battle_report":
 		_open_battle_report_panel()
 		return
+	if command_id == "advance_day":
+		advance_day_requested.emit()
+		return
 	if command_id == "event_log":
 		_open_event_log_panel()
 		return
@@ -232,6 +246,12 @@ func _on_appointment_sortie_state_changed() -> void:
 	var city_result: Dictionary = _city_detail_panel_node().show_city(_state, _selected_city_id)
 	if not city_result.ok:
 		push_error("formal hud city detail refresh failed: %s" % [city_result.errors])
+	var hud_result: Dictionary = FormalHudPresenter.build_hud_state(_state)
+	if hud_result.ok:
+		_date_label_node().text = str(hud_result.hud.date_text)
+		_force_label_node().text = str(hud_result.hud.force_summary)
+		_playable_status_label_node().text = str(hud_result.hud.playable_status)
+	runtime_state_replaced.emit(_state)
 
 
 func _open_battle_report_panel() -> void:
@@ -300,6 +320,12 @@ func _force_label_node() -> Label:
 	if _force_label != null:
 		return _force_label
 	return get_node("TopBar/MarginContainer/HBoxContainer/ForceSummaryLabel") as Label
+
+
+func _playable_status_label_node() -> Label:
+	if _playable_status_label != null:
+		return _playable_status_label
+	return get_node("TopBar/MarginContainer/HBoxContainer/PlayableStatusLabel") as Label
 
 
 func _selection_title_node() -> Label:

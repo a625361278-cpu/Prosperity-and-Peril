@@ -89,6 +89,12 @@ func _test_panel_creates_sortie() -> Dictionary:
 	if not state_result.state.armies.has("ARMY_1"):
 		panel.queue_free()
 		return {"ok": false, "message": "sortie did not create runtime army"}
+	if str(state_result.state.armies.ARMY_1.state) != "marching":
+		panel.queue_free()
+		return {"ok": false, "message": "sortie panel should start march for playable slice"}
+	if not state_result.state.armies.ARMY_1.has("days_required"):
+		panel.queue_free()
+		return {"ok": false, "message": "march metadata missing after sortie"}
 	if int(state_result.state.cities.CITY_TEST_A.troops) != 19000:
 		panel.queue_free()
 		return {"ok": false, "message": "city troop deduction mismatch: %s" % str(state_result.state.cities.CITY_TEST_A.troops)}

@@ -8,6 +8,7 @@ func _initialize() -> void:
 	_run("main scene embeds hidden content alpha workbench", _test_main_embeds_hidden_workbench)
 	_run("main scene toggles content alpha workbench from debug signal", _test_main_toggles_workbench)
 	_run("main scene updates formal hud from map selection", _test_main_updates_formal_hud_selection)
+	_run("main scene advances playable day and resolves battle", _test_main_advances_playable_day)
 	quit(_failed)
 
 
@@ -32,6 +33,13 @@ func _test_main_embeds_hidden_workbench() -> Dictionary:
 	if workbench.visible:
 		root.queue_free()
 		return {"ok": false, "message": "content alpha workbench must be hidden by default"}
+	var debug_panel := root.get_node_or_null("CanvasLayer/DebugPanel")
+	if debug_panel == null:
+		root.queue_free()
+		return {"ok": false, "message": "main debug panel missing"}
+	if debug_panel.visible:
+		root.queue_free()
+		return {"ok": false, "message": "debug panel should be hidden by default in playable slice"}
 	root.queue_free()
 	return {"ok": true}
 
@@ -79,6 +87,36 @@ func _test_main_updates_formal_hud_selection() -> Dictionary:
 	if not formal_hud.get_selection_title_text().contains("城市: 测试甲城"):
 		root.queue_free()
 		return {"ok": false, "message": "formal hud did not update selected city"}
+	root.queue_free()
+	return {"ok": true}
+
+
+func _test_main_advances_playable_day() -> Dictionary:
+	var main := _instantiate_main()
+	if not main.ok:
+		return main
+	var root = main.node
+	var state_result: Dictionary = root._build_visual_slice_state()
+	if not state_result.ok:
+		root.queue_free()
+		return {"ok": false, "message": "main could not build visual slice state"}
+	root._runtime_state = state_result.state
+	if not root._runtime_state.armies.has("ARMY_1"):
+		root.queue_free()
+		return {"ok": false, "message": "visual slice army missing"}
+	var before_day := int(root._runtime_state.current_day)
+	for _i in 3:
+		root._on_advance_day_requested()
+	if int(root._runtime_state.current_day) != before_day + 3:
+		root.queue_free()
+		return {"ok": false, "message": "advance day did not update date"}
+	if not root._runtime_state.battle_logs.has("BATTLE_1"):
+		root.queue_free()
+		return {"ok": false, "message": "advance day did not resolve engaged battle"}
+	var formal_hud = root.get_node("CanvasLayer/FormalHud")
+	if not formal_hud.get_playable_status_text().contains("接敌结算"):
+		root.queue_free()
+		return {"ok": false, "message": "hud did not show battle result feedback"}
 	root.queue_free()
 	return {"ok": true}
 

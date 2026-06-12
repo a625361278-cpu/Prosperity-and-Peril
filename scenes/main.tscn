@@ -28,3 +28,4 @@ script = ExtResource("2_map")
 visible = false
 
 [node name="DebugPanel" parent="CanvasLayer" instance=ExtResource("3_debug")]
+visible = false

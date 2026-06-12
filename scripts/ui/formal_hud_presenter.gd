@@ -6,6 +6,7 @@ const REQUIRED_STATE_KEYS := [
 	"forces",
 	"cities",
 	"armies",
+	"battle_logs",
 ]
 
 
@@ -19,6 +20,7 @@ static func build_hud_state(state: Dictionary) -> Dictionary:
 		"hud": {
 			"date_text": "第 %d 日 / 第 %d 月" % [int(state.current_day), int(state.current_month)],
 			"force_summary": _force_summary(state.forces),
+			"playable_status": _playable_status(state),
 			"selection_title": "当前选择: 未选择",
 			"selection_body": "点击地图城市或部队查看真实状态。",
 			"commands": _command_rows(),
@@ -99,13 +101,37 @@ static func _force_summary(forces: Dictionary) -> String:
 	return "  |  ".join(lines)
 
 
+static func _playable_status(state: Dictionary) -> String:
+	var marching := 0
+	var engaged := 0
+	var resolved := 0
+	for army_id in state.armies.keys():
+		var army: Dictionary = state.armies[army_id]
+		var army_state := str(army.state)
+		if army_state == "marching":
+			marching += 1
+		elif army_state == "engaged":
+			engaged += 1
+		elif ["victorious", "defeated", "out_of_supply"].has(army_state):
+			resolved += 1
+	if engaged > 0:
+		return "目标: 有部队已经接敌，点击推进一日会结算战斗。"
+	if marching > 0:
+		return "目标: 部队行军中，点击推进一日观察路线和粮草变化。"
+	if int(state.battle_logs.size()) > 0:
+		return "目标: 战斗已产生，打开战报查看结果，也可以继续从城市出阵。"
+	if resolved > 0:
+		return "目标: 部队状态已变化，选择部队或打开战报查看详情。"
+	return "目标: 点击己方城市，任命太守或出阵，形成一条完整作战链路。"
+
+
 static func _command_rows() -> Array[Dictionary]:
 	return [
-		{"id": "appointment", "label": "任命", "enabled": false, "blocked_reason": "正式任命界面尚未实装"},
-		{"id": "sortie", "label": "出阵", "enabled": false, "blocked_reason": "正式出阵界面尚未实装"},
+		{"id": "advance_day", "label": "推进一日", "enabled": true, "blocked_reason": "推进时间、行军和自动接战"},
 		{"id": "battle_report", "label": "战报", "enabled": true, "blocked_reason": "打开正式战报面板"},
 		{"id": "event_log", "label": "事件", "enabled": true, "blocked_reason": "打开正式事件日志面板"},
 		{"id": "save_load", "label": "存档", "enabled": true, "blocked_reason": "打开正式存档读档面板"},
+		{"id": "reserved_roster", "label": "武将", "enabled": false, "blocked_reason": "正式武将名册留作后续版本"},
 	]
 
 

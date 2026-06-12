@@ -4,6 +4,8 @@ const CoreDataLoader = preload("res://scripts/data/core_data_loader.gd")
 const CoreStateFactory = preload("res://scripts/simulation/core_state_factory.gd")
 const SortieSystem = preload("res://scripts/simulation/sortie_system.gd")
 const MarchSystem = preload("res://scripts/simulation/march_system.gd")
+const BattleSystem = preload("res://scripts/simulation/battle_system.gd")
+const TimeSystem = preload("res://scripts/simulation/time_system.gd")
 
 @onready var _map_view: Node = $StrategicMapView
 @onready var _formal_hud: Control = $CanvasLayer/FormalHud
@@ -27,7 +29,9 @@ func _ready() -> void:
 		_debug_panel_node().connect("content_alpha_workbench_requested", _on_content_alpha_workbench_requested)
 	if not _formal_hud_node().is_connected("runtime_state_replaced", _on_runtime_state_replaced):
 		_formal_hud_node().connect("runtime_state_replaced", _on_runtime_state_replaced)
-	var render_result: Dictionary = _map_view.render_state(state_result.state)
+	if not _formal_hud_node().is_connected("advance_day_requested", _on_advance_day_requested):
+		_formal_hud_node().connect("advance_day_requested", _on_advance_day_requested)
+	var render_result: Dictionary = _map_view_node().render_state(state_result.state)
 	if not render_result.ok:
 		push_error("Strategic map render failed: %s" % [render_result.errors])
 		return
@@ -67,16 +71,86 @@ func _on_runtime_state_replaced(state: Dictionary) -> void:
 		push_error("runtime state replacement cannot be empty")
 		return
 	_runtime_state = state
-	var render_result: Dictionary = _map_view.render_state(_runtime_state)
+	var render_result: Dictionary = _map_view_node().render_state(_runtime_state)
 	if not render_result.ok:
 		push_error("Strategic map render after load failed: %s" % [render_result.errors])
 	_debug_panel_node().set_runtime_state(_runtime_state)
+
+
+func _on_advance_day_requested() -> void:
+	if _runtime_state.is_empty():
+		push_error("advance day requested before runtime state initialized")
+		return
+	var result: Dictionary = _advance_playable_day()
+	if not result.ok:
+		push_error("advance playable day failed: %s" % [result.errors])
+		_formal_hud_node().set_playable_message("推进失败: %s" % "\n".join(result.errors))
+		return
+	var render_result: Dictionary = _map_view_node().render_state(_runtime_state)
+	if not render_result.ok:
+		push_error("Strategic map render after day advance failed: %s" % [render_result.errors])
+		return
+	var hud_result: Dictionary = _formal_hud_node().set_runtime_state(_runtime_state)
+	if not hud_result.ok:
+		push_error("Formal HUD after day advance failed: %s" % [hud_result.errors])
+		return
+	_formal_hud_node().set_playable_message(str(result.message))
+	_debug_panel_node().set_runtime_state(_runtime_state)
+
+
+func _advance_playable_day() -> Dictionary:
+	var errors: Array[String] = []
+	var messages: Array[String] = []
+	var time_result: Dictionary = TimeSystem.advance_days(_runtime_state, 1)
+	if not time_result.ok:
+		return {"ok": false, "errors": time_result.errors, "message": ""}
+	messages.append("第 %d 日: 时间推进完成。" % int(_runtime_state.current_day))
+	var army_ids: Array = _runtime_state.armies.keys()
+	army_ids.sort()
+	for army_id in army_ids:
+		var army: Dictionary = _runtime_state.armies[army_id]
+		if str(army.state) == "marching":
+			var march_result: Dictionary = MarchSystem.advance_army_one_day(_runtime_state, str(army_id))
+			if not march_result.ok:
+				errors.append_array(march_result.errors)
+				continue
+			army = _runtime_state.armies[army_id]
+			messages.append("%s 行军进度 %s/%s，粮=%s。" % [
+				str(army_id),
+				str(army.route_progress_days),
+				str(army.days_required),
+				str(army.food_current),
+			])
+		if str(army.state) == "engaged":
+			var route: Dictionary = _runtime_state.routes[army.route_id]
+			var battle_result: Dictionary = BattleSystem.resolve_city_battle(_runtime_state, str(army_id), str(route.to_city_id))
+			if not battle_result.ok:
+				errors.append_array(battle_result.errors)
+				continue
+			messages.append("%s 接敌结算: %s 胜者=%s。" % [
+				str(army_id),
+				str(battle_result.battle_id),
+				str(battle_result.winner),
+			])
+	if not errors.is_empty():
+		return {"ok": false, "errors": errors, "message": ""}
+	return {
+		"ok": true,
+		"errors": [],
+		"message": " ".join(messages),
+	}
 
 
 func _content_alpha_workbench_node() -> Control:
 	if _content_alpha_workbench != null:
 		return _content_alpha_workbench
 	return get_node("CanvasLayer/ContentAlphaWorkbench") as Control
+
+
+func _map_view_node() -> Node:
+	if _map_view != null:
+		return _map_view
+	return get_node("StrategicMapView")
 
 
 func _formal_hud_node() -> Control:

@@ -2,6 +2,7 @@ extends RefCounted
 
 const AppointmentSystem = preload("res://scripts/simulation/appointment_system.gd")
 const SortieSystem = preload("res://scripts/simulation/sortie_system.gd")
+const MarchSystem = preload("res://scripts/simulation/march_system.gd")
 
 const REQUIRED_STATE_KEYS := ["cities", "forces", "officers", "routes", "armies", "next_army_seq"]
 
@@ -60,10 +61,13 @@ static func create_sortie(state: Dictionary, city_id: String, officer_id: String
 	var result: Dictionary = SortieSystem.create_sortie(state, city_id, officer_id, route_id, troops, food)
 	if not result.ok:
 		return _failure(result.errors)
+	var march_result: Dictionary = MarchSystem.start_march(state, str(result.army_id), 12.0, 1000)
+	if not march_result.ok:
+		return _failure(march_result.errors)
 	return {
 		"ok": true,
 		"errors": [],
-		"message": "出阵完成: %s" % str(result.army_id),
+		"message": "出阵完成并开始行军: %s" % str(result.army_id),
 		"army_id": str(result.army_id),
 	}
 

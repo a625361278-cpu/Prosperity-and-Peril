@@ -40,9 +40,15 @@ layout_mode = 2
 text = "第 0 日 / 第 0 月"
 
 [node name="ForceSummaryLabel" type="Label" parent="TopBar/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+text = "等待运行时势力状态..."
+autowrap_mode = 3
+
+[node name="PlayableStatusLabel" type="Label" parent="TopBar/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "等待运行时势力状态..."
+text = "目标: 点击己方城市，任命太守或出阵。"
 autowrap_mode = 3
 
 [node name="RightPanel" type="PanelContainer" parent="."]
