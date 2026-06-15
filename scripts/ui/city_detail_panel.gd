@@ -7,11 +7,13 @@ const UiThemeTokenLoader = preload("res://scripts/data/ui_theme_token_loader.gd"
 signal city_action_requested(action_id)
 
 @onready var _title: Label = $CityHeader
+@onready var _force_summary: Label = $ForceSummary
 @onready var _resources: Label = $ResourceStats
 @onready var _governance: Label = $GovernanceStats
 @onready var _governor: Label = $GovernorSummary
 @onready var _officers: ItemList = $OfficerList
 @onready var _actions: HBoxContainer = $ActionBar
+@onready var _data_gaps: Label = $DataGapSummary
 
 
 func show_city(state: Dictionary, city_id: String) -> Dictionary:
@@ -31,6 +33,14 @@ func get_title_text() -> String:
 	return _title_node().text
 
 
+func get_force_summary_text() -> String:
+	return _force_summary_node().text
+
+
+func get_data_gap_text() -> String:
+	return _data_gaps_node().text
+
+
 func get_action_count() -> int:
 	return _actions_node().get_child_count()
 
@@ -45,11 +55,13 @@ func get_action_button_enabled(action_id: String) -> bool:
 
 func _apply_detail(detail: Dictionary) -> void:
 	_title_node().text = str(detail.title)
-	_resources_node().text = "兵粮与民生\n%s" % _format_stat_lines(detail.resource_rows)
-	_governance_node().text = "治理状态\n%s" % _format_stat_lines(detail.governance_rows)
+	_force_summary_node().text = str(detail.force_summary_text)
+	_resources_node().text = "%s\n%s" % [str(detail.resource_section_title), _format_stat_lines(detail.resource_rows)]
+	_governance_node().text = "%s\n%s" % [str(detail.governance_section_title), _format_stat_lines(detail.governance_rows)]
 	_governor_node().text = str(detail.governor_text)
 	_rebuild_officers(detail.officer_rows)
 	_rebuild_actions(detail.actions)
+	_data_gaps_node().text = _format_data_gaps(detail.data_gap_rows)
 
 
 func _format_stat_lines(rows: Array) -> String:
@@ -59,6 +71,18 @@ func _format_stat_lines(rows: Array) -> String:
 			push_error("city detail row must be dictionary")
 			continue
 		parts.append("%-4s  %s" % [str(row.label), str(row.value)])
+	return "\n".join(parts)
+
+
+func _format_data_gaps(rows: Array) -> String:
+	if rows.is_empty():
+		return "数据缺口\n当前城市详情所需字段已具备。"
+	var parts: Array[String] = ["数据缺口"]
+	for row in rows:
+		if not row is Dictionary:
+			push_error("city detail data gap row must be dictionary")
+			continue
+		parts.append("%s: %s" % [str(row.label), str(row.reason)])
 	return "\n".join(parts)
 
 
@@ -121,6 +145,12 @@ func _title_node() -> Label:
 	return get_node("CityHeader") as Label
 
 
+func _force_summary_node() -> Label:
+	if _force_summary != null:
+		return _force_summary
+	return get_node("ForceSummary") as Label
+
+
 func _resources_node() -> Label:
 	if _resources != null:
 		return _resources
@@ -149,3 +179,9 @@ func _actions_node() -> HBoxContainer:
 	if _actions != null:
 		return _actions
 	return get_node("ActionBar") as HBoxContainer
+
+
+func _data_gaps_node() -> Label:
+	if _data_gaps != null:
+		return _data_gaps
+	return get_node("DataGapSummary") as Label

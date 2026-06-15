@@ -2,7 +2,7 @@ extends RefCounted
 
 const REQUIRED_STATE_KEYS := ["cities", "forces", "officers"]
 const REQUIRED_CITY_KEYS := ["name", "force_id", "troops", "food", "public_order", "morale_public", "gentry_support", "recovery_state"]
-const REQUIRED_FORCE_KEYS := ["name"]
+const REQUIRED_FORCE_KEYS := ["name", "legitimacy", "prestige"]
 
 
 static func build_detail(state: Dictionary, city_id: String) -> Dictionary:
@@ -34,6 +34,16 @@ static func build_detail(state: Dictionary, city_id: String) -> Dictionary:
 		"detail": {
 			"city_id": city_id,
 			"title": "%s / %s" % [str(city.name), str(force.name)],
+			"force_summary_text": "势力 %s  正统 %s  名望 %s" % [
+				str(force.name),
+				str(force.legitimacy),
+				str(force.prestige),
+			],
+			"section_order": ["resource", "governance", "officer", "actions", "data_gaps"],
+			"resource_section_title": "兵粮与民生",
+			"governance_section_title": "治理状态",
+			"officer_section_title": "太守与属官",
+			"action_section_title": "城市动作",
 			"resource_rows": [
 				{"label": "兵力", "value": "%s" % str(city.troops)},
 				{"label": "粮草", "value": "%s" % str(city.food)},
@@ -47,6 +57,7 @@ static func build_detail(state: Dictionary, city_id: String) -> Dictionary:
 			],
 			"governor_text": governor.text,
 			"officer_rows": _same_force_officers(state.officers, force_id),
+			"data_gap_rows": _data_gap_rows(city),
 			"actions": [
 				{"id": "appointment", "label": "任命", "enabled": true, "blocked_reason": "打开正式任命与出阵面板"},
 				{"id": "sortie", "label": "出阵", "enabled": true, "blocked_reason": "打开正式任命与出阵面板"},
@@ -100,6 +111,25 @@ static func _same_force_officers(officers: Dictionary, force_id: String) -> Arra
 			"assignment": str(officer.get("assignment_type", "未任命")),
 		})
 	return rows
+
+
+static func _data_gap_rows(city: Dictionary) -> Array[Dictionary]:
+	var gaps: Array[Dictionary] = []
+	_append_gap_if_missing(gaps, city, "troop_capacity", "兵力上限", "正式城市军事容量字段尚未进入运行时状态")
+	_append_gap_if_missing(gaps, city, "food_capacity", "粮草上限", "正式城市仓储容量字段尚未进入运行时状态")
+	_append_gap_if_missing(gaps, city, "resource_yield", "资源产量", "正式城市资源产量字段尚未进入运行时状态")
+	_append_gap_if_missing(gaps, city, "buildings", "建筑列表", "正式城市建筑列表尚未进入运行时状态")
+	return gaps
+
+
+static func _append_gap_if_missing(gaps: Array[Dictionary], values: Dictionary, field: String, label: String, reason: String) -> void:
+	if values.has(field):
+		return
+	gaps.append({
+		"field": field,
+		"label": label,
+		"reason": reason,
+	})
 
 
 static func _sorted_keys(values: Dictionary) -> Array:

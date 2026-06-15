@@ -4,13 +4,18 @@
 
 [node name="CityDetailPanel" type="VBoxContainer"]
 visible = false
-custom_minimum_size = Vector2(300, 430)
+custom_minimum_size = Vector2(300, 500)
 theme_override_constants/separation = 10
 script = ExtResource("1_city_detail")
 
 [node name="CityHeader" type="Label" parent="."]
 custom_minimum_size = Vector2(300, 38)
 text = "城市详情"
+autowrap_mode = 3
+
+[node name="ForceSummary" type="Label" parent="."]
+custom_minimum_size = Vector2(300, 34)
+text = "势力摘要等待选择"
 autowrap_mode = 3
 
 [node name="ResourceStats" type="Label" parent="."]
@@ -33,3 +38,8 @@ custom_minimum_size = Vector2(300, 84)
 
 [node name="ActionBar" type="HBoxContainer" parent="."]
 custom_minimum_size = Vector2(300, 48)
+
+[node name="DataGapSummary" type="Label" parent="."]
+custom_minimum_size = Vector2(300, 70)
+text = "数据缺口等待选择"
+autowrap_mode = 3
