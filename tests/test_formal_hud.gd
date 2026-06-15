@@ -46,6 +46,8 @@ func _test_formal_hud_nodes() -> Dictionary:
 	for path in [
 		"TopBar/MarginContainer/HBoxContainer/DateLabel",
 		"TopBar/MarginContainer/HBoxContainer/ForceSummaryLabel",
+		"MapInfoLayer/MarginContainer/VBoxContainer/MapModeLabel",
+		"MapInfoLayer/MarginContainer/VBoxContainer/RouteStatusLabel",
 		"LeftPanel/MarginContainer/VBoxContainer/ObjectiveValue",
 		"LeftPanel/MarginContainer/VBoxContainer/EventValue",
 		"OfficerPanel/MarginContainer/HBoxContainer/Portrait",
@@ -54,10 +56,10 @@ func _test_formal_hud_nodes() -> Dictionary:
 		"RightPanel/MarginContainer/VBoxContainer/SelectionBody",
 		"RightPanel/MarginContainer/VBoxContainer/CityDetailPanel",
 		"BottomCommandBar/MarginContainer/CommandButtons",
-		"AppointmentSortiePanel",
-		"BattleReportPanel",
-		"EventLogPanel",
-		"SaveLoadPanel",
+		"PopupLayer/AppointmentSortiePanel",
+		"PopupLayer/BattleReportPanel",
+		"PopupLayer/EventLogPanel",
+		"PopupLayer/SaveLoadPanel",
 	]:
 		if root.get_node_or_null(path) == null:
 			root.queue_free()
@@ -106,6 +108,12 @@ func _test_formal_hud_loads_state() -> Dictionary:
 	if not root.get_playable_status_text().contains("目标:"):
 		root.queue_free()
 		return {"ok": false, "message": "playable status missing"}
+	if not root.get_map_mode_text().contains("战略地图"):
+		root.queue_free()
+		return {"ok": false, "message": "map mode layer missing formal text"}
+	if not root.get_route_status_text().contains("城市") or not root.get_route_status_text().contains("路线"):
+		root.queue_free()
+		return {"ok": false, "message": "route status layer missing real state summary"}
 	var officer_card_text: String = root.get_officer_card_text()
 	if not officer_card_text.contains("测试主将") or not officer_card_text.contains("正统 62") or not officer_card_text.contains("名望 48"):
 		root.queue_free()

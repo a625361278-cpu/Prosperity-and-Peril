@@ -57,6 +57,41 @@ size_flags_horizontal = 3
 text = "目标: 点击己方城市，任命太守或出阵。"
 autowrap_mode = 3
 
+[node name="MapInfoLayer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(360, 82)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -226.0
+offset_right = 180.0
+offset_bottom = -144.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MapInfoLayer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MapInfoLayer/MarginContainer"]
+layout_mode = 2
+
+[node name="MapModeLabel" type="Label" parent="MapInfoLayer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(320, 28)
+layout_mode = 2
+horizontal_alignment = 1
+text = "战略地图"
+
+[node name="RouteStatusLabel" type="Label" parent="MapInfoLayer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(320, 44)
+layout_mode = 2
+horizontal_alignment = 1
+text = "等待运行时路线状态。"
+autowrap_mode = 3
+
 [node name="LeftPanel" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(260, 360)
 layout_mode = 1
@@ -194,7 +229,16 @@ layout_mode = 2
 layout_mode = 2
 alignment = 1
 
-[node name="AppointmentSortiePanel" parent="." instance=ExtResource("3_appointment_sortie")]
+[node name="PopupLayer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="AppointmentSortiePanel" parent="PopupLayer" instance=ExtResource("3_appointment_sortie")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -208,7 +252,7 @@ offset_bottom = 160.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BattleReportPanel" parent="." instance=ExtResource("4_battle_report")]
+[node name="BattleReportPanel" parent="PopupLayer" instance=ExtResource("4_battle_report")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -222,7 +266,7 @@ offset_bottom = 160.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="EventLogPanel" parent="." instance=ExtResource("5_event_log")]
+[node name="EventLogPanel" parent="PopupLayer" instance=ExtResource("5_event_log")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -236,7 +280,7 @@ offset_bottom = 180.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SaveLoadPanel" parent="." instance=ExtResource("6_save_load")]
+[node name="SaveLoadPanel" parent="PopupLayer" instance=ExtResource("6_save_load")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

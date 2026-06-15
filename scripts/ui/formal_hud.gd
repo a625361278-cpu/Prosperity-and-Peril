@@ -9,6 +9,8 @@ signal advance_day_requested
 @onready var _date_label: Label = $TopBar/MarginContainer/HBoxContainer/DateLabel
 @onready var _force_label: Label = $TopBar/MarginContainer/HBoxContainer/ForceSummaryLabel
 @onready var _playable_status_label: Label = $TopBar/MarginContainer/HBoxContainer/PlayableStatusLabel
+@onready var _map_mode_label: Label = $MapInfoLayer/MarginContainer/VBoxContainer/MapModeLabel
+@onready var _route_status_label: Label = $MapInfoLayer/MarginContainer/VBoxContainer/RouteStatusLabel
 @onready var _objective_label: Label = $LeftPanel/MarginContainer/VBoxContainer/ObjectiveValue
 @onready var _event_hint_label: Label = $LeftPanel/MarginContainer/VBoxContainer/EventValue
 @onready var _officer_text_label: Label = $OfficerPanel/MarginContainer/HBoxContainer/OfficerText
@@ -16,10 +18,10 @@ signal advance_day_requested
 @onready var _selection_body: Label = $RightPanel/MarginContainer/VBoxContainer/SelectionBody
 @onready var _city_detail_panel = $RightPanel/MarginContainer/VBoxContainer/CityDetailPanel
 @onready var _command_bar: HBoxContainer = $BottomCommandBar/MarginContainer/CommandButtons
-@onready var _appointment_sortie_panel = $AppointmentSortiePanel
-@onready var _battle_report_panel = $BattleReportPanel
-@onready var _event_log_panel = $EventLogPanel
-@onready var _save_load_panel = $SaveLoadPanel
+@onready var _appointment_sortie_panel = $PopupLayer/AppointmentSortiePanel
+@onready var _battle_report_panel = $PopupLayer/BattleReportPanel
+@onready var _event_log_panel = $PopupLayer/EventLogPanel
+@onready var _save_load_panel = $PopupLayer/SaveLoadPanel
 
 var _state: Dictionary = {}
 var _base_dataset: Dictionary = {}
@@ -97,6 +99,14 @@ func get_playable_status_text() -> String:
 	return _playable_status_label_node().text
 
 
+func get_map_mode_text() -> String:
+	return _map_mode_label_node().text
+
+
+func get_route_status_text() -> String:
+	return _route_status_label_node().text
+
+
 func get_officer_card_text() -> String:
 	return _officer_text_node().text
 
@@ -170,6 +180,8 @@ func _apply_hud_state(hud: Dictionary) -> void:
 	_date_label_node().text = str(hud.date_text)
 	_force_label_node().text = str(hud.force_summary)
 	_playable_status_label_node().text = str(hud.playable_status)
+	_map_mode_label_node().text = str(hud.map_mode_text)
+	_route_status_label_node().text = str(hud.route_status_text)
 	_objective_label_node().text = str(hud.playable_status)
 	_event_hint_label_node().text = _event_hint_text()
 	_officer_text_node().text = str(hud.leader_card_text)
@@ -266,6 +278,8 @@ func _on_appointment_sortie_state_changed() -> void:
 		_date_label_node().text = str(hud_result.hud.date_text)
 		_force_label_node().text = str(hud_result.hud.force_summary)
 		_playable_status_label_node().text = str(hud_result.hud.playable_status)
+		_map_mode_label_node().text = str(hud_result.hud.map_mode_text)
+		_route_status_label_node().text = str(hud_result.hud.route_status_text)
 		_objective_label_node().text = str(hud_result.hud.playable_status)
 		_event_hint_label_node().text = _event_hint_text()
 		_officer_text_node().text = str(hud_result.hud.leader_card_text)
@@ -356,6 +370,18 @@ func _playable_status_label_node() -> Label:
 	return get_node("TopBar/MarginContainer/HBoxContainer/PlayableStatusLabel") as Label
 
 
+func _map_mode_label_node() -> Label:
+	if _map_mode_label != null:
+		return _map_mode_label
+	return get_node("MapInfoLayer/MarginContainer/VBoxContainer/MapModeLabel") as Label
+
+
+func _route_status_label_node() -> Label:
+	if _route_status_label != null:
+		return _route_status_label
+	return get_node("MapInfoLayer/MarginContainer/VBoxContainer/RouteStatusLabel") as Label
+
+
 func _objective_label_node() -> Label:
 	if _objective_label != null:
 		return _objective_label
@@ -401,22 +427,22 @@ func _command_bar_node() -> HBoxContainer:
 func _appointment_sortie_panel_node():
 	if _appointment_sortie_panel != null:
 		return _appointment_sortie_panel
-	return get_node("AppointmentSortiePanel")
+	return get_node("PopupLayer/AppointmentSortiePanel")
 
 
 func _battle_report_panel_node():
 	if _battle_report_panel != null:
 		return _battle_report_panel
-	return get_node("BattleReportPanel")
+	return get_node("PopupLayer/BattleReportPanel")
 
 
 func _event_log_panel_node():
 	if _event_log_panel != null:
 		return _event_log_panel
-	return get_node("EventLogPanel")
+	return get_node("PopupLayer/EventLogPanel")
 
 
 func _save_load_panel_node():
 	if _save_load_panel != null:
 		return _save_load_panel
-	return get_node("SaveLoadPanel")
+	return get_node("PopupLayer/SaveLoadPanel")

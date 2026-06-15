@@ -19,6 +19,9 @@ static func build_hud_state(state: Dictionary) -> Dictionary:
 	var leader_card := _leader_card_text(state)
 	if not leader_card.ok:
 		return _failure(leader_card.errors)
+	var route_status := _route_status_text(state)
+	if not route_status.ok:
+		return _failure(route_status.errors)
 	return {
 		"ok": true,
 		"errors": [],
@@ -26,6 +29,8 @@ static func build_hud_state(state: Dictionary) -> Dictionary:
 			"date_text": "第 %d 日 / 第 %d 月" % [int(state.current_day), int(state.current_month)],
 			"force_summary": _force_summary(state.forces),
 			"playable_status": _playable_status(state),
+			"map_mode_text": "战略地图 / 测试坐标切片",
+			"route_status_text": route_status.text,
 			"leader_card_text": leader_card.text,
 			"selection_title": "当前选择: 未选择",
 			"selection_body": "点击地图城市或部队查看真实状态。",
@@ -268,6 +273,40 @@ static func _playable_status(state: Dictionary) -> String:
 	if resolved > 0:
 		return "目标: 部队状态已变化，选择部队或打开战报查看详情。"
 	return "目标: 点击己方城市，任命太守或出阵，形成一条完整作战链路。"
+
+
+static func _route_status_text(state: Dictionary) -> Dictionary:
+	var pass_routes := 0
+	var blocked_passes := 0
+	for route_id in state.routes.keys():
+		var route: Dictionary = state.routes[route_id]
+		var route_errors := _require_fields(route, "route %s" % str(route_id), ["route_type", "blocks_enemy_passage"])
+		if not route_errors.is_empty():
+			return {"ok": false, "errors": route_errors, "text": ""}
+		var route_type := str(route.route_type)
+		if route_type == "pass":
+			pass_routes += 1
+			if bool(route.blocks_enemy_passage):
+				blocked_passes += 1
+	var marching := 0
+	for army_id in state.armies.keys():
+		var army: Dictionary = state.armies[army_id]
+		var army_errors := _require_fields(army, "army %s" % str(army_id), ["state"])
+		if not army_errors.is_empty():
+			return {"ok": false, "errors": army_errors, "text": ""}
+		if str(army.state) == "marching":
+			marching += 1
+	return {
+		"ok": true,
+		"errors": [],
+		"text": "城市 %d  路线 %d  关隘 %d  阻断 %d  行军 %d" % [
+			int(state.cities.size()),
+			int(state.routes.size()),
+			pass_routes,
+			blocked_passes,
+			marching,
+		],
+	}
 
 
 static func _command_rows() -> Array[Dictionary]:
