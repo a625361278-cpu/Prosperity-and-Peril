@@ -522,10 +522,21 @@
     - `test_strategic_map_view.gd` 通过，确认地图选择和可读标签未被 HUD 层级调整破坏。
     - `test_appointment_sortie_panel.gd` 通过，确认任命出阵弹窗业务入口未受 `PopupLayer` 调整影响。
 
-- [ ] Task 49：正式 UI 基础组件与主题统一
+- [x] Task 49：正式 UI 基础组件与主题统一
+  - 状态：已完成。
   - 范围：沉淀正式面板、标题栏、信息行、按钮、禁用入口、状态徽标、分隔线、弹窗容器等可复用组件或样式规则，统一使用 `ui_theme_tokens` 和 Godot Theme。
+  - 根因：Task 48 建立了主 HUD 层级，但 HUD 命令栏和城市详情动作区仍各自 `Button.new()` 并散写尺寸、tooltip 和元数据；如果继续扩展弹窗，会造成按钮尺寸、阻塞原因和组件语义不一致。
   - 数据原则：组件只负责展示和交互状态，不在组件层生成业务默认值。
   - 验收：主界面和弹窗不再各自散写临时样式；禁用入口必须显示真实阻塞原因。
+  - 边界：本任务先沉淀 `FormalUiComponentFactory` 并接入动态创建的 HUD 命令按钮和城市详情动作按钮；静态 `.tscn` 弹窗布局仍保持当前节点结构，后续 Task 51/52 重构弹窗时继续沿该工厂扩展。
+  - 修复：回归时发现 Task 48 的地图摘要把 `blocks_enemy_passage` 误要求到所有路线，导致普通道路初始化失败；已收窄为所有路线必须有 `route_type`，只有关隘路线必须显式提供 `blocks_enemy_passage`。
+  - 副作用：动态按钮现在会附带统一 `formal_component` 和 `blocked_reason` 元数据；原有 `command_id / action_id` 保留，外部调用链不变。
+  - 验证：
+    - 新增 `test_formal_ui_component_factory.gd`，先确认缺少组件工厂会失败，再验证标题、信息行、状态徽标和命令按钮按 Token/阻塞原因生成。
+    - `test_formal_hud.gd` 通过，确认 HUD 命令、城市详情动作和路线摘要仍来自真实状态。
+    - `test_main_content_alpha_workbench.gd`、`test_appointment_sortie_panel.gd`、`test_strategic_map_view.gd` 通过，确认主流程、任命出阵和地图选择未受组件抽取影响。
+    - `test_content_alpha_theme_resource.gd` 通过，确认 Theme 资源仍匹配 Token。
+    - `py -3.14 tools\validate_content_alpha_package.py` 通过，确认 Content Alpha 包校验未回退。
 
 - [ ] Task 50：正式城市与势力信息 UI 重构
   - 范围：按正式界面结构重做城市详情、势力摘要、治理状态和城市操作区；先定义 UI 需要的字段，再对照运行时状态列出缺失项。

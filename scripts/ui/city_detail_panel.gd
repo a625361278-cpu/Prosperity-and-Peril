@@ -1,6 +1,8 @@
 extends VBoxContainer
 
 const CityDetailPresenter = preload("res://scripts/ui/city_detail_presenter.gd")
+const FormalUiComponentFactory = preload("res://scripts/ui/formal_ui_component_factory.gd")
+const UiThemeTokenLoader = preload("res://scripts/data/ui_theme_token_loader.gd")
 
 signal city_action_requested(action_id)
 
@@ -79,19 +81,30 @@ func _rebuild_actions(actions: Array) -> void:
 	var bar := _actions_node()
 	for child in bar.get_children():
 		child.free()
+	var factory_result := _build_component_factory()
+	if not factory_result.ok:
+		push_error("city detail action factory failed: %s" % [factory_result.errors])
+		return
+	var factory = factory_result.factory
 	for action in actions:
 		if not action is Dictionary:
 			push_error("city detail action must be dictionary")
 			continue
-		var button := Button.new()
 		var action_id := str(action.id)
-		button.text = str(action.label)
-		button.disabled = not bool(action.enabled)
-		button.tooltip_text = str(action.blocked_reason)
-		button.custom_minimum_size = Vector2(132, 44)
-		button.set_meta("action_id", action_id)
+		var button: Button = factory.create_action_button(action)
 		button.pressed.connect(_on_action_pressed.bind(action_id))
 		bar.add_child(button)
+
+
+func _build_component_factory() -> Dictionary:
+	var token_result: Dictionary = UiThemeTokenLoader.load_default_tokens()
+	if not token_result.ok:
+		return _failure(token_result.errors)
+	return {
+		"ok": true,
+		"errors": [],
+		"factory": FormalUiComponentFactory.new(token_result.tokens),
+	}
 
 
 func _on_action_pressed(action_id: String) -> void:

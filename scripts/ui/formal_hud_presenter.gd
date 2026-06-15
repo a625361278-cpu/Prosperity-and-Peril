@@ -280,11 +280,14 @@ static func _route_status_text(state: Dictionary) -> Dictionary:
 	var blocked_passes := 0
 	for route_id in state.routes.keys():
 		var route: Dictionary = state.routes[route_id]
-		var route_errors := _require_fields(route, "route %s" % str(route_id), ["route_type", "blocks_enemy_passage"])
+		var route_errors := _require_fields(route, "route %s" % str(route_id), ["route_type"])
 		if not route_errors.is_empty():
 			return {"ok": false, "errors": route_errors, "text": ""}
 		var route_type := str(route.route_type)
 		if route_type == "pass":
+			var pass_errors := _require_fields(route, "pass route %s" % str(route_id), ["blocks_enemy_passage"])
+			if not pass_errors.is_empty():
+				return {"ok": false, "errors": pass_errors, "text": ""}
 			pass_routes += 1
 			if bool(route.blocks_enemy_passage):
 				blocked_passes += 1

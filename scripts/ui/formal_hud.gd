@@ -2,6 +2,8 @@ extends Control
 
 const ContentAlphaThemeLoader = preload("res://scripts/ui/content_alpha_theme_loader.gd")
 const FormalHudPresenter = preload("res://scripts/ui/formal_hud_presenter.gd")
+const FormalUiComponentFactory = preload("res://scripts/ui/formal_ui_component_factory.gd")
+const UiThemeTokenLoader = preload("res://scripts/data/ui_theme_token_loader.gd")
 
 signal runtime_state_replaced(state)
 signal advance_day_requested
@@ -195,20 +197,31 @@ func _rebuild_commands(commands: Array) -> void:
 	var bar := _command_bar_node()
 	for child in bar.get_children():
 		child.free()
+	var factory_result := _build_component_factory()
+	if not factory_result.ok:
+		push_error("formal hud command factory failed: %s" % [factory_result.errors])
+		return
+	var factory = factory_result.factory
 	for command in commands:
 		if not command is Dictionary:
 			push_error("formal hud command must be dictionary")
 			continue
-		var button := Button.new()
 		var command_id := str(command.id)
-		button.text = str(command.label)
-		button.disabled = not bool(command.enabled)
-		button.tooltip_text = str(command.blocked_reason)
-		button.custom_minimum_size = Vector2(112, 56)
-		button.set_meta("command_id", command_id)
+		var button: Button = factory.create_command_button(command)
 		if not button.disabled:
 			button.pressed.connect(_on_command_pressed.bind(command_id))
 		bar.add_child(button)
+
+
+func _build_component_factory() -> Dictionary:
+	var token_result: Dictionary = UiThemeTokenLoader.load_default_tokens()
+	if not token_result.ok:
+		return _failure(token_result.errors)
+	return {
+		"ok": true,
+		"errors": [],
+		"factory": FormalUiComponentFactory.new(token_result.tokens),
+	}
 
 
 func _wire_city_detail_panel() -> void:
